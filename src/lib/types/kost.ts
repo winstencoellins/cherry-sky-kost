@@ -129,6 +129,7 @@ export interface WhatsAppButtonProps {
   message?: string;
   variant?: 'default' | 'icon' | 'compact';
   className?: string;
+  label?: string;
 }
 
 /**

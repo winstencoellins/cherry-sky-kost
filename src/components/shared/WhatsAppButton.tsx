@@ -16,6 +16,7 @@ export function WhatsAppButton({
     message,
     variant = 'default',
     className,
+    label,
 }: WhatsAppButtonProps) {
     const whatsappURL = generateWhatsAppURL(phoneNumber, message);
 
@@ -63,7 +64,7 @@ export function WhatsAppButton({
         >
             <a href={whatsappURL} target="_blank" rel="noopener noreferrer">
                 <Icon name="chat" size={20} className="mr-2" />
-                Hubungi via WhatsApp
+                { label }
             </a>
         </Button>
     );

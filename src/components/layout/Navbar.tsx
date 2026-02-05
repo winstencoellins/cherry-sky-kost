@@ -73,7 +73,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                     <div className="hidden md:flex items-center gap-1">
                         {[
                             { href: '/', label: t('nav.home') },
-                            { href: '/cari', label: t('nav.search') },
+                            { href: '/search-kosts', label: t('nav.search') },
                             { href: '#properties', label: t('nav.properties') },
                             { href: '#contact', label: t('nav.contact') },
                         ].map((link) => (

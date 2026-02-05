@@ -118,7 +118,7 @@ export function RoomTypeCard({
                                 message={whatsappMessage}
                                 variant="compact"
                                 className="h-9 px-4 rounded-xl bg-[#137fec] hover:bg-blue-600 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-blue-500/30"
-                                text={t('cta.bookNow')}
+                                label={t('cta.bookNow')}
                             />
                         ) : (
                             <Button disabled size="sm" className="rounded-xl h-9 bg-slate-100 text-slate-400 text-xs">
