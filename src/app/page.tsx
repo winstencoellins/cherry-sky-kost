@@ -1,57 +1,11 @@
 /**
- * Homepage - Cherry Sky Kost
- * Main landing page with hero, property listings, and facilities
+ * Root page - redirect to default locale so next-intl and layout apply.
+ * The actual homepage is at [locale]/page.tsx.
  */
 
-'use client';
+import { redirect } from 'next/navigation';
+import { routing } from '@/i18n/routing';
 
-import { useTranslations } from 'next-intl';
-import { AppLayout } from '@/components/layout/AppLayout';
-import { Footer } from '@/components/layout/Footer';
-import { Hero } from '@/components/sections/Hero';
-import { KostSection } from '@/components/kost/KostSection';
-import { KostSectionSkeleton } from '@/components/kost/SkeletonLoaders';
-import { useFeaturedKosts } from '@/lib/hooks/use-kost-data';
-
-export default function HomePage() {
-  const t = useTranslations();
-  const { data: kosts, isLoading } = useFeaturedKosts();
-
-  return (
-    <AppLayout>
-      {/* Hero Section */}
-      <Hero />
-
-      {/* Properties Section */}
-      <div
-        id="properties"
-        className="flex flex-col items-center w-full py-12 md:py-20 px-6 lg:px-10 bg-slate-50 dark:bg-slate-900"
-      >
-        <div className="max-w-[1080px] w-full flex flex-col gap-16 md:gap-24">
-          {isLoading ? (
-            <>
-              <KostSectionSkeleton />
-              <KostSectionSkeleton />
-            </>
-          ) : kosts && kosts.length > 0 ? (
-            kosts.map((kost) => (
-              <KostSection key={kost.id} kost={kost} showFacilities={true} />
-            ))
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-slate-500 dark:text-slate-400">
-                {t('search.noResults')}
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Contact Section */}
-      <div id="contact">
-        <Footer />
-      </div>
-    </AppLayout>
-  );
+export default function RootPage() {
+  redirect(`/${routing.defaultLocale}`);
 }
-

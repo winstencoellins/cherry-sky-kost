@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import { Icon } from '@/components/shared/Icon';
 import { cn } from '@/lib/utils';
 import { generateWhatsAppURL } from '@/lib/utils/format';
-
+import { motion } from 'framer-motion';
 interface BottomNavItemProps {
     href: string;
     icon: string;
