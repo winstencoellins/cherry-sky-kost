@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
+import { Amenities } from '@/components/sections/Amenities';
 import { KostSection } from '@/components/kost/KostSection';
 import { KostSectionSkeleton } from '@/components/kost/SkeletonLoaders';
 import { useFeaturedKosts } from '@/lib/hooks/use-kost-data';
@@ -25,9 +26,9 @@ export default function HomePage() {
       {/* Properties Section */}
       <div
         id="properties"
-        className="flex flex-col items-center w-full py-12 md:py-20 px-6 lg:px-10 bg-slate-50 dark:bg-slate-900"
+        className="flex flex-col items-center w-full py-20 px-6 lg:px-10 bg-[#f6f7f8] dark:bg-[#101922]"
       >
-        <div className="max-w-[1080px] w-full flex flex-col gap-16 md:gap-24">
+        <div className="max-w-[1080px] w-full flex flex-col gap-24">
           {isLoading ? (
             <>
               <KostSectionSkeleton />
@@ -46,6 +47,9 @@ export default function HomePage() {
           )}
         </div>
       </div>
+
+      {/* Amenities Section */}
+      <Amenities />
 
       {/* Contact Section */}
       <div id="contact">

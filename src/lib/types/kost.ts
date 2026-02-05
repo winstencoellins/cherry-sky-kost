@@ -1,0 +1,140 @@
+/**
+ * Core Type Definitions for Cherry Sky Kost Platform
+ */
+
+export type BathroomType = 'dalam' | 'luar' | 'bersama';
+export type RoomStatus = 'available' | 'rented' | 'reserved' | 'full';
+export type PropertyType = 'putra' | 'putri' | 'campur';
+export type FacilityCategory = 'room' | 'building' | 'service' | 'security';
+
+/**
+ * Room Type Interface
+ * Represents different room configurations within a kost property
+ */
+export interface RoomType {
+  id: string;
+  name: string;
+  price: number;
+  bathroomType: BathroomType;
+  capacity: string; // e.g., "1-2 orang"
+  size?: number; // in square meters
+  availableCount: number;
+  totalCount: number;
+  status: RoomStatus;
+  waitlistEnabled: boolean;
+  images: string[];
+  description?: string;
+}
+
+/**
+ * Facility Interface
+ * Represents amenities and facilities available
+ */
+export interface Facility {
+  id: string;
+  name: string;
+  nameEn?: string;
+  icon: string; // Icon name or identifier
+  category: FacilityCategory;
+  isPremium: boolean;
+  isHighlight?: boolean; // Featured facility (e.g., 200Mbps WiFi, Free Laundry)
+  detail?: string; // Additional details (e.g., "Max 10x/month")
+}
+
+/**
+ * Location Interface
+ */
+export interface Location {
+  address: string;
+  city: string;
+  district?: string;
+  nearbyLandmark?: string; // e.g., "Dekat UMSU"
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
+}
+
+/**
+ * Kost Property Interface
+ * Main property entity representing a boarding house
+ */
+export interface Kost {
+  id: string;
+  name: string;
+  slug: string;
+  type: PropertyType;
+  description: string;
+  location: Location;
+  priceRange: {
+    min: number;
+    max: number;
+  };
+  images: string[];
+  thumbnail: string;
+  roomTypes: RoomType[];
+  facilities: Facility[];
+  highlights: string[]; // Special features to emphasize
+  totalRooms: number;
+  availableRooms: number;
+  rating?: number;
+  reviewCount?: number;
+  isFeatured: boolean;
+  whatsappNumber: string;
+  phone?: string;
+  rules?: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+/**
+ * Search Filter State
+ */
+export interface SearchFilters {
+  location?: string;
+  priceMin?: number;
+  priceMax?: number;
+  bathroomType?: BathroomType[];
+  facilities?: string[]; // Facility IDs
+  availability?: 'available' | 'all';
+  sortBy?: 'price-asc' | 'price-desc' | 'newest' | 'popular';
+}
+
+/**
+ * Component Prop Interfaces
+ */
+export interface KostCardProps {
+  kost: Kost;
+  variant?: 'default' | 'compact' | 'featured';
+  showCTA?: boolean;
+  onCTAClick?: () => void;
+}
+
+export interface RoomTypeCardProps {
+  roomType: RoomType;
+  kostName: string;
+  whatsappNumber: string;
+  onBookClick?: () => void;
+}
+
+export interface FacilityListProps {
+  facilities: Facility[];
+  variant?: 'grid' | 'list' | 'compact';
+  showCategory?: boolean;
+  highlightPremium?: boolean;
+}
+
+export interface WhatsAppButtonProps {
+  phoneNumber: string;
+  message?: string;
+  variant?: 'default' | 'icon' | 'compact';
+  className?: string;
+}
+
+/**
+ * Skeleton Loading Props
+ */
+export interface SkeletonCardProps {
+  variant?: 'kost' | 'room' | 'facility';
+  count?: number;
+}

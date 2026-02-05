@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "search": "Cari Kost",
+    "favorites": "Favorit",
+    "contact": "Hubungi",
+    "account": "Akun",
+    "login": "Masuk",
+    "register": "Daftar",
+    "about": "Tentang",
+    "properties": "Properti"
+  },
+  "hero": {
+    "title": "Temukan Kost Impian Anda",
+    "subtitle": "Kost nyaman dengan fasilitas lengkap di lokasi strategis",
+    "cta": "Lihat Kost Kami",
+    "learnMore": "Pelajari Lebih Lanjut",
+    "scheduleVisit": "Jadwalkan Kunjungan"
+  },
+  "roomTypes": {
+    "skyRoomAC": "Sky Room AC",
+    "skyRoomACInside": "Sky Room AC (Kamar Mandi Dalam)",
+    "skyRoomACOutside": "Sky Room AC (Kamar Mandi Luar)",
+    "standardRoomFan": "Standard Room Kipas",
+    "type1": "Tipe 1",
+    "type2": "Tipe 2"
+  },
+  "bathroom": {
+    "inside": "Kamar Mandi Dalam",
+    "outside": "Kamar Mandi Luar",
+    "shared": "Kamar Mandi Bersama"
+  },
+  "facilities": {
+    "title": "Fasilitas",
+    "cctv": "CCTV",
+    "sharedKitchen": "Dapur Umum",
+    "wifi": "Wi-Fi",
+    "wifiSpeed": "Wi-Fi {speed} Mbps",
+    "security": "Security",
+    "freeWater": "Air Gratis",
+    "motorcycleParking": "Parkir Motor",
+    "tv": "TV",
+    "tvAndroid": "TV Android",
+    "ac": "AC",
+    "wardrobe": "Lemari Baju",
+    "wardrobe2Door": "Lemari 2 Pintu",
+    "wardrobe3Door": "Lemari 3 Pintu",
+    "desk": "Meja Serbaguna",
+    "vanity": "Meja Rias",
+    "springBed": "Spring Bed",
+    "waterHeater": "Water Heater",
+    "refrigerator": "Kulkas",
+    "lift": "Lift",
+    "elevator": "Lift",
+    "sittingToilet": "Closet Duduk",
+    "basementParking": "Basement Parkiran",
+    "freeLaundry": "Laundry Gratis",
+    "laundryDetail": "Max 10x / 7kg per bulan (Cuci Kering Lipat)"
+  },
+  "status": {
+    "available": "Tersedia",
+    "rented": "Disewa",
+    "full": "Penuh",
+    "waitlist": "Daftar Tunggu",
+    "reserved": "Dipesan",
+    "roomsAvailable": "{count} kamar tersedia",
+    "almostFull": "Hampir Penuh"
+  },
+  "pricing": {
+    "perMonth": "/bulan",
+    "startingFrom": "Mulai dari",
+    "priceIncludes": "Harga sudah termasuk",
+    "capacity": "Kapasitas 1-2 orang",
+    "allFacilities": "Semua fasilitas tertulis",
+    "excludeElectricity": "Kecuali listrik",
+    "includeElectricity": "Termasuk listrik",
+    "includeWater": "Termasuk air"
+  },
+  "cta": {
+    "bookNow": "Pesan Sekarang",
+    "bookViewing": "Jadwalkan Kunjungan",
+    "contactOwner": "Hubungi Pemilik",
+    "viewDetails": "Lihat Detail",
+    "joinWaitlist": "Daftar Tunggu",
+    "whatsapp": "Hubungi via WhatsApp",
+    "call": "Telepon",
+    "seeMore": "Lihat Lebih Banyak",
+    "applyFilter": "Terapkan Filter",
+    "resetFilter": "Reset Filter"
+  },
+  "search": {
+    "title": "Cari Kost",
+    "placeholder": "Cari lokasi, nama kost...",
+    "location": "Lokasi",
+    "priceRange": "Rentang Harga",
+    "facilities": "Fasilitas",
+    "roomType": "Tipe Kamar",
+    "bathroomType": "Tipe Kamar Mandi",
+    "availability": "Ketersediaan",
+    "noResults": "Tidak ada kost yang ditemukan",
+    "tryDifferentFilters": "Coba gunakan filter yang berbeda"
+  },
+  "property": {
+    "flagship": "Properti Unggulan",
+    "premium": "Premium",
+    "location": "Lokasi",
+    "nearCampus": "Dekat {campus}",
+    "details": "Detail Properti",
+    "rules": "Peraturan",
+    "amenities": "Fasilitas Umum"
+  },
+  "footer": {
+    "tagline": "Menemukan hunian nyaman untuk hidup yang lebih baik",
+    "contact": "Hubungi Kami",
+    "quickLinks": "Tautan Cepat",
+    "residentPortal": "Portal Penghuni",
+    "maintenanceRequest": "Permintaan Perbaikan",
+    "careers": "Karir",
+    "privacyPolicy": "Kebijakan Privasi",
+    "newsletter": "Newsletter",
+    "newsletterDesc": "Berlangganan untuk update kamar baru",
+    "emailPlaceholder": "Alamat email",
+    "subscribe": "Berlangganan",
+    "copyright": "© {year} Cherry Sky Kost. Hak cipta dilindungi."
+  },
+  "whatsapp": {
+    "inquiry": "Halo, saya tertarik dengan {propertyName}",
+    "roomInquiry": "Halo, saya tertarik dengan {roomType} di {propertyName}. Apakah masih tersedia?",
+    "generalInquiry": "Halo, saya ingin menanyakan informasi tentang kost",
+    "visitSchedule": "Halo, saya ingin menjadwalkan kunjungan ke {propertyName}"
+  },
+  "common": {
+    "or": "atau",
+    "and": "dan",
+    "close": "Tutup",
+    "open": "Buka",
+    "loading": "Memuat...",
+    "error": "Terjadi kesalahan",
+    "tryAgain": "Coba Lagi",
+    "showMore": "Tampilkan Lebih Banyak",
+    "showLess": "Tampilkan Lebih Sedikit"
+  }
+}
