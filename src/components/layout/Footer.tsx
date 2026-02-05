@@ -100,8 +100,8 @@ export function Footer() {
                             Dapatkan info kost terbaru dan promo menarik.
                         </p>
                         <form className="flex gap-2">
-                            <input 
-                                type="email" 
+                            <input
+                                type="email"
                                 placeholder="Email Anda"
                                 className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-[#137fec] focus:ring-1 focus:ring-[#137fec] transition-all"
                             />

@@ -104,15 +104,15 @@ export function FacilityList({
                     >
                         <Icon name={facility.icon} size={24} />
                     </div>
-                    
+
                     <h4 className="font-semibold text-sm text-slate-800 dark:text-white text-center">
                         {facility.name}
                     </h4>
-                    
+
                     {facility.detail && (
-                         <p className="text-xs text-slate-400 text-center mt-1">
+                        <p className="text-xs text-slate-400 text-center mt-1">
                             {facility.detail}
-                         </p>
+                        </p>
                     )}
 
                     {facility.isPremium && (

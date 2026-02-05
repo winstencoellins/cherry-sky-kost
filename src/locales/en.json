@@ -1,143 +1,143 @@
 {
-  "nav": {
-    "home": "Home",
-    "search": "Search Kost",
-    "favorites": "Favorites",
-    "contact": "Contact",
-    "account": "Account",
-    "login": "Login",
-    "register": "Register",
-    "about": "About",
-    "properties": "Properties"
-  },
-  "hero": {
-    "title": "Find Your Dream Kost",
-    "subtitle": "Comfortable boarding house with complete facilities in strategic locations",
-    "cta": "View Our Properties",
-    "learnMore": "Learn More",
-    "scheduleVisit": "Schedule a Visit"
-  },
-  "roomTypes": {
-    "skyRoomAC": "Sky Room AC",
-    "skyRoomACInside": "Sky Room AC (Private Bathroom)",
-    "skyRoomACOutside": "Sky Room AC (Shared Bathroom)",
-    "standardRoomFan": "Standard Room Fan",
-    "type1": "Type 1",
-    "type2": "Type 2"
-  },
-  "bathroom": {
-    "inside": "Private Bathroom",
-    "outside": "Shared Bathroom",
-    "shared": "Shared Bathroom"
-  },
-  "facilities": {
-    "title": "Facilities",
-    "cctv": "CCTV",
-    "sharedKitchen": "Shared Kitchen",
-    "wifi": "Wi-Fi",
-    "wifiSpeed": "Wi-Fi {speed} Mbps",
-    "security": "Security",
-    "freeWater": "Free Water",
-    "motorcycleParking": "Motorcycle Parking",
-    "tv": "TV",
-    "tvAndroid": "Android TV",
-    "ac": "AC",
-    "wardrobe": "Wardrobe",
-    "wardrobe2Door": "2-Door Wardrobe",
-    "wardrobe3Door": "3-Door Wardrobe",
-    "desk": "Desk",
-    "vanity": "Vanity Table",
-    "springBed": "Spring Bed",
-    "waterHeater": "Water Heater",
-    "refrigerator": "Refrigerator",
-    "lift": "Elevator",
-    "elevator": "Elevator",
-    "sittingToilet": "Sitting Toilet",
-    "basementParking": "Basement Parking",
-    "freeLaundry": "Free Laundry",
-    "laundryDetail": "Max 10x / 7kg per month (Wash Dry Fold)"
-  },
-  "status": {
-    "available": "Available",
-    "rented": "Rented",
-    "full": "Full",
-    "waitlist": "Waitlist",
-    "reserved": "Reserved",
-    "roomsAvailable": "{count} rooms available",
-    "almostFull": "Almost Full"
-  },
-  "pricing": {
-    "perMonth": "/month",
-    "startingFrom": "Starting from",
-    "priceIncludes": "Price includes",
-    "capacity": "Capacity 1-2 persons",
-    "allFacilities": "All listed facilities",
-    "excludeElectricity": "Excluding electricity",
-    "includeElectricity": "Including electricity",
-    "includeWater": "Including water"
-  },
-  "cta": {
-    "bookNow": "Book Now",
-    "bookViewing": "Book Viewing",
-    "contactOwner": "Contact Owner",
-    "viewDetails": "View Details",
-    "joinWaitlist": "Join Waitlist",
-    "whatsapp": "Contact via WhatsApp",
-    "call": "Call",
-    "seeMore": "See More",
-    "applyFilter": "Apply Filters",
-    "resetFilter": "Reset Filters"
-  },
-  "search": {
-    "title": "Search Kost",
-    "placeholder": "Search location, kost name...",
-    "location": "Location",
-    "priceRange": "Price Range",
-    "facilities": "Facilities",
-    "roomType": "Room Type",
-    "bathroomType": "Bathroom Type",
-    "availability": "Availability",
-    "noResults": "No kost found",
-    "tryDifferentFilters": "Try using different filters"
-  },
-  "property": {
-    "flagship": "Flagship Property",
-    "premium": "Premium",
-    "location": "Location",
-    "nearCampus": "Near {campus}",
-    "details": "Property Details",
-    "rules": "Rules",
-    "amenities": "Amenities"
-  },
-  "footer": {
-    "tagline": "Finding comfortable living for a better life",
-    "contact": "Contact Us",
-    "quickLinks": "Quick Links",
-    "residentPortal": "Resident Portal",
-    "maintenanceRequest": "Maintenance Request",
-    "careers": "Careers",
-    "privacyPolicy": "Privacy Policy",
-    "newsletter": "Newsletter",
-    "newsletterDesc": "Subscribe for updates on new rooms",
-    "emailPlaceholder": "Email address",
-    "subscribe": "Subscribe",
-    "copyright": "© {year} Cherry Sky Kost. All rights reserved."
-  },
-  "whatsapp": {
-    "inquiry": "Hello, I'm interested in {propertyName}",
-    "roomInquiry": "Hello, I'm interested in {roomType} at {propertyName}. Is it still available?",
-    "generalInquiry": "Hello, I would like to inquire about the boarding house",
-    "visitSchedule": "Hello, I would like to schedule a visit to {propertyName}"
-  },
-  "common": {
-    "or": "or",
-    "and": "and",
-    "close": "Close",
-    "open": "Open",
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "tryAgain": "Try Again",
-    "showMore": "Show More",
-    "showLess": "Show Less"
-  }
+    "nav": {
+        "home": "Home",
+        "search": "Search Kost",
+        "favorites": "Favorites",
+        "contact": "Contact",
+        "account": "Account",
+        "login": "Login",
+        "register": "Register",
+        "about": "About",
+        "properties": "Properties"
+    },
+    "hero": {
+        "title": "Find Your Dream Kost",
+        "subtitle": "Comfortable boarding house with complete facilities in strategic locations",
+        "cta": "View Our Properties",
+        "learnMore": "Learn More",
+        "scheduleVisit": "Schedule a Visit"
+    },
+    "roomTypes": {
+        "skyRoomAC": "Sky Room AC",
+        "skyRoomACInside": "Sky Room AC (Private Bathroom)",
+        "skyRoomACOutside": "Sky Room AC (Shared Bathroom)",
+        "standardRoomFan": "Standard Room Fan",
+        "type1": "Type 1",
+        "type2": "Type 2"
+    },
+    "bathroom": {
+        "inside": "Private Bathroom",
+        "outside": "Shared Bathroom",
+        "shared": "Shared Bathroom"
+    },
+    "facilities": {
+        "title": "Facilities",
+        "cctv": "CCTV",
+        "sharedKitchen": "Shared Kitchen",
+        "wifi": "Wi-Fi",
+        "wifiSpeed": "Wi-Fi {speed} Mbps",
+        "security": "Security",
+        "freeWater": "Free Water",
+        "motorcycleParking": "Motorcycle Parking",
+        "tv": "TV",
+        "tvAndroid": "Android TV",
+        "ac": "AC",
+        "wardrobe": "Wardrobe",
+        "wardrobe2Door": "2-Door Wardrobe",
+        "wardrobe3Door": "3-Door Wardrobe",
+        "desk": "Desk",
+        "vanity": "Vanity Table",
+        "springBed": "Spring Bed",
+        "waterHeater": "Water Heater",
+        "refrigerator": "Refrigerator",
+        "lift": "Elevator",
+        "elevator": "Elevator",
+        "sittingToilet": "Sitting Toilet",
+        "basementParking": "Basement Parking",
+        "freeLaundry": "Free Laundry",
+        "laundryDetail": "Max 10x / 7kg per month (Wash Dry Fold)"
+    },
+    "status": {
+        "available": "Available",
+        "rented": "Rented",
+        "full": "Full",
+        "waitlist": "Waitlist",
+        "reserved": "Reserved",
+        "roomsAvailable": "{count} rooms available",
+        "almostFull": "Almost Full"
+    },
+    "pricing": {
+        "perMonth": "/month",
+        "startingFrom": "Starting from",
+        "priceIncludes": "Price includes",
+        "capacity": "Capacity 1-2 persons",
+        "allFacilities": "All listed facilities",
+        "excludeElectricity": "Excluding electricity",
+        "includeElectricity": "Including electricity",
+        "includeWater": "Including water"
+    },
+    "cta": {
+        "bookNow": "Book Now",
+        "bookViewing": "Book Viewing",
+        "contactOwner": "Contact Owner",
+        "viewDetails": "View Details",
+        "joinWaitlist": "Join Waitlist",
+        "whatsapp": "Contact via WhatsApp",
+        "call": "Call",
+        "seeMore": "See More",
+        "applyFilter": "Apply Filters",
+        "resetFilter": "Reset Filters"
+    },
+    "search": {
+        "title": "Search Kost",
+        "placeholder": "Search location, kost name...",
+        "location": "Location",
+        "priceRange": "Price Range",
+        "facilities": "Facilities",
+        "roomType": "Room Type",
+        "bathroomType": "Bathroom Type",
+        "availability": "Availability",
+        "noResults": "No kost found",
+        "tryDifferentFilters": "Try using different filters"
+    },
+    "property": {
+        "flagship": "Flagship Property",
+        "premium": "Premium",
+        "location": "Location",
+        "nearCampus": "Near {campus}",
+        "details": "Property Details",
+        "rules": "Rules",
+        "amenities": "Amenities"
+    },
+    "footer": {
+        "tagline": "Finding comfortable living for a better life",
+        "contact": "Contact Us",
+        "quickLinks": "Quick Links",
+        "residentPortal": "Resident Portal",
+        "maintenanceRequest": "Maintenance Request",
+        "careers": "Careers",
+        "privacyPolicy": "Privacy Policy",
+        "newsletter": "Newsletter",
+        "newsletterDesc": "Subscribe for updates on new rooms",
+        "emailPlaceholder": "Email address",
+        "subscribe": "Subscribe",
+        "copyright": "© {year} Cherry Sky Kost. All rights reserved."
+    },
+    "whatsapp": {
+        "inquiry": "Hello, I'm interested in {propertyName}",
+        "roomInquiry": "Hello, I'm interested in {roomType} at {propertyName}. Is it still available?",
+        "generalInquiry": "Hello, I would like to inquire about the boarding house",
+        "visitSchedule": "Hello, I would like to schedule a visit to {propertyName}"
+    },
+    "common": {
+        "or": "or",
+        "and": "and",
+        "close": "Close",
+        "open": "Open",
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "tryAgain": "Try Again",
+        "showMore": "Show More",
+        "showLess": "Show Less"
+    }
 }

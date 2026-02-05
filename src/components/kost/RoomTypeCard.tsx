@@ -56,7 +56,7 @@ export function RoomTypeCard({
             )}>
                 {/* Image Section */}
                 <div className="relative aspect-[16/10] w-full overflow-hidden">
-                     {roomType.images && roomType.images[0] ? (
+                    {roomType.images && roomType.images[0] ? (
                         <Image
                             src={roomType.images[0]}
                             alt={roomType.name}
@@ -68,7 +68,7 @@ export function RoomTypeCard({
                             <Icon name="image" size={48} />
                         </div>
                     )}
-                    
+
                     {/* Status Badge */}
                     <div className="absolute top-3 right-3">
                         {isAvailable ? (
@@ -117,13 +117,13 @@ export function RoomTypeCard({
                                 phoneNumber={whatsappNumber}
                                 message={whatsappMessage}
                                 variant="compact"
-                                className="h-9 px-4 rounded-xl bg-[#137fec] hover:bg-blue-600 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-blue-500/30" 
+                                className="h-9 px-4 rounded-xl bg-[#137fec] hover:bg-blue-600 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-blue-500/30"
                                 text={t('cta.bookNow')}
                             />
                         ) : (
-                             <Button disabled size="sm" className="rounded-xl h-9 bg-slate-100 text-slate-400 text-xs">
+                            <Button disabled size="sm" className="rounded-xl h-9 bg-slate-100 text-slate-400 text-xs">
                                 Penuh
-                             </Button>
+                            </Button>
                         )}
                     </div>
                 </div>

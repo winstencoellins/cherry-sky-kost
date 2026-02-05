@@ -44,8 +44,8 @@ export function Navbar({ onMenuClick }: NavbarProps) {
             animate={{ y: 0 }}
             className={cn(
                 "fixed top-0 left-0 right-0 z-50 transition-all duration-700",
-                isScrolled 
-                    ? "bg-white/80 dark:bg-slate-950/80 backdrop-blur-2xl border-b border-slate-200/50 dark:border-slate-800/50" 
+                isScrolled
+                    ? "bg-white/80 dark:bg-slate-950/80 backdrop-blur-2xl border-b border-slate-200/50 dark:border-slate-800/50"
                     : "bg-transparent"
             )}
         >
@@ -55,8 +55,8 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                     <Link href="/" className="flex items-center gap-2 group">
                         <div className={cn(
                             "w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300",
-                            isScrolled 
-                                ? "bg-slate-900 dark:bg-white" 
+                            isScrolled
+                                ? "bg-slate-900 dark:bg-white"
                                 : "bg-white/95 backdrop-blur-sm"
                         )}>
                             <Icon name="apartment" size={20} className={cn(isScrolled ? "text-white dark:text-slate-900" : "text-slate-900")} />
@@ -82,8 +82,8 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                                 href={link.href}
                                 className={cn(
                                     "px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300",
-                                    isScrolled 
-                                        ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800" 
+                                    isScrolled
+                                        ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
                                         : "text-white/90 hover:text-white hover:bg-white/10"
                                 )}
                             >
