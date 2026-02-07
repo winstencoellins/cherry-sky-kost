@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/shared/Icon';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { cn } from '@/lib/utils';
 
 interface NavbarProps {
@@ -73,9 +74,9 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                     <div className="hidden md:flex items-center gap-1">
                         {[
                             { href: '/', label: t('nav.home') },
+                            { href: '/about', label: t('nav.about') },
                             { href: '/search-kosts', label: t('nav.search') },
-                            { href: '#properties', label: t('nav.properties') },
-                            { href: '#contact', label: t('nav.contact') },
+                            { href: '/contact', label: t('nav.contact') },
                         ].map((link) => (
                             <Link
                                 key={link.href}
@@ -94,6 +95,11 @@ export function Navbar({ onMenuClick }: NavbarProps) {
 
                     {/* Right: Actions */}
                     <div className="flex items-center gap-3">
+                        {/* Language Switcher - Desktop */}
+                        <div className="hidden sm:block">
+                            <LanguageSwitcher variant="navbar" />
+                        </div>
+
                         <button
                             onClick={onMenuClick}
                             className={cn(

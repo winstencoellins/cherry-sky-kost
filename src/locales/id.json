@@ -15,7 +15,7 @@
         "subtitle": "Kost nyaman dengan fasilitas lengkap di lokasi strategis",
         "cta": "Lihat Kost Kami",
         "learnMore": "Pelajari Lebih Lanjut",
-        "scheduleVisit": "Jadwalkan Kunjungan"
+        "scheduleVisit": "Dashboard"
     },
     "roomTypes": {
         "skyRoomAC": "Sky Room AC",
@@ -161,5 +161,256 @@
         "tryAgain": "Coba Lagi",
         "showMore": "Tampilkan Lebih Banyak",
         "showLess": "Tampilkan Lebih Sedikit"
+    },
+    "about": {
+        "hero": {
+            "title": "Tentang Kami",
+            "subtitle": "Partner Terpercaya Anda dalam Mencari Kost yang Sempurna",
+            "description": "Kami berkomitmen untuk menyediakan solusi kost yang nyaman, aman, dan terjangkau bagi mahasiswa dan profesional di Medan."
+        },
+        "mission": {
+            "title": "Misi Kami",
+            "subtitle": "Mengapa Kami Melakukan Ini",
+            "description": "Menciptakan lingkungan hunian yang nyaman dan mendukung agar penghuni dapat fokus pada studi dan karir mereka tanpa khawatir tentang kualitas akomodasi.",
+            "vision": "Visi Kami",
+            "visionDescription": "Menjadi penyedia kost paling terpercaya dan disukai di Medan, dikenal karena kualitas, layanan, dan kepuasan penghuni."
+        },
+        "values": {
+            "title": "Nilai-Nilai Inti Kami",
+            "subtitle": "Apa yang Kami Perjuangkan",
+            "quality": {
+                "title": "Kualitas Utama",
+                "description": "Kami tidak pernah berkompromi pada kualitas fasilitas dan layanan kami."
+            },
+            "trust": {
+                "title": "Dapat Dipercaya",
+                "description": "Membangun kepercayaan melalui transparansi dan keunggulan layanan yang konsisten."
+            },
+            "community": {
+                "title": "Komunitas",
+                "description": "Menciptakan komunitas yang hangat dan mendukung bagi semua penghuni."
+            },
+            "innovation": {
+                "title": "Inovasi",
+                "description": "Terus meningkatkan fasilitas dan layanan kami dengan solusi modern."
+            }
+        },
+        "stats": {
+            "title": "Pencapaian Kami",
+            "subtitle": "Dipercaya oleh Banyak Orang",
+            "happyResidents": "Penghuni Bahagia",
+            "properties": "Properti",
+            "yearsExperience": "Tahun Pengalaman",
+            "satisfactionRate": "Tingkat Kepuasan"
+        },
+        "cta": {
+            "title": "Siap Menemukan Rumah Sempurna Anda?",
+            "subtitle": "Bergabunglah dengan ratusan penghuni puas yang telah menemukan tempat tinggal ideal mereka bersama kami.",
+            "button": "Lihat Properti Kami"
+        }
+    },
+    "contact": {
+        "hero": {
+            "title": "Hubungi Kami",
+            "subtitle": "Kami ingin mendengar dari Anda",
+            "description": "Ada pertanyaan tentang properti kami? Butuh bantuan menemukan kost yang sempurna? Hubungi kami hari ini!"
+        },
+        "info": {
+            "title": "Informasi Kontak",
+            "subtitle": "Hubungi kami",
+            "address": "Alamat",
+            "phone": "Nomor Telepon",
+            "email": "Email",
+            "hours": "Jam Operasional",
+            "weekdaysHours": "Senin - Jumat: 08:00 - 17:00",
+            "saturdayHours": "Sabtu: 09:00 - 14:00",
+            "weekendClosed": "Minggu: Tutup"
+        },
+        "form": {
+            "title": "Kirim Pesan",
+            "subtitle": "Kami akan merespon secepatnya",
+            "name": "Nama Lengkap",
+            "namePlaceholder": "Masukkan nama lengkap Anda",
+            "email": "Alamat Email",
+            "emailPlaceholder": "email@anda.com",
+            "phone": "Nomor Telepon",
+            "phonePlaceholder": "Nomor telepon Anda",
+            "message": "Pesan",
+            "messagePlaceholder": "Beritahu kami bagaimana kami bisa membantu...",
+            "subject": "Subjek",
+            "subjectPlaceholder": "Pertanyaan Anda tentang apa?",
+            "sendViaWhatsApp": "Kirim via WhatsApp",
+            "sendViaEmail": "Kirim via Email",
+            "sending": "Mengirim...",
+            "sent": "Pesan terkirim berhasil!",
+            "error": "Gagal mengirim pesan. Silakan coba lagi.",
+            "required": "Field ini harus diisi",
+            "invalidEmail": "Silakan masukkan alamat email yang valid"
+        },
+        "map": {
+            "title": "Lokasi Kami",
+            "subtitle": "Kunjungi kost kami",
+            "directionsButton": "Dapatkan Petunjuk Arah",
+            "coordinates": "Koordinat"
+        }
+    },
+    "terms": {
+        "hero": {
+            "title": "Syarat & Ketentuan",
+            "subtitle": "Kebijakan dan Hak Anda",
+            "description": "Silakan baca syarat dan ketentuan ini dengan hati-hati sebelum menggunakan layanan kami"
+        },
+        "sections": {
+            "introduction": {
+                "title": "1. Pengenalan",
+                "content": "Syarat dan Ketentuan ini mengatur penggunaan Anda terhadap platform Cherry Sky Kost, website, dan layanan kami. Dengan mengakses atau menggunakan layanan kami, Anda setuju untuk terikat oleh Syarat dan Ketentuan ini. Jika Anda tidak setuju dengan bagian mana pun dari Syarat ini, mohon jangan gunakan layanan kami."
+            },
+            "userResponsibilities": {
+                "title": "2. Tanggung Jawab Pengguna",
+                "content": "Sebagai pengguna platform kami, Anda bertanggung jawab untuk:",
+                "items": [
+                    "Memberikan informasi yang akurat dan lengkap saat pendaftaran",
+                    "Menjaga kerahasiaan kredensial akun Anda",
+                    "Tidak melakukan aktivitas ilegal atau tidak sah",
+                    "Mematuhi semua hukum dan peraturan yang berlaku",
+                    "Menghormati hak dan properti pengguna lain"
+                ]
+            },
+            "bookingPolicy": {
+                "title": "3. Kebijakan Pemesanan dan Reservasi",
+                "content": "Semua pemesanan dan reservasi tunduk pada ketersediaan dan konfirmasi. Kami berhak untuk menolak permintaan pemesanan apa pun. Pembatalan harus dilakukan sesuai dengan kebijakan pembatalan kami. Setiap deposit atau pembayaran yang dilakukan tunduk pada ketentuan yang diuraikan dalam konfirmasi pemesanan Anda."
+            },
+            "paymentTerms": {
+                "title": "4. Syarat Pembayaran",
+                "content": "Pembayaran untuk akomodasi kost harus dilakukan sebelumnya seperti yang ditentukan dalam konfirmasi pemesanan. Kami menerima berbagai metode pembayaran termasuk transfer bank dan platform pembayaran online. Semua harga dalam Rupiah Indonesia (IDR) kecuali dinyatakan sebaliknya."
+            },
+            "liability": {
+                "title": "5. Pembatasan Tanggung Jawab",
+                "content": "Cherry Sky Kost tidak bertanggung jawab atas kerugian tidak langsung, insidental, khusus, atau konsekuensial yang timbul dari penggunaan platform atau layanan kami. Ini termasuk kehilangan data, gangguan bisnis, atau kerusakan lainnya."
+            },
+            "privacy": {
+                "title": "6. Privasi dan Perlindungan Data",
+                "content": "Privasi Anda penting bagi kami. Kami mengumpulkan dan memproses data pribadi sesuai dengan hukum privasi yang berlaku. Informasi yang Anda berikan hanya akan digunakan untuk tujuan yang diuraikan dalam Kebijakan Privasi kami. Kami mengambil langkah yang tepat untuk melindungi informasi pribadi Anda dari akses tidak sah."
+            },
+            "intellectualProperty": {
+                "title": "7. Hak Kekayaan Intelektual",
+                "content": "Semua konten, gambar, teks, logo, dan materi lainnya di platform kami dilindungi oleh hukum hak cipta dan kekayaan intelektual. Anda tidak boleh mereproduksi, mendistribusikan, atau mengirimkan konten apa pun tanpa izin tertulis kami sebelumnya."
+            },
+            "modifications": {
+                "title": "8. Modifikasi Syarat",
+                "content": "Kami berhak untuk mengubah Syarat ini kapan saja. Perubahan akan berlaku segera setelah diposting di website. Penggunaan berkelanjutan Anda terhadap layanan kami setelah modifikasi apa pun berarti penerimaan Anda terhadap Syarat yang direvisi."
+            },
+            "termination": {
+                "title": "9. Penghentian Layanan",
+                "content": "Kami berhak untuk menangguhkan atau menghentikan akun Anda dan akses layanan kapan saja karena melanggar Syarat ini atau melakukan kegiatan terlarang. Setelah penghentian, hak Anda untuk menggunakan layanan kami akan segera berhenti."
+            },
+            "disclaimer": {
+                "title": "10. Penafian",
+                "content": "Layanan kami disediakan dengan basis 'sebagaimana adanya' dan 'sesuai ketersediaan'. Kami tidak menjamin bahwa platform kami akan bebas kesalahan atau tanpa gangguan. Kami tidak bertanggung jawab atas layanan pihak ketiga atau tautan eksternal."
+            },
+            "contact": {
+                "title": "11. Hubungi Kami",
+                "content": "Jika Anda memiliki pertanyaan mengenai Syarat dan Ketentuan ini, silakan hubungi kami di:",
+                "items": [
+                    "Email: legal@cherryskykost.com",
+                    "Telepon: +62 812-3456-7890",
+                    "Alamat: Jl. Gaharu Gg. Amat Lama No. 12, Medan"
+                ]
+            }
+        },
+        "lastUpdated": "Terakhir Diperbarui: 8 Februari 2026",
+        "agree": "Saya Setuju dengan Syarat dan Ketentuan"
+    },
+    "privacy": {
+        "hero": {
+            "title": "Kebijakan Privasi",
+            "subtitle": "Privasi Anda Penting bagi Kami",
+            "description": "Pelajari bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda"
+        },
+        "sections": {
+            "introduction": {
+                "title": "1. Pengenalan",
+                "content": "Cherry Sky Kost (selanjutnya disebut 'Perusahaan', 'kami', 'kita') berkomitmen untuk melindungi privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan menjaga informasi Anda saat menggunakan website dan platform kami."
+            },
+            "informationCollection": {
+                "title": "2. Informasi yang Kami Kumpulkan",
+                "content": "Kami mengumpulkan informasi dengan berbagai cara, termasuk:",
+                "items": [
+                    "Informasi identifikasi pribadi (nama, email, nomor telepon, alamat)",
+                    "Informasi pendaftaran akun dan profil",
+                    "Informasi pembayaran (diproses dengan aman melalui penyedia pihak ketiga)",
+                    "Detail pemesanan dan reservasi",
+                    "Preferensi komunikasi dan pertanyaan",
+                    "Informasi perangkat dan data penggunaan (alamat IP, jenis browser, halaman yang dikunjungi)",
+                    "Cookie dan teknologi pelacakan serupa"
+                ]
+            },
+            "useOfInformation": {
+                "title": "3. Bagaimana Kami Menggunakan Informasi Anda",
+                "content": "Kami menggunakan informasi yang dikumpulkan untuk berbagai tujuan:",
+                "items": [
+                    "Menyediakan dan memelihara layanan kami",
+                    "Memproses pemesanan dan transaksi",
+                    "Mengirim komunikasi transaksional dan promosi",
+                    "Merespons pertanyaan dan permintaan layanan pelanggan Anda",
+                    "Meningkatkan website dan pengalaman pengguna",
+                    "Mendeteksi dan mencegah aktivitas penipuan",
+                    "Mematuhi kewajiban hukum",
+                    "Analitik dan intelijen bisnis"
+                ]
+            },
+            "dataSecurity": {
+                "title": "4. Keamanan Data",
+                "content": "Kami menerapkan langkah-langkah teknis dan organisasi yang sesuai untuk melindungi informasi pribadi Anda dari akses, perubahan, pengungkapan, atau penghancuran yang tidak sah. Hal ini mencakup enkripsi, server aman, dan akses karyawan yang terbatas. Namun, tidak ada metode transmisi melalui Internet yang 100% aman."
+            },
+            "dataRetention": {
+                "title": "5. Retensi Data",
+                "content": "Kami menyimpan informasi pribadi Anda selama diperlukan untuk memenuhi tujuan pengumpulannya, termasuk untuk memenuhi persyaratan hukum, akuntansi, atau pelaporan. Anda dapat meminta penghapusan data Anda dengan tunduk pada kewajiban hukum tertentu."
+            },
+            "userRights": {
+                "title": "6. Hak dan Pilihan Anda",
+                "content": "Tergantung pada lokasi Anda, Anda mungkin memiliki hak-hak berikut:",
+                "items": [
+                    "Hak untuk mengakses informasi pribadi Anda",
+                    "Hak untuk memperbaiki atau memperbarui data yang tidak akurat",
+                    "Hak untuk meminta penghapusan informasi Anda",
+                    "Hak untuk keluar dari komunikasi pemasaran",
+                    "Hak untuk menarik kembali persetujuan kapan saja",
+                    "Hak untuk portabilitas data",
+                    "Hak untuk mengajukan keluhan kepada otoritas pengawas"
+                ]
+            },
+            "thirdPartyServices": {
+                "title": "7. Layanan dan Tautan Pihak Ketiga",
+                "content": "Website kami mungkin berisi tautan ke website dan layanan pihak ketiga. Kami tidak bertanggung jawab atas praktik privasi situs eksternal ini. Kami merekomendasikan untuk meninjau kebijakan privasi mereka sebelum memberikan informasi pribadi apa pun."
+            },
+            "cookies": {
+                "title": "8. Cookie dan Pelacakan",
+                "content": "Kami menggunakan cookie dan teknologi pelacakan serupa untuk meningkatkan pengalaman Anda. Alat-alat ini mengumpulkan informasi tentang perilaku browsing, preferensi, dan pola penggunaan. Anda dapat mengontrol pengaturan cookie melalui browser Anda, meskipun beberapa fitur mungkin tidak berfungsi dengan baik jika cookie dinonaktifkan."
+            },
+            "childrenPrivacy": {
+                "title": "9. Privasi Anak-Anak",
+                "content": "Layanan kami tidak ditujukan untuk anak-anak di bawah 13 tahun. Kami tidak dengan sengaja mengumpulkan informasi pribadi dari anak-anak. Jika kami menyadari pengumpulan tersebut, kami akan mengambil langkah untuk menghapus informasi dan menutup akun anak tersebut."
+            },
+            "internationaltransfer": {
+                "title": "10. Transfer Data Internasional",
+                "content": "Informasi Anda dapat ditransfer ke, disimpan di, dan diproses di negara-negara selain negara tempat tinggal Anda. Negara-negara ini mungkin memiliki undang-undang perlindungan data yang berbeda dari negara asal Anda. Dengan menggunakan layanan kami, Anda menyetujui transfer tersebut."
+            },
+            "policyUpdates": {
+                "title": "11. Pembaruan Kebijakan Privasi",
+                "content": "Kami dapat memperbarui Kebijakan Privasi ini secara berkala untuk mencerminkan perubahan dalam praktik kami atau undang-undang yang berlaku. Kami akan memberitahu Anda tentang perubahan material dengan memposting kebijakan yang diperbarui di website kami dengan tanggal 'Terakhir Diperbarui' yang diperbarui."
+            },
+            "contact": {
+                "title": "12. Hubungi Kami",
+                "content": "Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini atau praktik privasi kami, silakan hubungi kami di:",
+                "items": [
+                    "Email: privacy@cherryskykost.com",
+                    "Telepon: +62 812-3456-7890",
+                    "Alamat: Jl. Gaharu Gg. Amat Lama No. 12, Medan"
+                ]
+            }
+        },
+        "lastUpdated": "Terakhir Diperbarui: 8 Februari 2026",
+        "acknowledge": "Saya Memahami Kebijakan Privasi"
     }
 }

@@ -15,16 +15,12 @@ export function Footer() {
     const currentYear = new Date().getFullYear();
 
     const footerLinks = {
-        company: [
-            { label: 'Tentang Kami', href: '/tentang' },
-            { label: 'Karir', href: '/karir' },
-            { label: 'Berita', href: '/berita' },
-            { label: 'Kontak', href: '/kontak' },
-        ],
-        support: [
-            { label: 'Pusat Bantuan', href: '/bantuan' },
-            { label: 'Syarat & Ketentuan', href: '/syarat' },
-            { label: 'Kebijakan Privasi', href: '/privasi' },
+        main: [
+            { label: 'About', href: '/about' },
+            { label: 'Search Kost', href: '/search-kosts' },
+            { label: 'Contact', href: '/contact' },
+            { label: 'Terms & Conditions', href: '/terms' },
+            { label: 'Privacy Policy', href: '/privacy' },
         ],
         social: [
             { icon: 'public', href: '#', label: 'Website' },
@@ -65,26 +61,12 @@ export function Footer() {
                         </div>
                     </div>
 
-                    {/* Links Column 1 */}
-                    <div className="lg:col-span-2 lg:col-start-6">
-                        <h4 className="font-bold text-lg mb-6">Perusahaan</h4>
-                        <ul className="space-y-4">
-                            {footerLinks.company.map((link) => (
-                                <li key={link.href}>
-                                    <Link href={link.href} className="text-slate-400 hover:text-[#137fec] text-sm transition-colors">
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Links Column 2 */}
-                    <div className="lg:col-span-2">
-                        <h4 className="font-bold text-lg mb-6">Dukungan</h4>
-                        <ul className="space-y-4">
-                            {footerLinks.support.map((link) => (
-                                <li key={link.href}>
+                    {/* Links Column */}
+                    <div className="lg:col-span-5 lg:col-start-6">
+                        <h4 className="font-bold text-lg mb-6">Quick Links</h4>
+                        <ul className="grid grid-cols-2 gap-x-8 gap-y-4">
+                            {footerLinks.main.map((link, index) => (
+                                <li key={`link-${index}`}>
                                     <Link href={link.href} className="text-slate-400 hover:text-[#137fec] text-sm transition-colors">
                                         {link.label}
                                     </Link>
@@ -97,12 +79,12 @@ export function Footer() {
                     <div className="lg:col-span-3">
                         <h4 className="font-bold text-lg mb-6">Newsletter</h4>
                         <p className="text-slate-400 text-sm mb-4">
-                            Dapatkan info kost terbaru dan promo menarik.
+                            Get the latest kost info and exclusive offers.
                         </p>
                         <form className="flex gap-2">
                             <input
                                 type="email"
-                                placeholder="Email Anda"
+                                placeholder="Your Email"
                                 className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-[#137fec] focus:ring-1 focus:ring-[#137fec] transition-all"
                             />
                             <button className="p-2.5 rounded-xl bg-[#137fec] hover:bg-blue-600 text-white transition-colors">

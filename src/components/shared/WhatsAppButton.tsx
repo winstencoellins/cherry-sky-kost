@@ -20,52 +20,54 @@ export function WhatsAppButton({
 }: WhatsAppButtonProps) {
     const whatsappURL = generateWhatsAppURL(phoneNumber, message);
 
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open(whatsappURL, '_blank', 'noopener,noreferrer');
+    };
+
     if (variant === 'icon') {
         return (
-            <a
-                href={whatsappURL}
-                target="_blank"
-                rel="noopener noreferrer"
+            <button
+                onClick={handleClick}
                 className={cn(
                     'inline-flex items-center justify-center rounded-full w-12 h-12 bg-[#25D366] hover:bg-[#1fb855] text-white transition-colors shadow-lg',
                     className
                 )}
                 aria-label="Contact via WhatsApp"
+                type="button"
             >
                 <Icon name="chat" size={24} />
-            </a>
+            </button>
         );
     }
 
     if (variant === 'compact') {
         return (
-            <a
-                href={whatsappURL}
-                target="_blank"
-                rel="noopener noreferrer"
+            <button
+                onClick={handleClick}
                 className={cn(
                     'inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] hover:bg-[#1fb855] text-white text-sm font-medium rounded-lg transition-colors',
                     className
                 )}
+                type="button"
             >
                 <Icon name="chat" size={18} />
                 <span>WhatsApp</span>
-            </a>
+            </button>
         );
     }
 
     return (
         <Button
-            asChild
+            onClick={handleClick}
             className={cn(
                 'bg-[#25D366] hover:bg-[#1fb855] text-white font-semibold',
                 className
             )}
         >
-            <a href={whatsappURL} target="_blank" rel="noopener noreferrer">
-                <Icon name="chat" size={20} className="mr-2" />
-                { label }
-            </a>
+            <Icon name="chat" size={20} className="mr-2" />
+            { label }
         </Button>
     );
 }

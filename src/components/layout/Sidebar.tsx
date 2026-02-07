@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
 import { Icon } from '@/components/shared/Icon';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { cn } from '@/lib/utils';
 
 interface SidebarProps {
@@ -75,13 +76,19 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
                             onClick={handleClose}
                         />
                         <MenuItem
-                            href="/cari"
+                            href="/about"
+                            icon="info"
+                            label={t('nav.about')}
+                            onClick={handleClose}
+                        />
+                        <MenuItem
+                            href="/search-kosts"
                             icon="search"
                             label={t('nav.search')}
                             onClick={handleClose}
                         />
                         <MenuItem
-                            href="/favorit"
+                            href="/favourites"
                             icon="favorite"
                             label={t('nav.favorites')}
                             onClick={handleClose}
@@ -172,17 +179,21 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
                     {/* Help & Info */}
                     <div className="space-y-1">
                         <MenuItem
-                            href="/tentang"
-                            icon="info"
-                            label={t('nav.about')}
-                            onClick={handleClose}
-                        />
-                        <MenuItem
-                            href="#contact"
+                            href="/contact"
                             icon="call"
                             label={t('nav.contact')}
                             onClick={handleClose}
                         />
+                    </div>
+
+                    <Separator className="my-4" />
+
+                    {/* Language Switcher */}
+                    <div className="pt-4">
+                        <p className="px-3 mb-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Language
+                        </p>
+                        <LanguageSwitcher variant="sidebar" />
                     </div>
                 </div>
             </SheetContent>
