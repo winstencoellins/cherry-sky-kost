@@ -28,7 +28,10 @@
     "bathroom": {
         "inside": "Private Bathroom",
         "outside": "Shared Bathroom",
-        "shared": "Shared Bathroom"
+        "shared": "Shared Bathroom",
+        "dalam": "Private Bathroom",
+        "luar": "Shared Bathroom",
+        "bersama": "Shared Bathroom"
     },
     "facilities": {
         "title": "Facilities",
@@ -128,8 +131,25 @@
         "roomInquiry": "Hello, I'm interested in {roomType} at {propertyName}. Is it still available?",
         "generalInquiry": "Hello, I would like to inquire about the boarding house",
         "visitSchedule": "Hello, I would like to schedule a visit to {propertyName}"
-    },
-    "common": {
+    },    "roomDetail": {
+        "title": "Room Details",
+        "aboutPlace": "About this place",
+        "roomDetails": "Room Details",
+        "size": "Size",
+        "capacity": "Capacity",
+        "availability": "Room Availability",
+        "availableRooms": "{available} of {total} rooms available",
+        "viewAllPhotos": "View all {count} photos",
+        "morePhotos": "+{count} more",
+        "deposit": "Deposit {amount}",
+        "notChargedYet": "You won't be charged yet",
+        "saved": "Saved",
+        "save": "Save",
+        "share": "Share",
+        "backToHome": "Back to Home",
+        "viewOnMap": "View on Map",
+        "verified": "Verified"
+    },    "common": {
         "or": "or",
         "and": "and",
         "close": "Close",

@@ -6,7 +6,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,11 +25,13 @@ import { cn } from '@/lib/utils';
 export function RoomTypeCard({
     roomType,
     kostName,
+    kostId,
     whatsappNumber,
     onBookClick,
     index = 0,
-}: RoomTypeCardProps & { index?: number }) {
+}: RoomTypeCardProps & { index?: number; kostId?: string }) {
     const t = useTranslations();
+    const locale = useLocale();
     const isAvailable = roomType.status === 'available' && roomType.availableCount > 0;
     const isAlmostFull = isAvailable && roomType.availableCount <= 2;
 
@@ -40,6 +43,7 @@ export function RoomTypeCard({
                 : t('bathroom.shared');
 
     const whatsappMessage = generateInquiryMessage(kostName, roomType.name);
+    const detailUrl = kostId ? `/${locale}/kosts/${kostId}--${roomType.id}` : '#';
 
     return (
         <motion.div
@@ -49,25 +53,26 @@ export function RoomTypeCard({
             transition={{ delay: index * 0.1, duration: 0.5 }}
             className="h-full"
         >
-            <div className={cn(
-                "group relative h-full flex flex-col bg-white dark:bg-slate-900 rounded-2xl overflow-hidden transition-all duration-500",
-                "hover:shadow-xl hover:-translate-y-1 border border-slate-100 dark:border-slate-800",
-                !isAvailable && "opacity-70"
-            )}>
-                {/* Image Section */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden">
-                    {roomType.images && roomType.images[0] ? (
-                        <Image
-                            src={roomType.images[0]}
-                            alt={roomType.name}
-                            fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-300">
-                            <Icon name="image" size={48} />
-                        </div>
-                    )}
+            <Link href={detailUrl} className="block h-full">
+                <div className={cn(
+                    "group relative h-full flex flex-col bg-white dark:bg-slate-900 rounded-2xl overflow-hidden transition-all duration-500 cursor-pointer",
+                    "hover:shadow-xl hover:-translate-y-1 border border-slate-100 dark:border-slate-800",
+                    !isAvailable && "opacity-70"
+                )}>
+                    {/* Image Section */}
+                    <div className="relative aspect-16/10 w-full overflow-hidden">
+                        {roomType.images && roomType.images[0] ? (
+                            <Image
+                                src={roomType.images[0]}
+                                alt={roomType.name}
+                                fill
+                                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-300">
+                                <Icon name="image" size={48} />
+                            </div>
+                        )}
 
                     {/* Status Badge */}
                     <div className="absolute top-3 right-3">
@@ -95,13 +100,13 @@ export function RoomTypeCard({
                         <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-1 line-clamp-1 group-hover:text-[#137fec] transition-colors">
                             {roomType.name}
                         </h3>
-                        <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                            <Icon name="bathroom" size={14} />
-                            <span>{bathroomText}</span>
-                            <span className="w-0.5 h-0.5 bg-slate-300 rounded-full" />
-                            <Icon name="group" size={14} />
-                            <span>{roomType.capacity} orang</span>
-                        </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                        <Icon name="bathroom" size={14} />
+                        <span>{bathroomText}</span>
+                        <span className="w-0.5 h-0.5 bg-slate-300 rounded-full" />
+                        <Icon name="group" size={14} />
+                        <span>{roomType.capacity} orang</span>
                     </div>
 
                     <div className="mt-auto flex items-end justify-between gap-3">
@@ -112,22 +117,25 @@ export function RoomTypeCard({
                             </p>
                         </div>
 
-                        {isAvailable ? (
-                            <WhatsAppButton
-                                phoneNumber={whatsappNumber}
-                                message={whatsappMessage}
-                                variant="compact"
-                                className="h-9 px-4 rounded-xl bg-[#137fec] hover:bg-blue-600 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-blue-500/30"
-                                label={t('cta.bookNow')}
-                            />
-                        ) : (
-                            <Button disabled size="sm" className="rounded-xl h-9 bg-slate-100 text-slate-400 text-xs">
-                                Penuh
-                            </Button>
-                        )}
+                        <div onClick={(e) => e.preventDefault()}>
+                            {isAvailable ? (
+                                <WhatsAppButton
+                                    phoneNumber={whatsappNumber}
+                                    message={whatsappMessage}
+                                    variant="compact"
+                                    className="h-9 px-4 rounded-xl bg-[#137fec] hover:bg-blue-600 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-blue-500/30"
+                                    label={t('cta.bookNow')}
+                                />
+                            ) : (
+                                <Button disabled size="sm" className="rounded-xl h-9 bg-slate-100 text-slate-400 text-xs">
+                                    Penuh
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
+        </Link>
         </motion.div>
     );
 }

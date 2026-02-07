@@ -28,7 +28,10 @@
     "bathroom": {
         "inside": "Kamar Mandi Dalam",
         "outside": "Kamar Mandi Luar",
-        "shared": "Kamar Mandi Bersama"
+        "shared": "Kamar Mandi Bersama",
+        "dalam": "Kamar Mandi Dalam",
+        "luar": "Kamar Mandi Luar",
+        "bersama": "Kamar Mandi Bersama"
     },
     "facilities": {
         "title": "Fasilitas",
@@ -128,6 +131,25 @@
         "roomInquiry": "Halo, saya tertarik dengan {roomType} di {propertyName}. Apakah masih tersedia?",
         "generalInquiry": "Halo, saya ingin menanyakan informasi tentang kost",
         "visitSchedule": "Halo, saya ingin menjadwalkan kunjungan ke {propertyName}"
+    },
+    "roomDetail": {
+        "title": "Detail Kamar",
+        "aboutPlace": "Tentang Tempat Ini",
+        "roomDetails": "Detail Kamar",
+        "size": "Ukuran",
+        "capacity": "Kapasitas",
+        "availability": "Ketersediaan Kamar",
+        "availableRooms": "{available} dari {total} kamar tersedia",
+        "viewAllPhotos": "Lihat semua {count} foto",
+        "morePhotos": "+{count} foto",
+        "deposit": "Deposit {amount}",
+        "notChargedYet": "Anda tidak akan dikenakan biaya sekarang",
+        "saved": "Tersimpan",
+        "save": "Simpan",
+        "share": "Bagikan",
+        "backToHome": "Kembali ke Beranda",
+        "viewOnMap": "Lihat di Peta",
+        "verified": "Terverifikasi"
     },
     "common": {
         "or": "atau",

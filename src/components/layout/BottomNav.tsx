@@ -8,10 +8,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { motion } from 'framer-motion';
+
 import { Icon } from '@/components/shared/Icon';
 import { cn } from '@/lib/utils';
 import { generateWhatsAppURL } from '@/lib/utils/format';
-import { motion } from 'framer-motion';
+
 interface BottomNavItemProps {
     href: string;
     icon: string;
@@ -22,26 +24,31 @@ interface BottomNavItemProps {
 
 function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavItemProps) {
     const content = (
-        <div className="relative flex flex-col items-center justify-center w-full h-full gap-1">
-            <div className={cn(
-                "p-1.5 rounded-xl transition-all duration-300 relative",
-                isActive ? "bg-[#137fec]/10 -translate-y-1" : ""
-            )}>
+        <div className="relative flex flex-col items-center justify-center w-full h-full">
+            <div
+                className={cn(
+                    'p-2 rounded-xl transition-all duration-300 relative',
+                    isActive ? 'bg-[#137fec]/10 -translate-y-0.5' : ''
+                )}
+            >
                 <Icon
                     name={icon}
-                    size={24}
+                    size={22}
                     filled={isActive}
                     className={cn(
                         'transition-all duration-300',
-                        isActive ? 'text-[#137fec] scale-110' : 'text-slate-400 dark:text-slate-500'
+                        isActive
+                            ? 'text-[#137fec] scale-110'
+                            : 'text-slate-400 dark:text-slate-500'
                     )}
                 />
 
-                {/* Notification/Active Dot */}
+                {/* Active indicator dot */}
                 {isActive && (
                     <motion.div
                         layoutId="activeDot"
-                        className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#137fec] rounded-full"
+                        className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#137fec] rounded-full"
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                 )}
             </div>
@@ -49,9 +56,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
             <span
                 className={cn(
                     'text-[10px] font-medium transition-colors',
-                    isActive
-                        ? 'text-[#137fec]'
-                        : 'text-slate-500 dark:text-slate-500'
+                    isActive ? 'text-[#137fec]' : 'text-slate-500 dark:text-slate-400'
                 )}
             >
                 {label}
@@ -59,7 +64,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
         </div>
     );
 
-    const containerInfo = "flex-1 h-full py-2 select-none active:scale-95 transition-transform";
+    const containerClassName = 'flex-1 h-full py-1.5 select-none active:scale-95 transition-transform';
 
     if (isExternal) {
         return (
@@ -67,7 +72,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={containerInfo}
+                className={containerClassName}
             >
                 {content}
             </a>
@@ -75,10 +80,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
     }
 
     return (
-        <Link
-            href={href}
-            className={containerInfo}
-        >
+        <Link href={href} className={containerClassName}>
             {content}
         </Link>
     );
@@ -106,11 +108,6 @@ export function BottomNav() {
             label: t('nav.search'),
         },
         {
-            href: '/favorit',
-            icon: 'favorite',
-            label: t('nav.favorites'),
-        },
-        {
             href: whatsappURL,
             icon: 'chat',
             label: t('nav.contact'),
@@ -125,9 +122,14 @@ export function BottomNav() {
 
     return (
         <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
-            <div className="bg-white/90 dark:bg-[#0f172a]/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-2xl h-16 px-2 flex items-center justify-between">
+            <div className="bg-white/90 dark:bg-[#0f172a]/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-2xl h-[68px] px-1 flex items-center justify-around gap-0.5">
                 {navItems.map((item) => {
-                    const isActive = pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href));
+                    // Handle locale-based routing - check if pathname ends with the href or matches exactly
+                    const cleanPathname = pathname?.split('?')[0]; // Remove query params
+                    const isActive =
+                        cleanPathname === item.href ||
+                        cleanPathname?.endsWith(item.href) ||
+                        (item.href !== '/' && cleanPathname?.startsWith(item.href));
 
                     return (
                         <BottomNavItem

@@ -26,7 +26,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
 
             {/* Main Content */}
-            <main className="flex-1 pb-bottom-nav md:pb-0">
+            <main className="flex-1">
                 {children}
             </main>
 

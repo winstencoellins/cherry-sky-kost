@@ -101,6 +101,7 @@ export function KostSection({ kost, showFacilities = true }: KostSectionProps) {
                         key={roomType.id}
                         roomType={roomType}
                         kostName={kost.name}
+                        kostId={kost.id}
                         whatsappNumber={kost.whatsappNumber}
                         index={index}
                     />
