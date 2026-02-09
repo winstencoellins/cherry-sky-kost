@@ -91,6 +91,87 @@
         "applyFilter": "Apply Filters",
         "resetFilter": "Reset Filters"
     },
+    "auth": {
+        "login": {
+            "title": "Sign In to Your Account",
+            "subtitle": "Welcome back! Please sign in to continue.",
+            "email": "Email",
+            "emailPlaceholder": "name@email.com",
+            "password": "Password",
+            "passwordPlaceholder": "Enter your password",
+            "rememberMe": "Remember me",
+            "forgotPassword": "Forgot password?",
+            "loginButton": "Sign In",
+            "loggingIn": "Signing in...",
+            "noAccount": "Don't have an account?",
+            "registerLink": "Register now",
+            "errors": {
+                "invalidEmail": "Invalid email address",
+                "passwordTooShort": "Password must be at least 6 characters",
+                "invalidCredentials": "Invalid email or password",
+                "networkError": "Network error. Please try again.",
+                "unknownError": "An error occurred. Please try again."
+            }
+        },
+        "register": {
+            "title": "Create New Account",
+            "subtitle": "Join us to get the best experience.",
+            "name": "Full Name",
+            "namePlaceholder": "Enter your full name",
+            "email": "Email",
+            "emailPlaceholder": "name@email.com",
+            "phone": "Phone Number",
+            "phonePlaceholder": "+62 812-3456-7890",
+            "password": "Password",
+            "passwordPlaceholder": "Minimum 6 characters",
+            "confirmPassword": "Confirm Password",
+            "confirmPasswordPlaceholder": "Re-enter your password",
+            "registerButton": "Register",
+            "registering": "Registering...",
+            "hasAccount": "Already have an account?",
+            "loginLink": "Sign in here",
+            "termsAgree": "By registering, you agree to our",
+            "termsLink": "Terms & Conditions",
+            "privacyLink": "Privacy Policy",
+            "and": "and",
+            "errors": {
+                "nameRequired": "Full name is required",
+                "invalidEmail": "Invalid email address",
+                "phoneRequired": "Phone number is required",
+                "passwordTooShort": "Password must be at least 6 characters",
+                "passwordMismatch": "Passwords do not match",
+                "emailExists": "Email already registered",
+                "networkError": "Network error. Please try again.",
+                "unknownError": "An error occurred. Please try again."
+            }
+        },
+        "forgotPassword": {
+            "title": "Forgot Password?",
+            "subtitle": "Enter your email and we'll send you a reset link.",
+            "email": "Email",
+            "emailPlaceholder": "name@email.com",
+            "sendButton": "Send Reset Link",
+            "sending": "Sending...",
+            "backToLogin": "Back to sign in",
+            "emailSent": "Email sent!",
+            "checkInbox": "Please check your inbox for the password reset link.",
+            "errors": {
+                "invalidEmail": "Invalid email address",
+                "emailNotFound": "Email not found",
+                "networkError": "Network error. Please try again.",
+                "unknownError": "An error occurred. Please try again."
+            }
+        },
+        "dashboard": {
+            "title": "Tenant Dashboard",
+            "welcome": "Welcome, {name}",
+            "myBookings": "My Bookings",
+            "myPayments": "Payments",
+            "myProfile": "My Profile",
+            "maintenance": "Maintenance Requests",
+            "logout": "Logout"
+        }
+    },
     "search": {
         "title": "Search Kost",
         "placeholder": "Search location, kost name...",
@@ -131,7 +212,8 @@
         "roomInquiry": "Hello, I'm interested in {roomType} at {propertyName}. Is it still available?",
         "generalInquiry": "Hello, I would like to inquire about the boarding house",
         "visitSchedule": "Hello, I would like to schedule a visit to {propertyName}"
-    },    "roomDetail": {
+    },
+    "roomDetail": {
         "title": "Room Details",
         "aboutPlace": "About this place",
         "roomDetails": "Room Details",
@@ -149,7 +231,8 @@
         "backToHome": "Back to Home",
         "viewOnMap": "View on Map",
         "verified": "Verified"
-    },    "common": {
+    },
+    "common": {
         "or": "or",
         "and": "and",
         "close": "Close",

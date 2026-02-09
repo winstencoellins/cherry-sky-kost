@@ -91,6 +91,87 @@
         "applyFilter": "Terapkan Filter",
         "resetFilter": "Reset Filter"
     },
+    "auth": {
+        "login": {
+            "title": "Masuk ke Akun Anda",
+            "subtitle": "Selamat datang kembali! Silakan masuk untuk melanjutkan.",
+            "email": "Email",
+            "emailPlaceholder": "nama@email.com",
+            "password": "Kata Sandi",
+            "passwordPlaceholder": "Masukkan kata sandi Anda",
+            "rememberMe": "Ingat saya",
+            "forgotPassword": "Lupa kata sandi?",
+            "loginButton": "Masuk",
+            "loggingIn": "Masuk...",
+            "noAccount": "Belum punya akun?",
+            "registerLink": "Daftar sekarang",
+            "errors": {
+                "invalidEmail": "Email tidak valid",
+                "passwordTooShort": "Kata sandi minimal 6 karakter",
+                "invalidCredentials": "Email atau kata sandi salah",
+                "networkError": "Kesalahan jaringan. Silakan coba lagi.",
+                "unknownError": "Terjadi kesalahan. Silakan coba lagi."
+            }
+        },
+        "register": {
+            "title": "Buat Akun Baru",
+            "subtitle": "Bergabunglah dengan kami untuk mendapatkan pengalaman terbaik.",
+            "name": "Nama Lengkap",
+            "namePlaceholder": "Masukkan nama lengkap Anda",
+            "email": "Email",
+            "emailPlaceholder": "nama@email.com",
+            "phone": "Nomor Telepon",
+            "phonePlaceholder": "+62 812-3456-7890",
+            "password": "Kata Sandi",
+            "passwordPlaceholder": "Minimal 6 karakter",
+            "confirmPassword": "Konfirmasi Kata Sandi",
+            "confirmPasswordPlaceholder": "Ulangi kata sandi Anda",
+            "registerButton": "Daftar",
+            "registering": "Mendaftar...",
+            "hasAccount": "Sudah punya akun?",
+            "loginLink": "Masuk di sini",
+            "termsAgree": "Dengan mendaftar, Anda setuju dengan",
+            "termsLink": "Syarat & Ketentuan",
+            "privacyLink": "Kebijakan Privasi",
+            "and": "dan",
+            "errors": {
+                "nameRequired": "Nama lengkap harus diisi",
+                "invalidEmail": "Email tidak valid",
+                "phoneRequired": "Nomor telepon harus diisi",
+                "passwordTooShort": "Kata sandi minimal 6 karakter",
+                "passwordMismatch": "Kata sandi tidak cocok",
+                "emailExists": "Email sudah terdaftar",
+                "networkError": "Kesalahan jaringan. Silakan coba lagi.",
+                "unknownError": "Terjadi kesalahan. Silakan coba lagi."
+            }
+        },
+        "forgotPassword": {
+            "title": "Lupa Kata Sandi?",
+            "subtitle": "Masukkan email Anda dan kami akan mengirim tautan untuk reset kata sandi.",
+            "email": "Email",
+            "emailPlaceholder": "nama@email.com",
+            "sendButton": "Kirim Tautan Reset",
+            "sending": "Mengirim...",
+            "backToLogin": "Kembali ke halaman masuk",
+            "emailSent": "Email terkirim!",
+            "checkInbox": "Silakan cek inbox Anda untuk tautan reset kata sandi.",
+            "errors": {
+                "invalidEmail": "Email tidak valid",
+                "emailNotFound": "Email tidak ditemukan",
+                "networkError": "Kesalahan jaringan. Silakan coba lagi.",
+                "unknownError": "Terjadi kesalahan. Silakan coba lagi."
+            }
+        },
+        "dashboard": {
+            "title": "Dashboard Penyewa",
+            "welcome": "Selamat datang, {name}",
+            "myBookings": "Pemesanan Saya",
+            "myPayments": "Pembayaran",
+            "myProfile": "Profil Saya",
+            "maintenance": "Permintaan Perbaikan",
+            "logout": "Keluar"
+        }
+    },
     "search": {
         "title": "Cari Kost",
         "placeholder": "Cari lokasi, nama kost...",
