@@ -54,7 +54,7 @@ export function Amenities() {
     return (
         <section id="amenities" className="w-full bg-[#0f172a] relative overflow-hidden py-24 px-6 lg:px-10 text-white">
             {/* Background Gradients */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#137fec]/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#d4af37]/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
 
             <div className="relative z-10 max-w-[1080px] mx-auto">

@@ -153,7 +153,7 @@ ${formData.message}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#137fec]/10 border border-[#137fec]/20 text-[#137fec] dark:text-blue-400 text-xs font-bold tracking-widest uppercase mb-6"
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary dark:text-primary/80 text-xs font-bold tracking-widest uppercase mb-6"
                     >
                         <Icon name="mail" size={14} />
                         <span>{t('subtitle')}</span>
@@ -194,7 +194,7 @@ ${formData.message}
                                         value={formData.name}
                                         onChange={handleInputChange}
                                         placeholder={t('namePlaceholder')}
-                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-[#137fec] ${
+                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                                             errors.name
                                                 ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
                                                 : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
@@ -217,7 +217,7 @@ ${formData.message}
                                         value={formData.email}
                                         onChange={handleInputChange}
                                         placeholder={t('emailPlaceholder')}
-                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-[#137fec] ${
+                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                                             errors.email
                                                 ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
                                                 : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
@@ -243,7 +243,7 @@ ${formData.message}
                                         value={formData.phone}
                                         onChange={handleInputChange}
                                         placeholder={t('phonePlaceholder')}
-                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-[#137fec] ${
+                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                                             errors.phone
                                                 ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
                                                 : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
@@ -266,7 +266,7 @@ ${formData.message}
                                         value={formData.subject}
                                         onChange={handleInputChange}
                                         placeholder={t('subjectPlaceholder')}
-                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-[#137fec] ${
+                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                                             errors.subject
                                                 ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
                                                 : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
@@ -290,7 +290,7 @@ ${formData.message}
                                     onChange={handleInputChange}
                                     placeholder={t('messagePlaceholder')}
                                     rows={5}
-                                    className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-[#137fec] resize-none ${
+                                    className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
                                         errors.message
                                             ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
                                             : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
@@ -344,7 +344,7 @@ ${formData.message}
                                 <Button
                                     onClick={handleSendViaEmail}
                                     disabled={isSubmitting}
-                                    className="bg-[#137fec] hover:bg-blue-600 text-white font-semibold flex items-center justify-center gap-2"
+                                    className="bg-primary hover:bg-primary/90 text-white font-semibold flex items-center justify-center gap-2"
                                 >
                                     <Icon name="mail" size={18} />
                                     {t('sendViaEmail')}

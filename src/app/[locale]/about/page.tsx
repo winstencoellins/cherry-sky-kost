@@ -59,7 +59,7 @@ export default function AboutPage() {
                             <Button
                                 onClick={handleViewProperties}
                                 size="lg"
-                                className="bg-[#137fec] hover:bg-blue-600 text-white font-bold px-8 h-12 rounded-lg transition-all hover:scale-105 shadow-lg shadow-blue-500/30"
+                                className="bg-primary hover:bg-primary/90 text-white font-bold px-8 h-12 rounded-lg transition-all hover:scale-105 shadow-lg shadow-primary/30"
                             >
                                 <Icon name="home" size={20} className="mr-2" />
                                 {t('cta.button')}

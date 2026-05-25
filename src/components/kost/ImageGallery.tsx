@@ -61,7 +61,7 @@ export function ImageGallery({ images, alt = 'Room image' }: ImageGalleryProps) 
                                 key={actualIndex}
                                 className={cn(
                                     'aspect-[4/3] rounded-lg bg-slate-200 dark:bg-slate-700 cursor-pointer overflow-hidden relative',
-                                    selectedIndex === actualIndex && 'ring-2 ring-[#137fec]'
+                                    selectedIndex === actualIndex && 'ring-2 ring-primary'
                                 )}
                                 onClick={() => setSelectedIndex(actualIndex)}
                                 whileHover={{ scale: 1.05 }}

@@ -32,7 +32,7 @@ export function AboutHero() {
             </motion.div>
 
             {/* Decorative Gradients */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#137fec]/10 rounded-full blur-[120px]" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#d4af37]/10 rounded-full blur-[120px]" />
 
             {/* Scroll Indicator */}
@@ -89,7 +89,7 @@ export function AboutHero() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6, duration: 0.8 }}
-                    className="text-slate-300 text-lg md:text-xl font-light max-w-2xl leading-relaxed border-l-2 border-[#137fec] pl-6"
+                    className="text-slate-300 text-lg md:text-xl font-light max-w-2xl leading-relaxed border-l-2 border-primary pl-6"
                 >
                     {t('description')}
                 </motion.p>

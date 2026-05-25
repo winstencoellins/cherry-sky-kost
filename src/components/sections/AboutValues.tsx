@@ -42,8 +42,8 @@ export function AboutValues() {
     const getColorClasses = (color: string) => {
         const colors: Record<string, { bg: string; icon: string; shadow: string }> = {
             blue: {
-                bg: 'from-[#137fec] to-[#0c5eb8]',
-                icon: 'text-[#137fec]',
+                bg: 'from-primary to-primary/80',
+                icon: 'text-primary',
                 shadow: 'shadow-blue-500/20',
             },
             emerald: {
@@ -89,7 +89,7 @@ export function AboutValues() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#137fec]/10 border border-[#137fec]/20 text-[#137fec] dark:text-blue-400 text-xs font-bold tracking-widest uppercase mb-6"
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary dark:text-primary/80 text-xs font-bold tracking-widest uppercase mb-6"
                     >
                         <Icon name="star" size={14} filled />
                         <span>{t('subtitle')}</span>

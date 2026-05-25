@@ -37,7 +37,7 @@ export default function RoomDetailPage() {
             <AppLayout>
                 <div className="flex items-center justify-center min-h-screen">
                     <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-[#137fec] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
                         <p className="text-slate-500 dark:text-slate-400">{t('common.loading')}</p>
                     </div>
                 </div>
@@ -61,7 +61,7 @@ export default function RoomDetailPage() {
                         </p>
                         <Link
                             href={`/${locale}`}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-[#137fec] text-white rounded-lg hover:bg-blue-600 transition-colors"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
                         >
                             <Icon name="home" size={20} />
                             {t('roomDetail.backToHome')}
@@ -83,7 +83,7 @@ export default function RoomDetailPage() {
                     <div className="flex items-center justify-between">
                         <Link
                             href={`/${locale}`}
-                            className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-[#137fec] dark:hover:text-[#137fec] transition-colors"
+                            className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors"
                         >
                             <Icon name="arrow_back" size={20} />
                             <span className="hidden sm:inline font-medium">{t('roomDetail.backToHome')}</span>
@@ -147,7 +147,7 @@ export default function RoomDetailPage() {
                                         {roomType.name} - {kost.name}
                                     </h1>
                                     <div className="flex items-center text-slate-600 dark:text-slate-400">
-                                        <Icon name="location_on" size={20} className="mr-1 text-[#137fec]" />
+                                        <Icon name="location_on" size={20} className="mr-1 text-primary" />
                                         <p className="text-base font-medium">{kost.location.address}</p>
                                     </div>
                                 </div>
@@ -172,8 +172,8 @@ export default function RoomDetailPage() {
                                             transition={{ delay: 0.25, duration: 0.4 }}
                                             className="flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow"
                                         >
-                                            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#137fec]/10">
-                                                <Icon name="square_foot" size={20} className="text-[#137fec]" />
+                                            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
+                                                <Icon name="square_foot" size={20} className="text-primary" />
                                             </div>
                                             <div>
                                                 <p className="text-xs text-slate-500 dark:text-slate-400">{t('roomDetail.size')}</p>
@@ -189,8 +189,8 @@ export default function RoomDetailPage() {
                                         transition={{ delay: 0.3, duration: 0.4 }}
                                         className="flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow"
                                     >
-                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#137fec]/10">
-                                            <Icon name="people" size={20} className="text-[#137fec]" />
+                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
+                                            <Icon name="people" size={20} className="text-primary" />
                                         </div>
                                         <div>
                                             <p className="text-xs text-slate-500 dark:text-slate-400">{t('roomDetail.capacity')}</p>
@@ -205,8 +205,8 @@ export default function RoomDetailPage() {
                                         transition={{ delay: 0.35, duration: 0.4 }}
                                         className="flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow"
                                     >
-                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#137fec]/10">
-                                            <Icon name="door_front" size={20} className="text-[#137fec]" />
+                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
+                                            <Icon name="door_front" size={20} className="text-primary" />
                                         </div>
                                         <div>
                                             <p className="text-xs text-slate-500 dark:text-slate-400">Kamar Mandi</p>
@@ -233,7 +233,7 @@ export default function RoomDetailPage() {
                                 {kost.location.nearbyLandmark && (
                                     <div className="mt-4 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
                                         <div className="flex items-center gap-2">
-                                            <Icon name="school" size={20} className="text-[#137fec]" />
+                                            <Icon name="school" size={20} className="text-primary" />
                                             <p className="text-sm font-medium text-slate-900 dark:text-white">
                                                 {kost.location.nearbyLandmark}
                                             </p>
@@ -282,7 +282,7 @@ export default function RoomDetailPage() {
                                                         width: `${(roomType.availableCount / roomType.totalCount) * 100}%`,
                                                     }}
                                                     transition={{ delay: 0.7, duration: 0.8, ease: 'easeOut' }}
-                                                    className="bg-[#137fec] h-2.5 rounded-full"
+                                                    className="bg-primary h-2.5 rounded-full"
                                                 />
                                             </div>
                                         </div>

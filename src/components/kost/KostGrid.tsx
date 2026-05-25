@@ -204,7 +204,7 @@ export function KostGrid({ kosts, filters, isLoading }: KostGridProps) {
                                             className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg"
                                             title={facility.name}
                                         >
-                                            <Icon name={facility.icon} size={14} className="text-[#137fec]" />
+                                            <Icon name={facility.icon} size={14} className="text-primary" />
                                             <span className="text-xs text-slate-600 dark:text-slate-400 line-clamp-1">
                                                 {facility.name}
                                             </span>
@@ -230,7 +230,7 @@ export function KostGrid({ kosts, filters, isLoading }: KostGridProps) {
                                         WhatsApp
                                     </button>
                                     <button
-                                        className="flex items-center justify-center gap-2 px-3 py-2 bg-[#137fec] hover:bg-blue-600 text-white text-xs font-semibold rounded-lg transition-colors"
+                                        className="flex items-center justify-center gap-2 px-3 py-2 bg-primary hover:bg-primary/90 text-white text-xs font-semibold rounded-lg transition-colors"
                                     >
                                         <Icon name="arrow_forward" size={14} />
                                         Detail

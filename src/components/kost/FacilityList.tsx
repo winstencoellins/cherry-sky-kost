@@ -99,7 +99,7 @@ export function FacilityList({
                             'flex items-center justify-center w-12 h-12 rounded-xl mb-3 transition-colors',
                             facility.isPremium
                                 ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400'
-                                : 'bg-slate-100 text-[#137fec] dark:bg-slate-800 dark:text-blue-400 group-hover:bg-[#137fec] group-hover:text-white'
+                                : 'bg-slate-100 text-primary dark:bg-slate-800 dark:text-primary/80 group-hover:bg-primary group-hover:text-white'
                         )}
                     >
                         <Icon name={facility.icon} size={24} />

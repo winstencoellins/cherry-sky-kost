@@ -1,0 +1,299 @@
+"use client";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  createLease,
+  deleteLease,
+  getLease,
+  listLeases,
+  updateLease,
+} from "@/lib/api/admin/leases";
+import {
+  createLedgerEntry,
+  deleteLedgerEntry,
+  getLedgerEntry,
+  listLedgerEntries,
+  updateLedgerEntry,
+  type LedgerEntryFilters,
+} from "@/lib/api/admin/ledger-entries";
+import {
+  createProperty,
+  deleteProperty,
+  getProperty,
+  listProperties,
+  updateProperty,
+} from "@/lib/api/admin/properties";
+import {
+  createUnitPricing,
+  deleteUnitPricing,
+  getUnitPricing,
+  listUnitPricings,
+  updateUnitPricing,
+} from "@/lib/api/admin/unit-pricings";
+import {
+  createUnitType,
+  deleteUnitType,
+  getUnitType,
+  listUnitTypes,
+  updateUnitType,
+} from "@/lib/api/admin/unit-types";
+import {
+  createUnit,
+  deleteUnit,
+  getUnit,
+  listUnits,
+  updateUnit,
+} from "@/lib/api/admin/units";
+import { getTenantUser, listTenantUsers } from "@/lib/api/admin/users";
+import { adminKeys } from "@/lib/query/keys";
+import type { LeaseStatus, LedgerEntryType, UnitStatus } from "@/lib/types/admin";
+
+export function useProperties() {
+  return useQuery({
+    queryKey: adminKeys.properties.all(),
+    queryFn: listProperties,
+  });
+}
+
+export function useProperty(id: string, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.properties.detail(id),
+    queryFn: () => getProperty(id),
+    enabled: enabled && !!id,
+  });
+}
+
+export function usePropertyMutations() {
+  const qc = useQueryClient();
+  const invalidate = () =>
+    void qc.invalidateQueries({ queryKey: adminKeys.properties.all() });
+
+  return {
+    create: useMutation({ mutationFn: createProperty, onSuccess: invalidate }),
+    update: useMutation({
+      mutationFn: ({
+        id,
+        ...input
+      }: { id: string } & Parameters<typeof updateProperty>[1]) =>
+        updateProperty(id, input),
+      onSuccess: invalidate,
+    }),
+    remove: useMutation({ mutationFn: deleteProperty, onSuccess: invalidate }),
+  };
+}
+
+export function useUnitTypes(propertyId?: string) {
+  return useQuery({
+    queryKey: adminKeys.unitTypes.list(propertyId),
+    queryFn: () => listUnitTypes(propertyId),
+  });
+}
+
+export function useUnitType(id: string, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.unitTypes.detail(id),
+    queryFn: () => getUnitType(id),
+    enabled: enabled && !!id,
+  });
+}
+
+export function useUnitTypeMutations() {
+  const qc = useQueryClient();
+  const invalidate = () => {
+    void qc.invalidateQueries({ queryKey: adminKeys.unitTypes.all() });
+    void qc.invalidateQueries({ queryKey: adminKeys.unitPricings.all() });
+    void qc.invalidateQueries({ queryKey: adminKeys.units.all() });
+  };
+
+  return {
+    create: useMutation({ mutationFn: createUnitType, onSuccess: invalidate }),
+    update: useMutation({
+      mutationFn: ({
+        id,
+        ...input
+      }: { id: string } & Parameters<typeof updateUnitType>[1]) =>
+        updateUnitType(id, input),
+      onSuccess: invalidate,
+    }),
+    remove: useMutation({ mutationFn: deleteUnitType, onSuccess: invalidate }),
+  };
+}
+
+export function useUnitPricings(filters?: {
+  unitTypeId?: string;
+  propertyId?: string;
+}) {
+  return useQuery({
+    queryKey: adminKeys.unitPricings.list(filters),
+    queryFn: () => listUnitPricings(filters),
+  });
+}
+
+export function useUnitPricing(id: string, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.unitPricings.detail(id),
+    queryFn: () => getUnitPricing(id),
+    enabled: enabled && !!id,
+  });
+}
+
+export function useUnitPricingMutations() {
+  const qc = useQueryClient();
+  const invalidate = () =>
+    void qc.invalidateQueries({ queryKey: adminKeys.unitPricings.all() });
+
+  return {
+    create: useMutation({
+      mutationFn: createUnitPricing,
+      onSuccess: invalidate,
+    }),
+    update: useMutation({
+      mutationFn: ({
+        id,
+        ...input
+      }: { id: string } & Parameters<typeof updateUnitPricing>[1]) =>
+        updateUnitPricing(id, input),
+      onSuccess: invalidate,
+    }),
+    remove: useMutation({
+      mutationFn: deleteUnitPricing,
+      onSuccess: invalidate,
+    }),
+  };
+}
+
+export function useUnits(propertyId?: string) {
+  return useQuery({
+    queryKey: adminKeys.units.list(propertyId),
+    queryFn: () => listUnits(propertyId),
+  });
+}
+
+export function useUnit(id: string, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.units.detail(id),
+    queryFn: () => getUnit(id),
+    enabled: enabled && !!id,
+  });
+}
+
+export function useUnitMutations() {
+  const qc = useQueryClient();
+  const invalidate = () => {
+    void qc.invalidateQueries({ queryKey: adminKeys.units.all() });
+    void qc.invalidateQueries({ queryKey: adminKeys.leases.all() });
+  };
+
+  return {
+    create: useMutation({ mutationFn: createUnit, onSuccess: invalidate }),
+    update: useMutation({
+      mutationFn: ({
+        id,
+        ...input
+      }: { id: string } & Parameters<typeof updateUnit>[1]) =>
+        updateUnit(id, input),
+      onSuccess: invalidate,
+    }),
+    remove: useMutation({ mutationFn: deleteUnit, onSuccess: invalidate }),
+  };
+}
+
+export function useLeases(filters?: {
+  unitId?: string;
+  userId?: string;
+  propertyId?: string;
+}) {
+  return useQuery({
+    queryKey: adminKeys.leases.list(filters),
+    queryFn: () => listLeases(filters),
+  });
+}
+
+export function useLease(id: string, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.leases.detail(id),
+    queryFn: () => getLease(id),
+    enabled: enabled && !!id,
+  });
+}
+
+export function useTenantUsers(search?: string) {
+  return useQuery({
+    queryKey: adminKeys.users.list(search),
+    queryFn: () => listTenantUsers(search),
+  });
+}
+
+export function useTenantUser(id: string, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.users.detail(id),
+    queryFn: () => getTenantUser(id),
+    enabled: enabled && !!id,
+  });
+}
+
+export function useLeaseMutations() {
+  const qc = useQueryClient();
+  const invalidate = () => {
+    void qc.invalidateQueries({ queryKey: adminKeys.leases.all() });
+    void qc.invalidateQueries({ queryKey: adminKeys.units.all() });
+  };
+
+  return {
+    create: useMutation({ mutationFn: createLease, onSuccess: invalidate }),
+    update: useMutation({
+      mutationFn: ({
+        id,
+        ...input
+      }: {
+        id: string;
+        startDate?: string;
+        unitPricingId?: string;
+        status?: LeaseStatus;
+      }) => updateLease(id, input),
+      onSuccess: invalidate,
+    }),
+    remove: useMutation({ mutationFn: deleteLease, onSuccess: invalidate }),
+  };
+}
+
+export function useLedgerEntries(filters?: LedgerEntryFilters) {
+  return useQuery({
+    queryKey: adminKeys.ledgerEntries.list(filters),
+    queryFn: () => listLedgerEntries(filters),
+  });
+}
+
+export function useLedgerEntry(id: string, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.ledgerEntries.detail(id),
+    queryFn: () => getLedgerEntry(id),
+    enabled: enabled && !!id,
+  });
+}
+
+export function useLedgerEntryMutations() {
+  const qc = useQueryClient();
+  const invalidate = () =>
+    void qc.invalidateQueries({ queryKey: adminKeys.ledgerEntries.all() });
+
+  return {
+    create: useMutation({ mutationFn: createLedgerEntry, onSuccess: invalidate }),
+    update: useMutation({
+      mutationFn: ({
+        id,
+        ...input
+      }: {
+        id: string;
+        type?: LedgerEntryType;
+        amount?: number;
+        description?: string;
+        category?: string | null;
+        date?: string;
+        propertyId?: string | null;
+      }) => updateLedgerEntry(id, input),
+      onSuccess: invalidate,
+    }),
+    remove: useMutation({ mutationFn: deleteLedgerEntry, onSuccess: invalidate }),
+  };
+}

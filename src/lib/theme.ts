@@ -1,113 +1,134 @@
 /**
- * Theme Configuration for Cherry Sky Kost
- * Defines color palette, semantic tokens, and design constants
+ * Sky Kost design tokens — aligned with DESIGN (1).md
  */
 
 export const colors = {
-    // Brand Colors (from original HTML template)
-    primary: '#137fec',
-    gold: '#d4af37',
-    navy: '#0f172a',
-    backgroundLight: '#f6f7f8',
-    backgroundDark: '#101922',
+  primary: "#6f4627",
+  primaryContainer: "#8b5e3c",
+  onPrimary: "#ffffff",
+  onPrimaryContainer: "#ffe3d1",
+  inversePrimary: "#f4bb92",
 
-    // Semantic Colors for Kost Features
-    whatsapp: '#25D366',
+  secondary: "#5f5e5e",
+  secondaryContainer: "#e2dfde",
+  onSecondaryContainer: "#636262",
 
-    // Status Colors
-    status: {
-        available: '#10b981', // green-500
-        rented: '#64748b', // slate-500
-        waitlist: '#f59e0b', // amber-500
-        reserved: '#3b82f6', // blue-500
-    },
+  tertiary: "#415167",
+  tertiaryContainer: "#596980",
+  onTertiaryContainer: "#dbe9ff",
 
-    // Facility Category Colors
-    facility: {
-        room: '#8b5cf6', // violet-500
-        building: '#06b6d4', // cyan-500
-        service: '#ec4899', // pink-500
-        security: '#f97316', // orange-500
-    },
+  surface: "#faf9f6",
+  surfaceContainer: "#efeeeb",
+  surfaceContainerHighest: "#e3e2e0",
+  onSurface: "#1a1c1a",
+  onSurfaceVariant: "#51443c",
+  inverseSurface: "#2f312f",
+  inverseOnSurface: "#f2f1ee",
+  outline: "#83746b",
+  outlineVariant: "#d5c3b8",
+
+  background: "#faf9f6",
+  onBackground: "#1a1c1a",
+  card: "#ffffff",
+
+  error: "#ba1a1a",
+  errorContainer: "#ffdad6",
+  onErrorContainer: "#93000a",
+
+  whatsapp: "#25D366",
+  gold: "#d4af37",
+
+  status: {
+    vacant: "#059669",
+    occupied: "#2563eb",
+    unpaid: "#dc2626",
+    paid: "#047857",
+    waitingForReview: "#d97706",
+  },
 } as const;
 
 export const spacing = {
-    // Mobile Navigation Heights
-    mobileNavbar: '56px',
-    bottomNav: '64px',
-
-    // Safe area insets for mobile devices
-    safeAreaTop: 'env(safe-area-inset-top)',
-    safeAreaBottom: 'env(safe-area-inset-bottom)',
-
-    // Content padding to avoid bottom nav overlap
-    mobileContentPadding: '5rem', // 80px (64px bottom nav + 16px extra)
+  base: 8,
+  xs: 4,
+  sm: 12,
+  md: 24,
+  lg: 40,
+  xl: 64,
+  gutter: 24,
+  margin: 32,
+  mobileNavbar: "56px",
+  bottomNav: "64px",
+  safeAreaTop: "env(safe-area-inset-top)",
+  safeAreaBottom: "env(safe-area-inset-bottom)",
+  mobileContentPadding: "5rem",
 } as const;
 
 export const zIndex = {
-    base: 0,
-    dropdown: 10,
-    sticky: 20,
-    fixed: 30,
-    modalBackdrop: 40,
-    modal: 50,
-    popover: 60,
-    tooltip: 70,
-    navbar: 100,
-    sidebar: 110,
-    bottomNav: 90,
+  base: 0,
+  dropdown: 10,
+  sticky: 20,
+  fixed: 30,
+  modalBackdrop: 40,
+  modal: 50,
+  popover: 60,
+  tooltip: 70,
+  navbar: 100,
+  sidebar: 110,
+  bottomNav: 90,
 } as const;
 
 export const breakpoints = {
-    sm: '640px',
-    md: '768px',
-    lg: '1024px',
-    xl: '1280px',
-    '2xl': '1536px',
+  sm: "640px",
+  md: "768px",
+  lg: "1024px",
+  xl: "1280px",
+  "2xl": "1536px",
+  contentMax: "1440px",
 } as const;
 
 export const typography = {
-    fontFamily: {
-        display: ['Inter', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
-    },
-
-    // Font sizes for responsive design
-    fontSize: {
-        xs: '0.75rem',    // 12px
-        sm: '0.875rem',   // 14px
-        base: '1rem',     // 16px
-        lg: '1.125rem',   // 18px
-        xl: '1.25rem',    // 20px
-        '2xl': '1.5rem',  // 24px
-        '3xl': '1.875rem', // 30px
-        '4xl': '2.25rem', // 36px
-        '5xl': '3rem',    // 48px
-    },
+  fontFamily: {
+    display: ["var(--font-plus-jakarta)", "Plus Jakarta Sans", "sans-serif"],
+    body: ["var(--font-plus-jakarta)", "Plus Jakarta Sans", "sans-serif"],
+  },
+  fontSize: {
+    h1: "2.25rem",
+    h2: "1.5rem",
+    h3: "1.25rem",
+    bodyLg: "1.125rem",
+    bodyMd: "1rem",
+    labelSm: "0.875rem",
+    caption: "0.75rem",
+  },
 } as const;
 
 export const borderRadius = {
-    DEFAULT: '0.25rem',
-    lg: '0.5rem',
-    xl: '0.75rem',
-    '2xl': '1rem',
-    full: '9999px',
+  sm: "0.25rem",
+  DEFAULT: "0.5rem",
+  md: "0.75rem",
+  lg: "1rem",
+  xl: "1.5rem",
+  full: "9999px",
+} as const;
+
+export const shadows = {
+  card: "0 4px 20px rgb(47 49 47 / 4%)",
+  cardHover: "0 8px 28px rgb(47 49 47 / 8%)",
+  modal: "0 16px 48px rgb(111 70 39 / 12%)",
 } as const;
 
 export const animation = {
-    duration: {
-        fast: '150ms',
-        normal: '300ms',
-        slow: '500ms',
-    },
-
-    timing: {
-        ease: 'ease',
-        easeIn: 'ease-in',
-        easeOut: 'ease-out',
-        easeInOut: 'ease-in-out',
-    },
+  duration: {
+    fast: "150ms",
+    normal: "300ms",
+    slow: "500ms",
+  },
+  timing: {
+    ease: "ease",
+    easeIn: "ease-in",
+    easeOut: "ease-out",
+    easeInOut: "ease-in-out",
+  },
 } as const;
 
-// Export type for theme usage in components
 export type Theme = typeof colors & typeof spacing & typeof zIndex;

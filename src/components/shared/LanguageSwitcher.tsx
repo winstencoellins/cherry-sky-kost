@@ -115,7 +115,7 @@ export function LanguageSwitcher({ variant = 'navbar' }: LanguageSwitcherProps) 
                                         className={cn(
                                             'w-full px-4 py-3 rounded-lg flex items-center gap-3 text-sm font-medium transition-all duration-200',
                                             isActive
-                                                ? 'bg-[#137fec] text-white shadow-md'
+                                                ? 'bg-primary text-white shadow-md'
                                                 : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
                                         )}
                                     >

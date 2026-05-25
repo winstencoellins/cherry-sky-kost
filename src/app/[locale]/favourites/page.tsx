@@ -32,7 +32,7 @@ export default function FavoritesPage() {
           </p>
           <a
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#137fec] hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors"
           >
             <Icon name="search" size={20} />
             Cari Kost

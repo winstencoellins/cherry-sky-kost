@@ -140,7 +140,7 @@ export function PrivacyContent() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mb-16 p-6 bg-[#137fec]/5 dark:bg-[#137fec]/10 border border-[#137fec]/20 rounded-2xl"
+                    className="mb-16 p-6 bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-2xl"
                 >
                     <h2 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                         <Icon name="list" size={20} />
@@ -151,7 +151,7 @@ export function PrivacyContent() {
                             <a
                                 key={section.key}
                                 href={`#section-${index}`}
-                                className="text-sm text-[#137fec] hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors flex items-center gap-2"
+                                className="text-sm text-primary hover:text-primary/90 dark:hover:text-primary/80 font-medium transition-colors flex items-center gap-2"
                             >
                                 <Icon name="arrow_forward" size={14} />
                                 {section.title}
@@ -181,7 +181,7 @@ export function PrivacyContent() {
                                         expandedSection === section.key ? null : section.key
                                     )
                                 }
-                                className="w-full text-left p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg hover:border-[#137fec]/50 transition-all duration-300"
+                                className="w-full text-left p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg hover:border-primary/50 transition-all duration-300"
                             >
                                 <div className="flex items-center justify-between gap-4">
                                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">
@@ -194,7 +194,7 @@ export function PrivacyContent() {
                                                 : 'expand_more'
                                         }
                                         size={24}
-                                        className="text-[#137fec] flex-shrink-0 transition-transform"
+                                        className="text-primary flex-shrink-0 transition-transform"
                                     />
                                 </div>
                             </button>

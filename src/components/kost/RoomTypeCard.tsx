@@ -97,7 +97,7 @@ export function RoomTypeCard({
                 {/* Content Section - Compact */}
                 <div className="flex flex-col flex-1 p-4 gap-3">
                     <div>
-                        <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-1 line-clamp-1 group-hover:text-[#137fec] transition-colors">
+                        <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-1 line-clamp-1 group-hover:text-primary transition-colors">
                             {roomType.name}
                         </h3>
                     </div>
@@ -123,7 +123,7 @@ export function RoomTypeCard({
                                     phoneNumber={whatsappNumber}
                                     message={whatsappMessage}
                                     variant="compact"
-                                    className="h-9 px-4 rounded-xl bg-[#137fec] hover:bg-blue-600 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-blue-500/30"
+                                    className="h-9 px-4 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-primary/30"
                                     label={t('cta.bookNow')}
                                 />
                             ) : (

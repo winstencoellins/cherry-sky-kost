@@ -31,7 +31,7 @@ export function Footer() {
     return (
         <footer className="w-full bg-[#0f172a] text-white pt-20 pb-10 px-6 lg:px-10 overflow-hidden relative">
             {/* Ambient Background */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#137fec]/5 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#d4af37]/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="max-w-7xl mx-auto relative z-10">
@@ -40,7 +40,7 @@ export function Footer() {
                     <div className="lg:col-span-4 flex flex-col gap-6">
                         <div className="flex items-center gap-3">
                             <div className="p-2.5 bg-white/5 border border-white/10 rounded-xl">
-                                <Icon name="apartment" className="text-[#137fec]" size={28} />
+                                <Icon name="apartment" className="text-primary" size={28} />
                             </div>
                             <h3 className="font-bold text-2xl tracking-tight">Cherry Sky Kost</h3>
                         </div>
@@ -52,7 +52,7 @@ export function Footer() {
                                 <a
                                     key={index}
                                     href={social.href}
-                                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 hover:text-[#137fec] transition-all"
+                                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 hover:text-primary transition-all"
                                     aria-label={social.label}
                                 >
                                     <Icon name={social.icon} size={20} />
@@ -67,7 +67,7 @@ export function Footer() {
                         <ul className="grid grid-cols-2 gap-x-8 gap-y-4">
                             {footerLinks.main.map((link, index) => (
                                 <li key={`link-${index}`}>
-                                    <Link href={link.href} className="text-slate-400 hover:text-[#137fec] text-sm transition-colors">
+                                    <Link href={link.href} className="text-slate-400 hover:text-primary text-sm transition-colors">
                                         {link.label}
                                     </Link>
                                 </li>
@@ -85,9 +85,9 @@ export function Footer() {
                             <input
                                 type="email"
                                 placeholder="Your Email"
-                                className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-[#137fec] focus:ring-1 focus:ring-[#137fec] transition-all"
+                                className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                             />
-                            <button className="p-2.5 rounded-xl bg-[#137fec] hover:bg-blue-600 text-white transition-colors">
+                            <button className="p-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white transition-colors">
                                 <Icon name="arrow_forward" size={20} />
                             </button>
                         </form>

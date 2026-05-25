@@ -493,5 +493,228 @@
         },
         "lastUpdated": "Terakhir Diperbarui: 8 Februari 2026",
         "acknowledge": "Saya Memahami Kebijakan Privasi"
+    },
+    "admin": {
+        "nav": {
+            "overview": "Dashboard",
+            "properties": "Properti",
+            "unitTypes": "Tipe unit",
+            "units": "Unit",
+            "leases": "Sewa",
+            "pricing": "Harga",
+            "bookkeeping": "Buku kas",
+            "settings": "Pengaturan",
+            "signOut": "Keluar",
+            "groups": {
+                "main": "Utama",
+                "inventory": "Inventaris",
+                "operations": "Operasional",
+                "finance": "Keuangan"
+            }
+        },
+        "header": {
+            "searchPlaceholder": "Cari sewa, penyewa, atau unit...",
+            "notifications": "Notifikasi",
+            "roleManager": "Manajer",
+            "breadcrumb": "Admin",
+            "openMenu": "Buka menu navigasi"
+        },
+        "table": {
+            "unitProperty": "Unit / Properti",
+            "rentAmount": "Jumlah Sewa (IDR)",
+            "showing": "Menampilkan {start}–{end} dari {total} entri",
+            "previous": "Halaman sebelumnya",
+            "next": "Halaman berikutnya"
+        },
+        "login": {
+            "title": "Sky Kost Admin Suite",
+            "subtitle": "Masuk untuk mengelola properti Anda",
+            "emailLabel": "Alamat Email",
+            "emailPlaceholder": "admin@skykost.com",
+            "passwordLabel": "Kata Sandi",
+            "showPassword": "Tampilkan kata sandi",
+            "hidePassword": "Sembunyikan kata sandi",
+            "forgotPassword": "Lupa kata sandi?",
+            "forgotPasswordHint": "Reset kata sandi belum tersedia. Hubungi administrator.",
+            "securityNote": "Akses aman hanya untuk personel yang berwenang.",
+            "submit": "Masuk",
+            "submitting": "Memproses…",
+            "success": "Selamat datang kembali!",
+            "errors": {
+                "invalid": "Email atau kata sandi salah.",
+                "forbidden": "Anda tidak memiliki akses admin."
+            }
+        },
+        "crud": {
+            "add": "Tambah",
+            "save": "Simpan",
+            "saving": "Menyimpan…",
+            "loading": "Memuat…",
+            "empty": "Belum ada data.",
+            "loadFailed": "Gagal memuat data.",
+            "saveFailed": "Gagal menyimpan.",
+            "deleteFailed": "Gagal menghapus.",
+            "created": "Berhasil dibuat.",
+            "updated": "Berhasil diperbarui.",
+            "deleted": "Berhasil dihapus.",
+            "searchPlaceholder": "Cari…",
+            "backToList": "Kembali ke daftar",
+            "cancel": "Batal",
+            "deleteTitle": "Hapus data?",
+            "deleteDescription": "Ini akan menghapus \"{name}\" secara permanen. Tindakan ini tidak dapat dibatalkan.",
+            "deleteConfirm": "Hapus",
+            "deleting": "Menghapus…",
+            "confirmDelete": "Hapus \"{name}\"?",
+            "createTitle": "Buat",
+            "editTitle": "Ubah",
+            "name": "Nama",
+            "address": "Alamat",
+            "city": "Kota",
+            "property": "Properti",
+            "unitType": "Tipe unit",
+            "unit": "Unit",
+            "tenant": "Penyewa",
+            "status": "Status",
+            "size": "Luas (m²)",
+            "description": "Deskripsi",
+            "floor": "Lantai",
+            "duration": "Durasi (hari)",
+            "days": "hari",
+            "price": "Harga (IDR)",
+            "period": "Periode",
+            "actions": "Aksi",
+            "allProperties": "Semua properti",
+            "allUnitTypes": "Semua tipe unit",
+            "selectProperty": "Pilih properti",
+            "selectUnitType": "Pilih tipe unit",
+            "selectUnit": "Pilih unit",
+            "selectPricing": "Pilih paket harga",
+            "propertyRequired": "Properti wajib dipilih.",
+            "startDate": "Tanggal mulai",
+            "pricing": "Paket harga",
+            "tenantUserId": "ID pengguna penyewa",
+            "tenantUserIdHint": "ID user dari database auth",
+            "selectTenant": "Pilih penyewa",
+            "noTenantsAvailable": "Belum ada akun penyewa. Daftarkan pengguna dengan peran tenant terlebih dahulu."
+        },
+        "pages": {
+            "overview": {
+                "title": "Dashboard",
+                "description": "Ringkasan aktivitas properti Anda hari ini.",
+                "greeting": {
+                    "morning": "Selamat pagi",
+                    "afternoon": "Selamat siang",
+                    "evening": "Selamat malam"
+                },
+                "viewLeases": "Lihat sewa",
+                "loading": "Memuat…",
+                "stats": {
+                    "properties": "Properti",
+                    "propertiesHint": "Bangunan dalam portofolio",
+                    "units": "Total unit",
+                    "unitsHint": "{occupied} sedang terisi",
+                    "leases": "Sewa aktif",
+                    "leasesHint": "{expiring} berakhir dalam 30 hari",
+                    "revenue": "Pendapatan bulanan",
+                    "revenueHint": "Dari sewa berstatus lunas",
+                    "pricing": "Paket harga",
+                    "leasesLegacy": "Sewa"
+                },
+                "quickActions": {
+                    "title": "Aksi cepat",
+                    "addProperty": "Tambah properti",
+                    "addUnitType": "Tipe unit",
+                    "addUnit": "Kelola unit",
+                    "newLease": "Sewa baru",
+                    "setPricing": "Atur harga"
+                },
+                "recent": {
+                    "title": "Sewa terbaru",
+                    "subtitle": "Aktivitas sewa terakhir",
+                    "viewAll": "Lihat semua",
+                    "empty": "Belum ada sewa. Buat sewa pertama untuk memulai."
+                }
+            },
+            "properties": {
+                "title": "Properti",
+                "description": "Kelola bangunan kost.",
+                "formDescription": "Masukkan detail properti untuk portofolio kost Anda."
+            },
+            "unitTypes": {
+                "title": "Tipe unit",
+                "description": "Kategori kamar per properti (mis. Studio, 1BR).",
+                "formDescription": "Tentukan kategori kamar dan hubungkan ke properti."
+            },
+            "units": {
+                "title": "Unit",
+                "description": "Kamar fisik di dalam properti Anda.",
+                "formDescription": "Tambah atau perbarui unit sewa.",
+                "sizeRequired": "Masukkan ukuran yang valid dalam meter persegi."
+            },
+            "leases": {
+                "title": "Perjanjian Sewa",
+                "description": "Kelola dan pantau semua sewa penyewa di properti Anda.",
+                "filters": "Filter",
+                "newLease": "Sewa Baru",
+                "searchPlaceholder": "Cari sewa...",
+                "to": "s/d",
+                "expiring": "Akan berakhir",
+                "formDescription": "Buat atau perbarui perjanjian sewa penyewa.",
+                "stats": {
+                    "totalBadge": "Total",
+                    "attentionBadge": "Perhatian",
+                    "collectionBadge": "Koleksi",
+                    "activeLeases": "Perjanjian Sewa Aktif",
+                    "expiring": "Berakhir dalam 30 hari",
+                    "collected": "Terkumpul bulan ini"
+                }
+            },
+            "pricing": {
+                "title": "Harga",
+                "description": "Paket harga per tipe unit dan durasi.",
+                "formDescription": "Atur harga sewa untuk paket durasi."
+            },
+            "bookkeeping": {
+                "title": "Buku kas",
+                "description": "Catat pemasukan dan pengeluaran properti Anda.",
+                "formDescription": "Catat transaksi keuangan.",
+                "entryType": "Jenis",
+                "typeIncome": "Pemasukan",
+                "typeExpense": "Pengeluaran",
+                "typeFilter": "Jenis",
+                "allTypes": "Semua jenis",
+                "date": "Tanggal",
+                "category": "Kategori",
+                "amount": "Jumlah (IDR)",
+                "amountRequired": "Masukkan jumlah yang valid lebih dari nol.",
+                "noProperty": "Semua properti",
+                "leasesLoadFailed": "Gagal memuat data sewa untuk pemasukan.",
+                "leaseIncomeDescription": "Sewa {unit} - {property}",
+                "fromLease": "Dari sewa",
+                "stats": {
+                    "income": "Total pemasukan",
+                    "incomeHint": "Pemasukan buku besar plus sewa berbayar penuh",
+                    "expense": "Total pengeluaran",
+                    "expenseHint": "Jumlah entri pengeluaran dalam tampilan",
+                    "net": "Saldo bersih",
+                    "netHint": "Pemasukan dikurangi pengeluaran",
+                    "profit": "Untung",
+                    "loss": "Rugi"
+                },
+                "categories": {
+                    "rent": "Sewa",
+                    "deposit": "Deposit",
+                    "late_fee": "Denda keterlambatan",
+                    "other_income": "Pemasukan lain",
+                    "utilities": "Utilitas",
+                    "maintenance": "Perawatan",
+                    "cleaning": "Kebersihan",
+                    "staff": "Gaji & staf",
+                    "supplies": "Perlengkapan",
+                    "tax": "Pajak & biaya",
+                    "other_expense": "Pengeluaran lain"
+                }
+            }
+        }
     }
 }

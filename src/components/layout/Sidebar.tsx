@@ -40,9 +40,9 @@ function MenuItem({ href, icon, label, onClick }: MenuItemProps) {
             <Icon
                 name={icon}
                 size={24}
-                className="text-slate-600 dark:text-slate-400 group-hover:text-[#137fec]"
+                className="text-slate-600 dark:text-slate-400 group-hover:text-primary"
             />
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-[#137fec]">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-primary">
                 {label}
             </span>
         </Link>
@@ -59,7 +59,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
             <SheetContent side="left" className="w-[280px] sm:w-[320px] p-0">
                 <SheetHeader className="p-6 pb-4">
                     <SheetTitle className="flex items-center gap-2 text-left">
-                        <div className="text-[#137fec]">
+                        <div className="text-primary">
                             <Icon name="apartment" size={28} />
                         </div>
                         <span className="text-xl font-bold">Cherry Sky</span>

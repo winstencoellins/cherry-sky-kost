@@ -112,7 +112,7 @@ export function RoomDetailSidebar({
                         href={`https://wa.me/${whatsappNumber}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-slate-400 hover:text-[#137fec] transition-colors"
+                        className="text-slate-400 hover:text-primary transition-colors"
                     >
                         <Icon name="chat" size={20} />
                     </a>

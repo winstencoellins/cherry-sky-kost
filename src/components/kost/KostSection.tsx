@@ -54,12 +54,12 @@ export function KostSection({ kost, showFacilities = true }: KostSectionProps) {
                             {kost.description}
                         </p>
                         <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <Icon name="location_on" size={16} className="text-[#137fec]" />
+                            <Icon name="location_on" size={16} className="text-primary" />
                             <span>{kost.location.address}</span>
                             {kost.location.nearbyLandmark && (
                                 <>
                                     <span>•</span>
-                                    <span className="font-medium text-[#137fec]">
+                                    <span className="font-medium text-primary">
                                         {kost.location.nearbyLandmark}
                                     </span>
                                 </>
@@ -80,7 +80,7 @@ export function KostSection({ kost, showFacilities = true }: KostSectionProps) {
                         <Badge
                             key={index}
                             variant="secondary"
-                            className="px-3 py-1 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                            className="px-3 py-1 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-primary/80"
                         >
                             {highlight}
                         </Badge>

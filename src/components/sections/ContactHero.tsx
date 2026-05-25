@@ -32,7 +32,7 @@ export function ContactHero() {
             </motion.div>
 
             {/* Decorative Gradients */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#137fec]/10 rounded-full blur-[120px]" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#d4af37]/10 rounded-full blur-[120px]" />
 
             {/* Content */}
@@ -72,7 +72,7 @@ export function ContactHero() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6, duration: 0.8 }}
-                    className="text-slate-300 text-base md:text-lg font-light max-w-2xl leading-relaxed border-l-2 border-[#137fec] pl-6"
+                    className="text-slate-300 text-base md:text-lg font-light max-w-2xl leading-relaxed border-l-2 border-primary pl-6"
                 >
                     {t('description')}
                 </motion.p>
@@ -95,7 +95,7 @@ export function ContactHero() {
                     </a>
                     <a
                         href="tel:+6281234567890"
-                        className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#137fec] hover:bg-blue-600 text-white transition-all hover:scale-110 shadow-lg"
+                        className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary hover:bg-primary/90 text-white transition-all hover:scale-110 shadow-lg"
                         aria-label="Call us"
                     >
                         <Icon name="call" size={24} />

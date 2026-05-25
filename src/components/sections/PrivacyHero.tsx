@@ -19,7 +19,7 @@ export function PrivacyHero() {
                 <motion.div
                     animate={{ y: [0, 20, 0], opacity: [0.3, 0.5, 0.3] }}
                     transition={{ duration: 8, repeat: Infinity }}
-                    className="absolute -top-40 right-0 w-[500px] h-[500px] bg-[#137fec]/20 rounded-full blur-[120px] pointer-events-none"
+                    className="absolute -top-40 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] pointer-events-none"
                 />
                 <motion.div
                     animate={{ y: [0, -20, 0], opacity: [0.2, 0.4, 0.2] }}
@@ -38,7 +38,7 @@ export function PrivacyHero() {
                     className="inline-flex items-center justify-center mb-8"
                 >
                     <div className="p-4 bg-white/10 border border-white/20 rounded-2xl backdrop-blur-sm">
-                        <Icon name="privacy_tip" size={40} className="text-[#137fec]" />
+                        <Icon name="privacy_tip" size={40} className="text-primary" />
                     </div>
                 </motion.div>
 
@@ -77,7 +77,7 @@ export function PrivacyHero() {
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="h-1 w-24 bg-gradient-to-r from-[#137fec] to-[#d4af37] rounded-full mx-auto mt-8"
+                    className="h-1 w-24 bg-gradient-to-r from-primary to-[#d4af37] rounded-full mx-auto mt-8"
                 />
             </div>
         </section>

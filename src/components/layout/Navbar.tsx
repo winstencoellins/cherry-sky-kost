@@ -137,7 +137,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                         className="overflow-hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a]"
                     >
                         <div className="container mx-auto px-4 py-4">
-                            <div className="flex items-center gap-3 px-4 py-3 bg-slate-100 dark:bg-slate-800/50 rounded-2xl border border-transparent focus-within:border-[#137fec] transition-colors">
+                            <div className="flex items-center gap-3 px-4 py-3 bg-slate-100 dark:bg-slate-800/50 rounded-2xl border border-transparent focus-within:border-primary transition-colors">
                                 <Icon name="search" size={20} className="text-slate-400" />
                                 <input
                                     type="text"

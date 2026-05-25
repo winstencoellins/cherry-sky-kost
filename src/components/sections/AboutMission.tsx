@@ -30,7 +30,7 @@ export function AboutMission() {
                             whileInView={{ scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[#137fec] to-[#0c5eb8] text-white shadow-lg shadow-blue-500/30 mb-6"
+                            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg shadow-primary/30 mb-6"
                         >
                             <Icon name="flag" size={32} />
                         </motion.div>
@@ -39,7 +39,7 @@ export function AboutMission() {
                             {t('title')}
                         </h2>
                         
-                        <p className="text-sm text-[#137fec] dark:text-blue-400 font-semibold uppercase tracking-wider mb-4">
+                        <p className="text-sm text-primary dark:text-primary/80 font-semibold uppercase tracking-wider mb-4">
                             {t('subtitle')}
                         </p>
 
@@ -48,7 +48,7 @@ export function AboutMission() {
                         </p>
 
                         {/* Decorative Element */}
-                        <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-[#137fec]/5 dark:bg-[#137fec]/10 rounded-full blur-2xl" />
+                        <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-primary/5 dark:bg-primary/10 rounded-full blur-2xl" />
                     </motion.div>
 
                     {/* Vision */}

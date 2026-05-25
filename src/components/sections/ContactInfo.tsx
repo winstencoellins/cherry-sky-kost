@@ -72,7 +72,7 @@ export function ContactInfo() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#137fec]/10 border border-[#137fec]/20 text-[#137fec] dark:text-blue-400 text-xs font-bold tracking-widest uppercase mb-6"
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary dark:text-primary/80 text-xs font-bold tracking-widest uppercase mb-6"
                     >
                         <Icon name="info" size={14} />
                         <span>{t('subtitle')}</span>
@@ -108,11 +108,11 @@ export function ContactInfo() {
                             >
                                 {/* Icon Container */}
                                 <div className="relative mb-5">
-                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-[#137fec] to-blue-700 text-white shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
+                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-blue-700 text-white shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform duration-300">
                                         <Icon name={detail.icon} size={28} />
                                     </div>
                                     {/* Glow effect */}
-                                    <div className="absolute inset-0 w-14 h-14 rounded-xl bg-gradient-to-br from-[#137fec] to-blue-700 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300" />
+                                    <div className="absolute inset-0 w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-blue-700 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300" />
                                 </div>
 
                                 {/* Content */}
@@ -134,15 +134,15 @@ export function ContactInfo() {
                                 {/* Arrow Icon */}
                                 {detail.link && (
                                     <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                                        <span className="text-xs font-semibold text-[#137fec] dark:text-blue-400 uppercase tracking-wider">
+                                        <span className="text-xs font-semibold text-primary dark:text-primary/80 uppercase tracking-wider">
                                             {detail.icon === 'location_on' ? 'View Map' : 'Contact'}
                                         </span>
-                                        <Icon name="arrow_forward" size={16} className="text-[#137fec] group-hover:translate-x-1 transition-transform" />
+                                        <Icon name="arrow_forward" size={16} className="text-primary group-hover:translate-x-1 transition-transform" />
                                     </div>
                                 )}
 
                                 {/* Decorative corner */}
-                                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-transparent to-[#137fec]/5 dark:to-[#137fec]/10 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-transparent to-primary/5 dark:to-primary/10 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                             </a>
                         </motion.div>
                     ))}

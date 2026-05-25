@@ -37,7 +37,7 @@ export function SearchHero({ onFilterFocus }: SearchHeroProps) {
             </motion.div>
 
             {/* Decorative Gradients */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#137fec]/10 rounded-full blur-[120px]" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#d4af37]/10 rounded-full blur-[120px]" />
 
             {/* Content */}
@@ -82,7 +82,7 @@ export function SearchHero({ onFilterFocus }: SearchHeroProps) {
                     <Button
                         onClick={onFilterFocus}
                         size="lg"
-                        className="bg-[#137fec] hover:bg-blue-600 text-white font-bold px-8 h-12 rounded-lg transition-all hover:scale-105 shadow-lg shadow-blue-500/30"
+                        className="bg-primary hover:bg-primary/90 text-white font-bold px-8 h-12 rounded-lg transition-all hover:scale-105 shadow-lg shadow-primary/30"
                     >
                         <Icon name="search" size={20} className="mr-2" />
                         {t('title')}

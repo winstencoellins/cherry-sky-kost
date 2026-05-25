@@ -28,7 +28,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
             <div
                 className={cn(
                     'p-2 rounded-xl transition-all duration-300 relative',
-                    isActive ? 'bg-[#137fec]/10 -translate-y-0.5' : ''
+                    isActive ? 'bg-primary/10 -translate-y-0.5' : ''
                 )}
             >
                 <Icon
@@ -38,7 +38,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
                     className={cn(
                         'transition-all duration-300',
                         isActive
-                            ? 'text-[#137fec] scale-110'
+                            ? 'text-primary scale-110'
                             : 'text-slate-400 dark:text-slate-500'
                     )}
                 />
@@ -47,7 +47,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
                 {isActive && (
                     <motion.div
                         layoutId="activeDot"
-                        className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#137fec] rounded-full"
+                        className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                 )}
@@ -56,7 +56,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
             <span
                 className={cn(
                     'text-[10px] font-medium transition-colors',
-                    isActive ? 'text-[#137fec]' : 'text-slate-500 dark:text-slate-400'
+                    isActive ? 'text-primary' : 'text-slate-500 dark:text-slate-400'
                 )}
             >
                 {label}

@@ -149,7 +149,7 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
                                     onClick={() => handleSortChange(option.id)}
                                     className={`w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                                         filters.sortBy === option.id
-                                            ? 'bg-[#137fec] text-white'
+                                            ? 'bg-primary text-white'
                                             : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                                     }`}
                                 >
@@ -169,7 +169,7 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
                             <Icon name="restart_alt" size={16} className="mr-2" />
                             Reset
                         </Button>
-                        <Button className="flex-1 bg-[#137fec] hover:bg-blue-600 text-white">
+                        <Button className="flex-1 bg-primary hover:bg-primary/90 text-white">
                             <Icon name="search" size={16} className="mr-2" />
                             Cari
                         </Button>

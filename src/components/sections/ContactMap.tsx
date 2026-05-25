@@ -71,7 +71,7 @@ export function ContactMap() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#137fec]/10 border border-[#137fec]/20 text-[#137fec] dark:text-blue-400 text-xs font-bold tracking-widest uppercase mb-6"
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary dark:text-primary/80 text-xs font-bold tracking-widest uppercase mb-6"
                     >
                         <Icon name="map" size={14} />
                         <span>{t('subtitle')}</span>
@@ -123,7 +123,7 @@ export function ContactMap() {
                                 className="group bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                             >
                                 {/* Location Number */}
-                                <div className="absolute top-4 right-4 inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#137fec] text-white text-xs font-bold">
+                                <div className="absolute top-4 right-4 inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white text-xs font-bold">
                                     {index + 1}
                                 </div>
 
@@ -145,9 +145,9 @@ export function ContactMap() {
                                     {/* Phone */}
                                     <a
                                         href={`tel:${location.phone}`}
-                                        className="flex items-center gap-3 hover:text-[#137fec] transition-colors"
+                                        className="flex items-center gap-3 hover:text-primary transition-colors"
                                     >
-                                        <Icon name="call" size={16} className="text-[#137fec] flex-shrink-0" />
+                                        <Icon name="call" size={16} className="text-primary flex-shrink-0" />
                                         <span className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
                                             {location.phone}
                                         </span>
@@ -166,7 +166,7 @@ export function ContactMap() {
                                         href={getMapsURL(location)}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center justify-center gap-2 w-full px-4 py-2 bg-[#137fec] hover:bg-blue-600 text-white text-sm font-semibold rounded-lg transition-colors mt-4"
+                                        className="inline-flex items-center justify-center gap-2 w-full px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm font-semibold rounded-lg transition-colors mt-4"
                                     >
                                         <Icon name="directions" size={16} />
                                         {t('directionsButton')}
@@ -182,10 +182,10 @@ export function ContactMap() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-16 p-8 bg-gradient-to-r from-[#137fec]/10 to-[#137fec]/5 dark:from-[#137fec]/20 dark:to-[#137fec]/10 rounded-2xl border border-[#137fec]/20 text-center"
+                    className="mt-16 p-8 bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-2xl border border-primary/20 text-center"
                 >
                     <div className="flex items-center justify-center gap-3 mb-4">
-                        <Icon name="info" size={20} className="text-[#137fec]" />
+                        <Icon name="info" size={20} className="text-primary" />
                         <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                             Planning a Visit?
                         </h3>
@@ -196,7 +196,7 @@ export function ContactMap() {
                     </p>
                     <a
                         href="tel:+6281234567890"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-[#137fec] hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors"
                     >
                         <Icon name="call" size={18} />
                         Call to Schedule Tour
