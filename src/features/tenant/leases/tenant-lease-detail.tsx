@@ -1,0 +1,114 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
+import { Icon } from "@/components/shared/Icon";
+import { AdminAlert } from "@/features/admin/components/admin-alert";
+import { LeaseStatusBadge } from "@/features/admin/components/status-badge";
+import {
+  formatDate,
+  formatIdrTable,
+} from "@/features/admin/lib/format";
+import { getErrorMessage } from "@/features/admin/lib/errors";
+import { useTenantLease } from "@/features/tenant/hooks/use-tenant-queries";
+
+export function TenantLeaseDetail({ id }: { id: string }) {
+  const t = useTranslations("tenant.common");
+  const tp = useTranslations("tenant.pages.leases");
+  const { data: lease, isLoading, error } = useTenantLease(id);
+
+  if (isLoading) {
+    return (
+      <p className="text-sm text-[#83746b]">{t("loading")}</p>
+    );
+  }
+
+  if (error || !lease) {
+    return (
+      <div className="space-y-4">
+        <Link
+          href="/tenant/leases"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-[#6f4627] hover:underline"
+        >
+          <Icon name="arrow_back" size={18} />
+          {t("backToList")}
+        </Link>
+        <AdminAlert message={getErrorMessage(error, t("loadFailed"))} />
+      </div>
+    );
+  }
+
+  const rent = lease.unitPricing?.price ?? 0;
+  const duration = lease.unitPricing?.durationDays;
+
+  return (
+    <div className="space-y-6">
+      <Link
+        href="/tenant/leases"
+        className="inline-flex items-center gap-1 text-sm font-semibold text-[#6f4627] hover:underline"
+      >
+        <Icon name="arrow_back" size={18} />
+        {t("backToList")}
+      </Link>
+
+      <div className="rounded-2xl border border-[#e3e2e0] bg-white/80 p-6 shadow-sm">
+        <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-semibold text-[#1a1c1a]">
+              {lease.unit?.name ?? "—"}
+            </h2>
+            <p className="mt-1 text-sm text-[#51443c]">
+              {lease.unit?.property?.name ?? "—"}
+              {lease.unit?.unitType?.name
+                ? ` · ${lease.unit.unitType.name}`
+                : ""}
+            </p>
+          </div>
+          <LeaseStatusBadge status={lease.status} />
+        </div>
+
+        <dl className="grid gap-4 sm:grid-cols-2">
+          <DetailItem label={tp("startDate")} value={formatDate(lease.startDate)} />
+          <DetailItem
+            label={tp("endDate")}
+            value={lease.endDate ? formatDate(lease.endDate) : "—"}
+          />
+          <DetailItem label={t("rent")} value={formatIdrTable(rent)} />
+          <DetailItem
+            label={tp("duration")}
+            value={duration != null ? `${duration} ${t("days")}` : "—"}
+          />
+          {lease.unit?.property?.address && (
+            <DetailItem
+              label={tp("address")}
+              value={lease.unit.property.address}
+              className="sm:col-span-2"
+            />
+          )}
+          {lease.unit?.property?.city && (
+            <DetailItem label={tp("city")} value={lease.unit.property.city} />
+          )}
+        </dl>
+      </div>
+    </div>
+  );
+}
+
+function DetailItem({
+  label,
+  value,
+  className,
+}: {
+  label: string;
+  value: string;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <dt className="text-xs font-semibold uppercase tracking-wide text-[#83746b]">
+        {label}
+      </dt>
+      <dd className="mt-1 text-sm font-medium text-[#1a1c1a]">{value}</dd>
+    </div>
+  );
+}

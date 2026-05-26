@@ -1,5 +1,10 @@
 import { apiFetch } from "@/lib/api/client";
-import type { ApiDataResponse, ApiListResponse, TenantUser } from "@/lib/types/admin";
+import type {
+  ApiDataResponse,
+  ApiListResponse,
+  ResetTenantPasswordResult,
+  TenantUser,
+} from "@/lib/types/admin";
 
 export async function listTenantUsers(search?: string): Promise<TenantUser[]> {
   const query = search?.trim()
@@ -14,6 +19,28 @@ export async function listTenantUsers(search?: string): Promise<TenantUser[]> {
 export async function getTenantUser(id: string): Promise<TenantUser> {
   const res = await apiFetch<ApiDataResponse<TenantUser>>(
     `/admin/users/${id}`,
+  );
+  return res.data;
+}
+
+export async function createTenantUser(input: {
+  name: string;
+  email: string;
+  password: string;
+}): Promise<TenantUser> {
+  const res = await apiFetch<ApiDataResponse<TenantUser>>("/admin/users", {
+    method: "POST",
+    body: input,
+  });
+  return res.data;
+}
+
+export async function resetTenantPassword(
+  id: string,
+): Promise<ResetTenantPasswordResult> {
+  const res = await apiFetch<ApiDataResponse<ResetTenantPasswordResult>>(
+    `/admin/users/${id}/reset-password`,
+    { method: "POST" },
   );
   return res.data;
 }

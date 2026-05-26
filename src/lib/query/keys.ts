@@ -20,6 +20,11 @@ export const adminKeys = {
     all: () => [...adminKeys.all, "units"] as const,
     list: (propertyId?: string) =>
       [...adminKeys.units.all(), { propertyId }] as const,
+    vacant: (params: {
+      startDate: string;
+      endDate: string;
+      propertyId?: string;
+    }) => [...adminKeys.units.all(), "vacant", params] as const,
     detail: (id: string) => [...adminKeys.units.all(), id] as const,
   },
   leases: {
@@ -46,5 +51,16 @@ export const adminKeys = {
       to?: string;
     }) => [...adminKeys.ledgerEntries.all(), filters ?? {}] as const,
     detail: (id: string) => [...adminKeys.ledgerEntries.all(), id] as const,
+  },
+} as const;
+
+export const tenantKeys = {
+  all: ["tenant"] as const,
+  leases: {
+    all: () => [...tenantKeys.all, "leases"] as const,
+    detail: (id: string) => [...tenantKeys.leases.all(), id] as const,
+  },
+  profile: {
+    all: () => [...tenantKeys.all, "profile"] as const,
   },
 } as const;

@@ -1,23 +1,19 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Icon } from "@/components/shared/Icon";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
 import { ADMIN_PROFILE_IMAGE } from "@/features/admin/constants/assets";
-import {
-  adminNavGroups,
-  adminNavItems,
-} from "@/features/admin/constants/nav-items";
-import { useAdminShell } from "@/features/admin/components/admin-shell-context";
+import { tenantNavItems } from "@/features/tenant/constants/nav-items";
+import { useTenantShell } from "@/features/tenant/components/tenant-shell-context";
 import { authClient } from "@/lib/auth/client";
 import { cn } from "@/lib/utils";
 
 function resolveActiveNavHref(pathname: string): string | null {
-  const matches = adminNavItems.filter((item) =>
-    item.href === "/admin"
-      ? pathname === "/admin"
-      : pathname === item.href || pathname.startsWith(`${item.href}/`),
+  const matches = tenantNavItems.filter(
+    (item) =>
+      pathname === item.href || pathname.startsWith(`${item.href}/`),
   );
   if (matches.length === 0) return null;
   return matches.reduce((best, item) =>
@@ -26,22 +22,23 @@ function resolveActiveNavHref(pathname: string): string | null {
 }
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
-  const t = useTranslations("admin");
+  const t = useTranslations("tenant");
   const pathname = usePathname();
   const router = useRouter();
-  const { user } = useAdminShell();
+  const { user } = useTenantShell();
+  const activeHref = resolveActiveNavHref(pathname);
 
   async function handleSignOut() {
     await authClient.signOut();
     onNavigate?.();
-    router.push("/admin/login");
+    router.push("/tenant/login");
     router.refresh();
   }
 
   return (
     <>
       <Link
-        href="/admin"
+        href="/tenant/leases"
         onClick={onNavigate}
         className="mb-6 flex items-center gap-3 rounded-2xl px-2 py-1 transition-opacity hover:opacity-90"
       >
@@ -52,57 +49,53 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           <p className="truncate text-base font-bold tracking-tight text-[#1a1c1a]">
             Sky Kost
           </p>
-          <p className="text-xs font-medium text-[#8b5e3c]">Admin Suite</p>
+          <p className="text-xs font-medium text-[#8b5e3c]">{t("portalName")}</p>
         </div>
       </Link>
 
-      <nav className="flex-1 space-y-6 overflow-y-auto pr-1">
-        {adminNavGroups.map((group) => (
-          <section key={group.id}>
-            <p className="mb-2 px-3 text-[11px] font-bold uppercase tracking-wider text-[#83746b]/80">
-              {t(group.labelKey)}
-            </p>
-            <ul className="space-y-0.5">
-              {group.items.map((item) => {
-                const active = resolveActiveNavHref(pathname) === item.href;
-                return (
-                  <li key={item.key}>
-                    <Link
-                      href={item.href}
-                      onClick={onNavigate}
-                      className={cn(
-                        "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                        active
-                          ? "bg-[#6f4627] text-white shadow-md shadow-[#6f4627]/20"
-                          : "text-[#51443c] hover:bg-[#efeeeb] hover:text-[#1a1c1a]",
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          "flex size-9 shrink-0 items-center justify-center rounded-lg transition-colors",
-                          active
-                            ? "bg-white/15"
-                            : "bg-[#efeeeb] group-hover:bg-white",
-                        )}
-                      >
-                        <Icon
-                          name={item.icon}
-                          size={20}
-                          filled={active}
-                          className={active ? "text-white" : "text-[#6f4627]"}
-                        />
-                      </span>
-                      <span className="truncate">{t(item.labelKey)}</span>
-                      {active && (
-                        <span className="ml-auto size-1.5 shrink-0 rounded-full bg-white/90" />
-                      )}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        ))}
+      <nav className="flex-1 space-y-0.5 overflow-y-auto pr-1">
+        <p className="mb-2 px-3 text-[11px] font-bold uppercase tracking-wider text-[#83746b]/80">
+          {t("nav.group")}
+        </p>
+        <ul className="space-y-0.5">
+          {tenantNavItems.map((item) => {
+            const active = activeHref === item.href;
+            return (
+              <li key={item.key}>
+                <Link
+                  href={item.href}
+                  onClick={onNavigate}
+                  className={cn(
+                    "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                    active
+                      ? "bg-[#6f4627] text-white shadow-md shadow-[#6f4627]/20"
+                      : "text-[#51443c] hover:bg-[#efeeeb] hover:text-[#1a1c1a]",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "flex size-9 shrink-0 items-center justify-center rounded-lg transition-colors",
+                      active
+                        ? "bg-white/15"
+                        : "bg-[#efeeeb] group-hover:bg-white",
+                    )}
+                  >
+                    <Icon
+                      name={item.icon}
+                      size={20}
+                      filled={active}
+                      className={active ? "text-white" : "text-[#6f4627]"}
+                    />
+                  </span>
+                  <span className="truncate">{t(item.labelKey)}</span>
+                  {active && (
+                    <span className="ml-auto size-1.5 shrink-0 rounded-full bg-white/90" />
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </nav>
 
       <div className="mt-6 space-y-2 border-t border-[#e3e2e0] pt-5">
@@ -126,13 +119,6 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
         <button
           type="button"
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#51443c] transition-colors hover:bg-[#efeeeb]"
-        >
-          <Icon name="settings" size={20} className="text-[#6f4627]" />
-          {t("nav.settings")}
-        </button>
-        <button
-          type="button"
           onClick={() => void handleSignOut()}
           className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#51443c] transition-colors hover:bg-[#ffdad6]/50 hover:text-[#ba1a1a]"
         >
@@ -144,8 +130,8 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-export function AdminSidebar() {
-  const { mobileOpen, setMobileOpen } = useAdminShell();
+export function TenantSidebar() {
+  const { mobileOpen, setMobileOpen } = useTenantShell();
 
   return (
     <>

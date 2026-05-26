@@ -59,6 +59,11 @@ export interface TenantUser extends UnitUserRef {
   updatedAt: string;
 }
 
+export interface ResetTenantPasswordResult {
+  user: TenantUser;
+  temporaryPassword: string;
+}
+
 export interface Unit {
   id: string;
   name: string;

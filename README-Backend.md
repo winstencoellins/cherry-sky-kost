@@ -14,6 +14,31 @@ Base URL (local): `http://localhost:8000`
 
 All successful API responses use `{ "data": ... }` unless noted otherwise.
 
+### DigitalOcean Spaces (S3)
+
+Set these in `.env` to use `lib/storage.ts`:
+
+| Variable | Example |
+|---|---|
+| `DO_SPACES_KEY` | Spaces access key |
+| `DO_SPACES_SECRET` | Spaces secret key |
+| `DO_SPACES_BUCKET` | `my-bucket` |
+| `DO_SPACES_REGION` | `sgp1` |
+| `DO_SPACES_ENDPOINT` | `https://sgp1.digitaloceanspaces.com` |
+| `DO_SPACES_CDN_URL` | Optional CDN base URL for public links |
+
+```ts
+import { storage } from "../lib/storage";
+
+const { key, url } = await storage.upload({
+  key: "leases/abc/receipt.jpg",
+  body: fileBuffer,
+  contentType: "image/jpeg",
+});
+
+await storage.delete(key);
+```
+
 ---
 
 ## Authentication
@@ -451,7 +476,7 @@ Optional: `name`, `floor`, `status` (`vacant` \| `occupied`).
 
 ### Users (Tenants)
 
-Read-only access to users with `role: tenant` (for lease assignment).
+Manage users with `role: tenant` (for lease assignment).
 
 #### `GET /admin/users`
 
@@ -482,11 +507,61 @@ Read-only access to users with `role: tenant` (for lease assignment).
 
 ---
 
+#### `POST /admin/users`
+
+Create a new tenant account.
+
+**Request body**
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "supersecret"
+}
+```
+
+**Response `200`** — same shape as a single list item.
+
+**Errors:** `409` email already in use · `422` validation failed
+
+---
+
 #### `GET /admin/users/:id`
 
 **Response `200`** — same shape as a single list item.
 
 **Error `404`** — user not found or not a tenant.
+
+---
+
+#### `POST /admin/users/:id/reset-password`
+
+Reset a tenant's password when they forgot it. Generates a random 8-character alphanumeric temporary password and invalidates their active sessions.
+
+**Response `200`**
+
+```json
+{
+  "data": {
+    "user": {
+      "id": "usr...",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "tenant",
+      "emailVerified": false,
+      "image": null,
+      "createdAt": "2026-05-01T00:00:00.000Z",
+      "updatedAt": "2026-05-01T00:00:00.000Z"
+    },
+    "temporaryPassword": "aB3xY9k2"
+  }
+}
+```
+
+Share `temporaryPassword` with the tenant securely. They should sign in and change it via `PUT /profile/password`.
+
+**Errors:** `404` tenant not found · `400` tenant has no email/password account
 
 ---
 
@@ -626,6 +701,67 @@ All fields optional (same as create).
 ## Tenant Routes
 
 > Auth required. Not under `/admin`.
+
+### Profile
+
+#### `GET /profile`
+
+Returns the authenticated user's profile (`id`, `name`, `email`, `role`, `emailVerified`, `image`, `createdAt`, `updatedAt`).
+
+**Error `404`** — user record not found.
+
+---
+
+#### `PUT /profile`
+
+Update the authenticated user's profile (`name` and/or `image`). Email cannot be changed on this endpoint.
+
+**Request body**
+
+```json
+{
+  "name": "John Doe",
+  "image": "https://example.com/avatar.jpg"
+}
+```
+
+At least one of `name` or `image` is required. Pass `"image": null` to remove the profile image.
+
+**Response `200`** — updated profile (same shape as `GET /profile`).
+
+**Errors:** `401` not authenticated · `422` validation failed
+
+---
+
+#### `PUT /profile/password`
+
+Change the authenticated user's password. Requires the current password.
+
+**Request body**
+
+```json
+{
+  "currentPassword": "oldpassword123",
+  "newPassword": "newpassword1234",
+  "revokeOtherSessions": true
+}
+```
+
+`revokeOtherSessions` defaults to `true` when omitted.
+
+**Response `200`**
+
+```json
+{
+  "data": {
+    "success": true
+  }
+}
+```
+
+**Errors:** `400` incorrect current password · `401` not authenticated · `422` validation failed
+
+---
 
 ### Leases
 

@@ -3,8 +3,10 @@ export type AdminNavPageKey =
   | "properties"
   | "unitTypes"
   | "units"
+  | "vacantSearch"
   | "pricing"
   | "leases"
+  | "users"
   | "bookkeeping";
 
 export interface AdminNavItem {
@@ -62,6 +64,12 @@ export const adminNavGroups: AdminNavGroup[] = [
         labelKey: "nav.units",
       },
       {
+        key: "vacantSearch",
+        href: "/admin/units/vacant",
+        icon: "event_available",
+        labelKey: "nav.vacantSearch",
+      },
+      {
         key: "pricing",
         href: "/admin/pricing",
         icon: "sell",
@@ -78,6 +86,12 @@ export const adminNavGroups: AdminNavGroup[] = [
         href: "/admin/leases",
         icon: "description",
         labelKey: "nav.leases",
+      },
+      {
+        key: "users",
+        href: "/admin/users",
+        icon: "group",
+        labelKey: "nav.users",
       },
     ],
   },

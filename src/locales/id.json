@@ -500,7 +500,9 @@
             "properties": "Properti",
             "unitTypes": "Tipe unit",
             "units": "Unit",
+            "vacantSearch": "Cari kamar kosong",
             "leases": "Sewa",
+            "users": "Penyewa",
             "pricing": "Harga",
             "bookkeeping": "Buku kas",
             "settings": "Pengaturan",
@@ -568,6 +570,7 @@
             "createTitle": "Buat",
             "editTitle": "Ubah",
             "name": "Nama",
+            "email": "Email",
             "address": "Alamat",
             "city": "Kota",
             "property": "Properti",
@@ -651,6 +654,45 @@
                 "formDescription": "Tambah atau perbarui unit sewa.",
                 "sizeRequired": "Masukkan ukuran yang valid dalam meter persegi."
             },
+            "vacantUnits": {
+                "title": "Cari kamar kosong",
+                "description": "Temukan unit tanpa sewa yang tumpang tindih dengan rentang tanggal yang dipilih.",
+                "filters": "Kriteria pencarian",
+                "endDate": "Tanggal selesai",
+                "search": "Cari",
+                "hint": "Pilih tanggal mulai dan selesai, lalu cari untuk melihat kamar yang tersedia.",
+                "empty": "Tidak ada kamar kosong untuk periode ini.",
+                "resultsCount": "{count, plural, one {# kamar kosong} other {# kamar kosong}}",
+                "datesRequired": "Tanggal mulai dan selesai wajib diisi.",
+                "invalidDateRange": "Tanggal mulai harus sebelum tanggal selesai."
+            },
+            "users": {
+                "title": "Penyewa",
+                "description": "Lihat akun penyewa untuk penugasan sewa dan akses portal.",
+                "createTitle": "Tambah penyewa",
+                "formDescription": "Buat akun penyewa untuk penugasan sewa dan masuk ke portal.",
+                "searchPlaceholder": "Cari berdasarkan nama atau email…",
+                "empty": "Tidak ada penyewa ditemukan.",
+                "joined": "Bergabung",
+                "password": "Kata sandi",
+                "passwordHint": "Minimal 8 karakter. Penyewa akan memakai ini untuk masuk.",
+                "showPassword": "Tampilkan kata sandi",
+                "hidePassword": "Sembunyikan kata sandi",
+                "emailExists": "Email ini sudah terdaftar.",
+                "resetPassword": "Reset kata sandi",
+                "resetTitle": "Reset kata sandi penyewa?",
+                "resetDescription": "Ini akan membuat kata sandi sementara baru untuk \"{name}\" dan mengeluarkan mereka dari semua sesi aktif. Bagikan kata sandi baru kepada penyewa dengan aman.",
+                "resetConfirm": "Reset kata sandi",
+                "resetting": "Mereset…",
+                "resetSuccess": "Kata sandi berhasil direset.",
+                "resetFailed": "Gagal mereset kata sandi.",
+                "resetResultTitle": "Kata sandi sementara",
+                "resetResultDescription": "Salin kata sandi ini dan bagikan kepada penyewa. Mereka harus mengubahnya setelah masuk.",
+                "temporaryPassword": "Kata sandi sementara",
+                "copyPassword": "Salin kata sandi",
+                "copied": "Tersalin!",
+                "done": "Selesai"
+            },
             "leases": {
                 "title": "Perjanjian Sewa",
                 "description": "Kelola dan pantau semua sewa penyewa di properti Anda.",
@@ -714,6 +756,91 @@
                     "tax": "Pajak & biaya",
                     "other_expense": "Pengeluaran lain"
                 }
+            }
+        }
+    },
+    "tenant": {
+        "portalName": "Portal Penyewa",
+        "nav": {
+            "group": "Akun saya",
+            "leases": "Sewa saya",
+            "profile": "Profil",
+            "signOut": "Keluar"
+        },
+        "header": {
+            "breadcrumb": "Penyewa",
+            "openMenu": "Buka menu navigasi",
+            "roleTenant": "Penyewa"
+        },
+        "login": {
+            "title": "Portal Penyewa Sky Kost",
+            "subtitle": "Masuk untuk melihat sewa dan profil Anda",
+            "emailLabel": "Alamat Email",
+            "emailPlaceholder": "anda@contoh.com",
+            "passwordLabel": "Kata Sandi",
+            "showPassword": "Tampilkan kata sandi",
+            "hidePassword": "Sembunyikan kata sandi",
+            "securityNote": "Akses aman hanya untuk penyewa terdaftar.",
+            "submit": "Masuk",
+            "submitting": "Sedang masuk…",
+            "success": "Selamat datang kembali!",
+            "errors": {
+                "invalid": "Email atau kata sandi tidak valid.",
+                "forbidden": "Akun ini tidak dapat mengakses portal penyewa. Gunakan login admin."
+            }
+        },
+        "common": {
+            "loading": "Memuat…",
+            "loadFailed": "Gagal memuat data.",
+            "empty": "Belum ada data.",
+            "unit": "Unit",
+            "period": "Periode",
+            "status": "Status",
+            "rent": "Sewa (IDR)",
+            "actions": "Aksi",
+            "view": "Lihat",
+            "backToList": "Kembali ke daftar sewa",
+            "name": "Nama",
+            "email": "Email",
+            "days": "hari",
+            "save": "Simpan perubahan",
+            "saving": "Menyimpan…"
+        },
+        "pages": {
+            "leases": {
+                "title": "Sewa saya",
+                "description": "Perjanjian sewa yang terhubung ke akun Anda.",
+                "searchPlaceholder": "Cari berdasarkan unit atau properti…",
+                "empty": "Anda belum memiliki sewa.",
+                "to": "s/d",
+                "startDate": "Tanggal mulai",
+                "endDate": "Tanggal selesai",
+                "duration": "Durasi",
+                "address": "Alamat",
+                "city": "Kota"
+            },
+            "profile": {
+                "title": "Profil",
+                "description": "Perbarui nama dan kata sandi Anda.",
+                "emailReadOnly": "Email tidak dapat diubah di sini. Hubungi administrator jika perlu memperbaruinya.",
+                "memberSince": "Bergabung sejak",
+                "emailVerified": "Email terverifikasi",
+                "emailNotVerified": "Email belum terverifikasi",
+                "accountSection": "Detail akun",
+                "passwordSection": "Ubah kata sandi",
+                "passwordDescription": "Masukkan kata sandi saat ini untuk mengatur yang baru.",
+                "currentPassword": "Kata sandi saat ini",
+                "newPassword": "Kata sandi baru",
+                "confirmPassword": "Konfirmasi kata sandi baru",
+                "updatePassword": "Perbarui kata sandi",
+                "updatingPassword": "Memperbarui…",
+                "showPassword": "Tampilkan",
+                "hidePassword": "Sembunyikan",
+                "profileUpdated": "Profil berhasil diperbarui.",
+                "passwordUpdated": "Kata sandi berhasil diperbarui.",
+                "saveFailed": "Gagal memperbarui profil.",
+                "passwordFailed": "Gagal memperbarui kata sandi.",
+                "incorrectCurrentPassword": "Kata sandi saat ini salah."
             }
         }
     }

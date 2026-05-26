@@ -1,3 +1,4 @@
+import { normalizeRole } from "@/lib/auth/role";
 import type { User } from "@/lib/types/auth";
 
 /** Extract role from Better Auth sign-in / session user payloads. */
@@ -5,8 +6,7 @@ export function getRoleFromAuthUser(
   user: Record<string, unknown> | null | undefined,
 ): string | undefined {
   if (!user) return undefined;
-  const role = user.role;
-  return typeof role === "string" && role.length > 0 ? role : undefined;
+  return normalizeRole(user.role);
 }
 
 export function getRoleFromSignInData(data: unknown): string | undefined {

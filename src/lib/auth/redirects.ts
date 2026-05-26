@@ -1,12 +1,14 @@
-import { isStaffRole, UserRole } from "@/lib/types/auth";
+import { normalizeRole, isTenantRole } from "@/lib/auth/role";
+import { isStaffRole, type UserRole } from "@/lib/types/auth";
 
 /** Default landing route after a successful sign-in, by role. */
 export function getHomePathForRole(role: UserRole | string): string {
-  if (isStaffRole(role)) {
+  const normalized = normalizeRole(role);
+  if (normalized && isStaffRole(normalized)) {
     return "/admin";
   }
-  if (role === UserRole.TENANT) {
-    return "/tenant/dashboard";
+  if (isTenantRole(normalized)) {
+    return "/tenant/leases";
   }
   return "/";
 }

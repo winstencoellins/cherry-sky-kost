@@ -20,7 +20,8 @@ export enum UserRole {
 }
 
 export function isStaffRole(role: string): boolean {
-  return role === UserRole.ADMIN || role === UserRole.SUPERADMIN;
+  const normalized = role.trim().toLowerCase();
+  return normalized === UserRole.ADMIN || normalized === UserRole.SUPERADMIN;
 }
 
 export interface LoginCredentials {

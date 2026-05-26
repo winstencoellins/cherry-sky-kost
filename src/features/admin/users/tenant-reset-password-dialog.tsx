@@ -1,0 +1,138 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useTenantUserMutations } from "@/features/admin/hooks/use-admin-queries";
+import { getErrorMessage } from "@/features/admin/lib/errors";
+import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
+import type { TenantUser } from "@/lib/types/admin";
+
+interface TenantResetPasswordDialogProps {
+  user: TenantUser | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function TenantResetPasswordDialog({
+  user,
+  open,
+  onOpenChange,
+}: TenantResetPasswordDialogProps) {
+  const t = useTranslations("admin.crud");
+  const tp = useTranslations("admin.pages.users");
+  const mutations = useTenantUserMutations();
+  const [phase, setPhase] = useState<"confirm" | "result">("confirm");
+  const [temporaryPassword, setTemporaryPassword] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const pending = mutations.resetPassword.isPending;
+
+  useEffect(() => {
+    if (!open) {
+      setPhase("confirm");
+      setTemporaryPassword(null);
+      setError(null);
+      setCopied(false);
+    }
+  }, [open]);
+
+  async function handleConfirm() {
+    if (!user) return;
+    setError(null);
+    try {
+      const result = await mutations.resetPassword.mutateAsync(user.id);
+      setTemporaryPassword(result.temporaryPassword);
+      setPhase("result");
+      showApiSuccess(tp("resetSuccess"));
+    } catch (err) {
+      const msg = getErrorMessage(err, tp("resetFailed"));
+      setError(msg);
+      showApiError(err, msg);
+    }
+  }
+
+  async function handleCopy() {
+    if (!temporaryPassword) return;
+    try {
+      await navigator.clipboard.writeText(temporaryPassword);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }
+
+  function handleClose() {
+    onOpenChange(false);
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent showCloseButton={!pending}>
+        {phase === "confirm" ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>{tp("resetTitle")}</DialogTitle>
+              <DialogDescription>
+                {tp("resetDescription", { name: user?.name ?? "" })}
+              </DialogDescription>
+            </DialogHeader>
+            {error && (
+              <p className="text-sm text-[#ba1a1a]">{error}</p>
+            )}
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={pending}
+                onClick={handleClose}
+              >
+                {t("cancel")}
+              </Button>
+              <Button
+                type="button"
+                disabled={pending || !user}
+                onClick={() => void handleConfirm()}
+              >
+                {pending ? tp("resetting") : tp("resetConfirm")}
+              </Button>
+            </DialogFooter>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>{tp("resetResultTitle")}</DialogTitle>
+              <DialogDescription>{tp("resetResultDescription")}</DialogDescription>
+            </DialogHeader>
+            <div className="rounded-xl border border-[#e3e2e0] bg-[#faf9f6] p-4">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#83746b]">
+                {tp("temporaryPassword")}
+              </p>
+              <p className="font-mono text-lg font-semibold tracking-wide text-[#1a1c1a]">
+                {temporaryPassword}
+              </p>
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => void handleCopy()}>
+                {copied ? tp("copied") : tp("copyPassword")}
+              </Button>
+              <Button type="button" onClick={handleClose}>
+                {tp("done")}
+              </Button>
+            </DialogFooter>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}

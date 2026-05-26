@@ -14,6 +14,24 @@ export async function listUnits(propertyId?: string): Promise<Unit[]> {
   return res.data;
 }
 
+export async function listVacantUnits(params: {
+  startDate: string;
+  endDate: string;
+  propertyId?: string;
+}): Promise<Unit[]> {
+  const search = new URLSearchParams({
+    startDate: params.startDate,
+    endDate: params.endDate,
+  });
+  if (params.propertyId) {
+    search.set("propertyId", params.propertyId);
+  }
+  const res = await apiFetch<ApiListResponse<Unit>>(
+    `/admin/units/vacant?${search.toString()}`,
+  );
+  return res.data;
+}
+
 export async function getUnit(id: string): Promise<Unit> {
   const res = await apiFetch<ApiDataResponse<Unit>>(`/admin/units/${id}`);
   return res.data;

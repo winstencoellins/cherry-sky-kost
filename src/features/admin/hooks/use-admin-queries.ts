@@ -42,9 +42,15 @@ import {
   deleteUnit,
   getUnit,
   listUnits,
+  listVacantUnits,
   updateUnit,
 } from "@/lib/api/admin/units";
-import { getTenantUser, listTenantUsers } from "@/lib/api/admin/users";
+import {
+  createTenantUser,
+  getTenantUser,
+  listTenantUsers,
+  resetTenantPassword,
+} from "@/lib/api/admin/users";
 import { adminKeys } from "@/lib/query/keys";
 import type { LeaseStatus, LedgerEntryType, UnitStatus } from "@/lib/types/admin";
 
@@ -169,6 +175,25 @@ export function useUnits(propertyId?: string) {
   });
 }
 
+export function useVacantUnits(
+  params: {
+    startDate: string;
+    endDate: string;
+    propertyId?: string;
+  },
+  enabled = true,
+) {
+  return useQuery({
+    queryKey: adminKeys.units.vacant(params),
+    queryFn: () => listVacantUnits(params),
+    enabled:
+      enabled &&
+      !!params.startDate &&
+      !!params.endDate &&
+      params.startDate < params.endDate,
+  });
+}
+
 export function useUnit(id: string, enabled = true) {
   return useQuery({
     queryKey: adminKeys.units.detail(id),
@@ -230,6 +255,17 @@ export function useTenantUser(id: string, enabled = true) {
     queryFn: () => getTenantUser(id),
     enabled: enabled && !!id,
   });
+}
+
+export function useTenantUserMutations() {
+  const qc = useQueryClient();
+  const invalidate = () =>
+    void qc.invalidateQueries({ queryKey: adminKeys.users.all() });
+
+  return {
+    create: useMutation({ mutationFn: createTenantUser, onSuccess: invalidate }),
+    resetPassword: useMutation({ mutationFn: resetTenantPassword }),
+  };
 }
 
 export function useLeaseMutations() {

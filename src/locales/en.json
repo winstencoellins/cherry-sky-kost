@@ -500,7 +500,9 @@
             "properties": "Properties",
             "unitTypes": "Unit types",
             "units": "Units",
+            "vacantSearch": "Vacant rooms",
             "leases": "Leases",
+            "users": "Tenants",
             "pricing": "Pricing",
             "bookkeeping": "Bookkeeping",
             "settings": "Settings",
@@ -568,6 +570,7 @@
             "createTitle": "Create",
             "editTitle": "Edit",
             "name": "Name",
+            "email": "Email",
             "address": "Address",
             "city": "City",
             "property": "Property",
@@ -651,6 +654,45 @@
                 "formDescription": "Add or update a rentable unit.",
                 "sizeRequired": "Enter a valid size in square meters."
             },
+            "vacantUnits": {
+                "title": "Vacant room search",
+                "description": "Find units with no lease overlapping your selected date range.",
+                "filters": "Search criteria",
+                "endDate": "End date",
+                "search": "Search",
+                "hint": "Choose a start and end date, then search to see available rooms.",
+                "empty": "No vacant rooms found for this period.",
+                "resultsCount": "{count, plural, one {# vacant room} other {# vacant rooms}}",
+                "datesRequired": "Start and end dates are required.",
+                "invalidDateRange": "Start date must be before end date."
+            },
+            "users": {
+                "title": "Tenants",
+                "description": "View tenant accounts for lease assignment and portal access.",
+                "createTitle": "Add tenant",
+                "formDescription": "Create a tenant account for lease assignment and portal sign-in.",
+                "searchPlaceholder": "Search by name or email…",
+                "empty": "No tenants found.",
+                "joined": "Joined",
+                "password": "Password",
+                "passwordHint": "Minimum 8 characters. The tenant will use this to sign in.",
+                "showPassword": "Show password",
+                "hidePassword": "Hide password",
+                "emailExists": "This email is already registered.",
+                "resetPassword": "Reset password",
+                "resetTitle": "Reset tenant password?",
+                "resetDescription": "This will generate a new temporary password for \"{name}\" and sign them out of all active sessions. Share the new password with the tenant securely.",
+                "resetConfirm": "Reset password",
+                "resetting": "Resetting…",
+                "resetSuccess": "Password reset successfully.",
+                "resetFailed": "Failed to reset password.",
+                "resetResultTitle": "Temporary password",
+                "resetResultDescription": "Copy this password and share it with the tenant. They should change it after signing in.",
+                "temporaryPassword": "Temporary password",
+                "copyPassword": "Copy password",
+                "copied": "Copied!",
+                "done": "Done"
+            },
             "leases": {
                 "title": "Lease Agreements",
                 "description": "Manage and track all tenant leases across your properties.",
@@ -714,6 +756,91 @@
                     "tax": "Tax & fees",
                     "other_expense": "Other expense"
                 }
+            }
+        }
+    },
+    "tenant": {
+        "portalName": "Tenant Portal",
+        "nav": {
+            "group": "My account",
+            "leases": "My leases",
+            "profile": "Profile",
+            "signOut": "Logout"
+        },
+        "header": {
+            "breadcrumb": "Tenant",
+            "openMenu": "Open navigation menu",
+            "roleTenant": "Tenant"
+        },
+        "login": {
+            "title": "Sky Kost Tenant Portal",
+            "subtitle": "Sign in to view your leases and profile",
+            "emailLabel": "Email Address",
+            "emailPlaceholder": "you@example.com",
+            "passwordLabel": "Password",
+            "showPassword": "Show password",
+            "hidePassword": "Hide password",
+            "securityNote": "Secure access for registered tenants only.",
+            "submit": "Sign In",
+            "submitting": "Signing in…",
+            "success": "Welcome back!",
+            "errors": {
+                "invalid": "Invalid email or password.",
+                "forbidden": "This account cannot access the tenant portal. Use the admin login instead."
+            }
+        },
+        "common": {
+            "loading": "Loading…",
+            "loadFailed": "Failed to load data.",
+            "empty": "No records yet.",
+            "unit": "Unit",
+            "period": "Period",
+            "status": "Status",
+            "rent": "Rent (IDR)",
+            "actions": "Actions",
+            "view": "View",
+            "backToList": "Back to leases",
+            "name": "Name",
+            "email": "Email",
+            "days": "days",
+            "save": "Save changes",
+            "saving": "Saving…"
+        },
+        "pages": {
+            "leases": {
+                "title": "My leases",
+                "description": "Rental agreements linked to your account.",
+                "searchPlaceholder": "Search by unit or property…",
+                "empty": "You have no leases yet.",
+                "to": "to",
+                "startDate": "Start date",
+                "endDate": "End date",
+                "duration": "Duration",
+                "address": "Address",
+                "city": "City"
+            },
+            "profile": {
+                "title": "Profile",
+                "description": "Update your name and password.",
+                "emailReadOnly": "Email cannot be changed here. Contact your administrator if you need to update it.",
+                "memberSince": "Member since",
+                "emailVerified": "Email verified",
+                "emailNotVerified": "Email not verified",
+                "accountSection": "Account details",
+                "passwordSection": "Change password",
+                "passwordDescription": "Enter your current password to set a new one.",
+                "currentPassword": "Current password",
+                "newPassword": "New password",
+                "confirmPassword": "Confirm new password",
+                "updatePassword": "Update password",
+                "updatingPassword": "Updating…",
+                "showPassword": "Show",
+                "hidePassword": "Hide",
+                "profileUpdated": "Profile updated successfully.",
+                "passwordUpdated": "Password updated successfully.",
+                "saveFailed": "Failed to update profile.",
+                "passwordFailed": "Failed to update password.",
+                "incorrectCurrentPassword": "Current password is incorrect."
             }
         }
     }
