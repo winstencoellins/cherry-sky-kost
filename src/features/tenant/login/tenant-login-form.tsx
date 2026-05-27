@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { Icon } from "@/components/shared/Icon";
 import { useRouter } from "@/i18n/routing";
 import { AdminLoginShell } from "@/features/admin/login/admin-login-shell";
@@ -43,7 +45,15 @@ const inputClassName = cn(
 export function TenantLoginForm() {
   const t = useTranslations("tenant.login");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const forbiddenFromUrl = searchParams.get("error") === "forbidden";
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (forbiddenFromUrl) {
+      toast.error(t("errors.forbidden"));
+    }
+  }, [forbiddenFromUrl, t]);
 
   const form = useForm({
     defaultValues: {
@@ -89,7 +99,7 @@ export function TenantLoginForm() {
 
       const access = assertCanAccessTenantPortal(role);
 
-      if (!access.ok) {
+      if (!access.ok || !role) {
         await authClient.signOut();
         toast.error(
           access.isStaff ? t("errors.forbidden") : t("errors.invalid"),
@@ -99,7 +109,7 @@ export function TenantLoginForm() {
 
       toast.success(t("success"));
       router.refresh();
-      router.push(getHomePathForRole(role!));
+      router.push(getHomePathForRole(role));
     },
   });
 

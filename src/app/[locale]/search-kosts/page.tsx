@@ -1,29 +1,25 @@
 /**
  * Search Kost Page - Cari Kost
- * Search and filter properties with modern UI
+ * Search and filter properties via GET /public/search
  */
 
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Footer } from '@/components/layout/Footer';
 import { SearchHero } from '@/components/sections/SearchHero';
 import { SearchFilters } from '@/components/sections/SearchFilters';
 import { KostGrid } from '@/components/kost/KostGrid';
+import { DEFAULT_SEARCH_FILTERS } from '@/lib/api/public/search-contract';
+import { useSearchKosts } from '@/lib/hooks/use-kost-data';
 import type { SearchFilters as SearchFiltersType } from '@/lib/types';
-import { useKosts } from '@/lib/hooks/use-kost-data';
-
-const DEFAULT_FILTERS: SearchFiltersType = {
-    priceMin: 500000,
-    priceMax: 2500000,
-};
 
 export default function SearchKostsPage() {
-    const t = useTranslations();
-    const { data: kosts, isLoading } = useKosts();
-    const [filters, setFilters] = useState<SearchFiltersType>(DEFAULT_FILTERS);
+    const t = useTranslations('search');
+    const [filters, setFilters] = useState<SearchFiltersType>(DEFAULT_SEARCH_FILTERS);
+    const { data: kosts, total, isLoading, isFetching, error } = useSearchKosts(filters);
     const filterRef = useRef<HTMLDivElement>(null);
 
     const handleFiltersFocus = () => {
@@ -38,27 +34,38 @@ export default function SearchKostsPage() {
     };
 
     const handleResetFilters = () => {
-        setFilters(DEFAULT_FILTERS);
+        setFilters(DEFAULT_SEARCH_FILTERS);
     };
+
+    const resultCount = kosts?.length ?? 0;
 
     return (
         <AppLayout>
-            {/* Hero Section */}
-            <SearchHero onFilterFocus={handleFiltersFocus} />
+            <SearchHero
+                onFilterFocus={handleFiltersFocus}
+                searchQuery={filters.location ?? ''}
+                onSearchQueryChange={(location) =>
+                    setFilters((prev) => ({ ...prev, location }))
+                }
+            />
 
-            {/* Main Content */}
-            <div className="w-full py-16 px-6 lg:px-10 bg-white dark:bg-slate-950">
+            <section className="w-full bg-[#faf9f6] py-12 px-6 lg:px-10">
                 <div className="max-w-7xl mx-auto">
-                    {/* Results Info */}
-                    <div className="mb-8">
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
-                            Menampilkan {kosts?.length || 0} properti kost
+                    <div className="mb-8 space-y-2">
+                        <p className="text-sm text-[#83746b]">
+                            {t('resultsCount', { count: resultCount, total })}
+                            {isFetching && !isLoading ? (
+                                <span className="ml-2 text-[#6f4627]">{t('updating')}</span>
+                            ) : null}
                         </p>
+                        {error ? (
+                            <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                                {t('loadError')}
+                            </p>
+                        ) : null}
                     </div>
 
-                    {/* Layout Container */}
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                        {/* Filters Sidebar */}
                         <div ref={filterRef} className="lg:col-span-1">
                             <SearchFilters
                                 filters={filters}
@@ -67,21 +74,17 @@ export default function SearchKostsPage() {
                             />
                         </div>
 
-                        {/* Results Grid */}
                         <div className="lg:col-span-3">
-                            {kosts && (
-                                <KostGrid
-                                    kosts={kosts}
-                                    filters={filters}
-                                    isLoading={isLoading}
-                                />
-                            )}
+                            <KostGrid
+                                kosts={kosts ?? []}
+                                filters={filters}
+                                isLoading={isLoading}
+                            />
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Footer */}
             <Footer />
         </AppLayout>
     );

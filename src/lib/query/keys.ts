@@ -54,6 +54,19 @@ export const adminKeys = {
   },
 } as const;
 
+export const publicKeys = {
+  all: ["public"] as const,
+  properties: {
+    all: () => [...publicKeys.all, "properties"] as const,
+    detail: (id: string) => [...publicKeys.properties.all(), id] as const,
+  },
+  search: {
+    all: () => [...publicKeys.all, "search"] as const,
+    list: (params: Record<string, unknown>) =>
+      [...publicKeys.search.all(), params] as const,
+  },
+} as const;
+
 export const tenantKeys = {
   all: ["tenant"] as const,
   leases: {

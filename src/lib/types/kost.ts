@@ -92,11 +92,15 @@ export interface Kost {
  */
 export interface SearchFilters {
   location?: string;
+  city?: string;
   priceMin?: number;
   priceMax?: number;
   bathroomType?: BathroomType[];
   facilities?: string[]; // Facility IDs
   availability?: 'available' | 'all';
+  startDate?: string;
+  endDate?: string;
+  durationDays?: number;
   sortBy?: 'price-asc' | 'price-desc' | 'newest' | 'popular';
 }
 

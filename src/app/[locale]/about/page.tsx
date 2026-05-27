@@ -39,19 +39,19 @@ export default function AboutPage() {
             <AboutStats />
 
             {/* CTA Section */}
-            <section className="w-full py-20 px-6 lg:px-10 bg-white dark:bg-slate-900">
+            <section className="w-full bg-[#faf9f6] py-16 px-6 lg:px-10">
                 <div className="max-w-[800px] mx-auto text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="space-y-6"
+                        className="space-y-6 rounded-2xl border border-[#e3e2e0] bg-white/80 p-8 shadow-sm"
                     >
-                        <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 dark:text-white tracking-tight">
+                        <h2 className="text-2xl font-semibold tracking-tight text-[#1a1c1a] md:text-3xl">
                             {t('cta.title')}
                         </h2>
                         
-                        <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
+                        <p className="mx-auto max-w-2xl text-sm leading-relaxed text-[#83746b]">
                             {t('cta.subtitle')}
                         </p>
 
@@ -59,7 +59,7 @@ export default function AboutPage() {
                             <Button
                                 onClick={handleViewProperties}
                                 size="lg"
-                                className="bg-primary hover:bg-primary/90 text-white font-bold px-8 h-12 rounded-lg transition-all hover:scale-105 shadow-lg shadow-primary/30"
+                                className="h-12 rounded-xl bg-[#6f4627] px-8 text-sm font-semibold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#805533] focus-visible:ring-[#8b5e3c]/40"
                             >
                                 <Icon name="home" size={20} className="mr-2" />
                                 {t('cta.button')}

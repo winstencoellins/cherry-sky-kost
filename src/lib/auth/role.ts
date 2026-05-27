@@ -30,3 +30,17 @@ export function assertCanAccessTenantPortal(role: string | undefined): {
   }
   return { ok: isTenantRole(normalized), isStaff: false };
 }
+
+export function assertCanAccessAdminPortal(role: string | undefined): {
+  ok: boolean;
+  isTenant: boolean;
+} {
+  const normalized = normalizeRole(role);
+  if (!normalized) {
+    return { ok: false, isTenant: false };
+  }
+  if (isTenantRole(normalized)) {
+    return { ok: false, isTenant: true };
+  }
+  return { ok: isStaffRole(normalized), isTenant: false };
+}

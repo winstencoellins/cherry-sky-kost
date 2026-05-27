@@ -182,7 +182,15 @@
         "bathroomType": "Tipe Kamar Mandi",
         "availability": "Ketersediaan",
         "noResults": "Tidak ada kost yang ditemukan",
-        "tryDifferentFilters": "Coba gunakan filter yang berbeda"
+        "tryDifferentFilters": "Coba gunakan filter yang berbeda",
+        "resultsCount": "Menampilkan {count} properti ({total} kamar cocok)",
+        "updating": "Memperbarui…",
+        "loadError": "Gagal memuat hasil pencarian. Pastikan API berjalan lalu coba lagi.",
+        "durationLabel": "Durasi sewa (hari)",
+        "durationAny": "Semua durasi",
+        "duration7": "7 hari",
+        "duration12": "12 hari",
+        "duration30": "30 hari"
     },
     "property": {
         "flagship": "Properti Unggulan",
@@ -544,7 +552,7 @@
             "success": "Selamat datang kembali!",
             "errors": {
                 "invalid": "Email atau kata sandi salah.",
-                "forbidden": "Anda tidak memiliki akses admin."
+                "forbidden": "Anda tidak dapat masuk di sini. Akun penyewa harus menggunakan portal penyewa."
             }
         },
         "crud": {
@@ -786,7 +794,7 @@
             "success": "Selamat datang kembali!",
             "errors": {
                 "invalid": "Email atau kata sandi tidak valid.",
-                "forbidden": "Akun ini tidak dapat mengakses portal penyewa. Gunakan login admin."
+                "forbidden": "Anda tidak dapat masuk di sini. Akun admin harus menggunakan login admin."
             }
         },
         "common": {

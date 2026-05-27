@@ -6,7 +6,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '@/components/shared/Icon';
@@ -14,47 +14,45 @@ import { cn } from '@/lib/utils';
 
 interface LanguageSwitcherProps {
     variant?: 'navbar' | 'sidebar';
+    /** When true, navbar trigger uses styles for a light/solid navbar background. */
+    isSolid?: boolean;
 }
 
 interface Language {
     code: string;
     name: string;
-    flag: string;
+    /** ISO 3166-1 alpha-2 country code for flag-icons (fi fi-XX) */
+    countryCode: string;
 }
 
-export function LanguageSwitcher({ variant = 'navbar' }: LanguageSwitcherProps) {
+const LANGUAGES: Language[] = [
+    { code: 'en', name: 'English', countryCode: 'us' },
+    { code: 'id', name: 'Bahasa Indonesia', countryCode: 'id' },
+];
+
+export function LanguageSwitcher({ variant = 'navbar', isSolid = true }: LanguageSwitcherProps) {
     const locale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
-    const t = useTranslations();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const languages: Language[] = [
-        { code: 'en', name: 'English', flag: '🇺🇸' },
-        { code: 'id', name: 'Bahasa Indonesia', flag: '🇮🇩' },
-    ];
-
-    const currentLanguage = languages.find((lang) => lang.code === locale) || languages[0];
+    const currentLanguage = LANGUAGES.find((lang) => lang.code === locale) ?? LANGUAGES[0];
 
     const handleLanguageChange = (langCode: string) => {
         if (langCode !== locale) {
-            // Remove the current locale from the pathname
             const pathWithoutLocale = pathname.replace(`/${locale}`, '');
-            // Navigate to the new locale
             router.push(`/${langCode}${pathWithoutLocale || '/'}`);
         }
         setIsOpen(false);
     };
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
             }
         };
-
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside);
             return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -63,82 +61,57 @@ export function LanguageSwitcher({ variant = 'navbar' }: LanguageSwitcherProps) 
 
     return (
         <div ref={dropdownRef} className="relative">
-            {/* Trigger Button */}
+            {/* Trigger — flag only */}
             <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                type="button"
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.93 }}
                 onClick={() => setIsOpen(!isOpen)}
+                aria-label={`Current language: ${currentLanguage.name}. Click to change.`}
+                aria-expanded={isOpen}
                 className={cn(
-                    'flex items-center gap-1.5 px-3 py-2 rounded-lg font-medium transition-all duration-300',
+                    'flex items-center justify-center rounded-xl transition-all duration-300',
                     variant === 'navbar'
-                        ? 'text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800/30 bg-slate-100/30'
-                        : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm'
+                        ? cn('h-9 w-9', isSolid ? 'hover:bg-white/70' : 'hover:bg-white/15')
+                        : 'h-10 w-10 hover:bg-[#faf9f6]',
                 )}
             >
-                <span className="text-lg">{currentLanguage.flag}</span>
-                <span className="text-xs font-bold uppercase">{currentLanguage.code}</span>
-                <motion.div
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="ml-0.5"
-                >
-                    <Icon name="expand_more" size={16} />
-                </motion.div>
+                <span className={`fi fi-${currentLanguage.countryCode} text-xl`} />
             </motion.button>
 
-            {/* Dropdown Menu */}
+            {/* Dropdown */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        initial={{ opacity: 0, y: -8, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                        transition={{ duration: 0.2 }}
-                        className={cn(
-                            'absolute top-full right-0 mt-2 rounded-xl border backdrop-blur-md shadow-lg p-2 w-48 z-50',
-                            variant === 'navbar'
-                                ? 'bg-white/95 dark:bg-slate-900/95 border-slate-200 dark:border-slate-700'
-                                : 'bg-white/90 dark:bg-slate-800/90 border-slate-100 dark:border-slate-700'
-                        )}
+                        exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-full z-50 mt-2 w-44 rounded-xl border border-[#e3e2e0] bg-[#faf9f6]/95 p-1.5 shadow-lg backdrop-blur-md"
                     >
-                        <div className="space-y-1">
-                            {languages.map((language, index) => {
+                        <div className="space-y-0.5">
+                            {LANGUAGES.map((language) => {
                                 const isActive = language.code === locale;
-
                                 return (
-                                    <motion.button
+                                    <button
                                         key={language.code}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: index * 0.05 }}
+                                        type="button"
                                         onClick={() => handleLanguageChange(language.code)}
                                         className={cn(
-                                            'w-full px-4 py-3 rounded-lg flex items-center gap-3 text-sm font-medium transition-all duration-200',
+                                            'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                                             isActive
-                                                ? 'bg-primary text-white shadow-md'
-                                                : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
+                                                ? 'bg-[#6f4627] text-white'
+                                                : 'text-[#1a1c1a] hover:bg-white',
                                         )}
                                     >
-                                        <span className="text-lg">{language.flag}</span>
-                                        <span className="text-xs font-bold uppercase">{language.code}</span>
+                                        <span className={`fi fi-${language.countryCode} text-xl`} />
+                                        <span className="flex-1 text-left">{language.name}</span>
                                         {isActive && (
-                                            <motion.div
-                                                layoutId="activeLanguage"
-                                                className="ml-auto"
-                                            >
-                                                <Icon name="check" size={18} />
-                                            </motion.div>
+                                            <Icon name="check" size={16} className="shrink-0" />
                                         )}
-                                    </motion.button>
+                                    </button>
                                 );
                             })}
-                        </div>
-
-                        {/* Divider and Info */}
-                        <div className="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700">
-                            <p className="text-xs text-slate-500 dark:text-slate-400 px-2 py-1">
-                                {variant === 'navbar' ? 'Switch your preferred language' : 'Change language'}
-                            </p>
                         </div>
                     </motion.div>
                 )}

@@ -24,11 +24,28 @@ export default function HomePage() {
       <Hero />
 
       {/* Properties Section */}
-      <div
+      <section
         id="properties"
-        className="flex flex-col items-center w-full py-20 px-6 lg:px-10 bg-[#f6f7f8] dark:bg-[#101922]"
+        aria-labelledby="featured-properties-heading"
+        className="flex w-full flex-col items-center bg-[#faf9f6] px-6 py-20 lg:px-10"
       >
-        <div className="max-w-[1080px] w-full flex flex-col gap-24">
+        <div className="flex w-full max-w-[1080px] flex-col gap-10">
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#83746b]">
+              Properti Pilihan
+            </p>
+            <h2
+              id="featured-properties-heading"
+              className="text-2xl font-semibold tracking-tight text-[#1a1c1a] md:text-3xl"
+            >
+              Kamar Kost Pilihan di Medan
+            </h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-[#83746b]">
+              Telusuri kamar kost yang sudah kami kurasi dengan lokasi strategis dan fasilitas
+              lengkap.
+            </p>
+          </div>
+
           {isLoading ? (
             <>
               <KostSectionSkeleton />
@@ -39,14 +56,14 @@ export default function HomePage() {
               <KostSection key={kost.id} kost={kost} showFacilities={true} />
             ))
           ) : (
-            <div className="text-center py-12">
-              <p className="text-slate-500 dark:text-slate-400">
+            <div className="py-12 text-center">
+              <p className="text-sm text-[#83746b]">
                 {t('search.noResults')}
               </p>
             </div>
           )}
         </div>
-      </div>
+      </section>
 
       {/* Amenities Section */}
       <Amenities />

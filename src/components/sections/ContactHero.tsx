@@ -13,7 +13,7 @@ export function ContactHero() {
     const t = useTranslations('contact.hero');
 
     return (
-        <div className="relative w-full min-h-[450px] md:min-h-[550px] flex items-center justify-center bg-[#0f172a] overflow-hidden">
+        <section className="relative flex min-h-[450px] w-full items-center justify-center overflow-hidden bg-[#faf9f6] md:min-h-[550px]">
             {/* Background Image */}
             <motion.div
                 initial={{ scale: 1.1 }}
@@ -27,22 +27,22 @@ export function ContactHero() {
                         backgroundImage: 'url("https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&h=1080&fit=crop")',
                     }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a]/95 via-[#0f172a]/70 to-[#0f172a]/50" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#3b2311]/85 via-[#6f4627]/65 to-[#faf9f6]/10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a130f] via-transparent to-transparent opacity-90" />
             </motion.div>
 
             {/* Decorative Gradients */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#d4af37]/10 rounded-full blur-[120px]" />
+            <div className="pointer-events-none absolute top-0 right-0 h-[420px] w-[420px] -translate-y-1/2 translate-x-1/3 rounded-full bg-[#f5e4d4]/70 blur-[120px]" />
+            <div className="pointer-events-none absolute bottom-0 left-0 h-[380px] w-[380px] translate-y-1/3 -translate-x-1/3 rounded-full bg-[#e3e2e0]/70 blur-[100px]" />
 
             {/* Content */}
-            <div className="relative z-10 max-w-4xl w-full px-6 lg:px-10 flex flex-col items-center gap-8 text-center">
+            <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-8 px-6 text-center lg:px-10">
                 {/* Accent Line */}
                 <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: 80 }}
                     transition={{ delay: 0.5, duration: 0.8 }}
-                    className="h-1 bg-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.5)] rounded-full"
+                    className="h-1 rounded-full bg-[#6f4627] shadow-[0_0_16px_rgba(111,70,39,0.45)]"
                 />
 
                 {/* Title */}
@@ -51,7 +51,7 @@ export function ContactHero() {
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.8, type: "spring", stiffness: 50 }}
-                        className="text-white text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight"
+                        className="text-4xl font-bold leading-[1.1] tracking-tight text-[#faf9f6] drop-shadow-md md:text-5xl lg:text-6xl"
                     >
                         {t('title')}
                     </motion.h1>
@@ -62,7 +62,7 @@ export function ContactHero() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
-                    className="text-slate-300 text-lg md:text-xl font-light"
+                    className="text-lg font-light text-[#f5f2ee] md:text-xl"
                 >
                     {t('subtitle')}
                 </motion.p>
@@ -72,7 +72,7 @@ export function ContactHero() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6, duration: 0.8 }}
-                    className="text-slate-300 text-base md:text-lg font-light max-w-2xl leading-relaxed border-l-2 border-primary pl-6"
+                    className="max-w-2xl border-l-2 border-[#e3e2e0] pl-6 text-base font-light leading-relaxed text-[#f5f2ee] md:text-lg"
                 >
                     {t('description')}
                 </motion.p>
@@ -88,27 +88,27 @@ export function ContactHero() {
                         href="https://wa.me/6281234567890"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#25D366] hover:bg-[#1fb855] text-white transition-all hover:scale-110 shadow-lg"
+                        className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all hover:scale-110 hover:bg-[#1fb855]"
                         aria-label="Chat via WhatsApp"
                     >
                         <Icon name="chat" size={24} />
                     </a>
                     <a
                         href="tel:+6281234567890"
-                        className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary hover:bg-primary/90 text-white transition-all hover:scale-110 shadow-lg"
+                        className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#6f4627] text-white shadow-lg transition-all hover:scale-110 hover:bg-[#805533]"
                         aria-label="Call us"
                     >
                         <Icon name="call" size={24} />
                     </a>
                     <a
                         href="mailto:info@cherryskykost.com"
-                        className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#d4af37] hover:bg-yellow-500 text-white transition-all hover:scale-110 shadow-lg"
+                        className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#faf9f6]/90 text-[#6f4627] shadow-lg transition-all hover:scale-110 hover:bg-white"
                         aria-label="Email us"
                     >
                         <Icon name="mail" size={24} />
                     </a>
                 </motion.div>
             </div>
-        </div>
+        </section>
     );
 }

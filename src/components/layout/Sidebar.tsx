@@ -16,7 +16,6 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Icon } from '@/components/shared/Icon';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
-import { cn } from '@/lib/utils';
 
 interface SidebarProps {
     open: boolean;
@@ -35,14 +34,14 @@ function MenuItem({ href, icon, label, onClick }: MenuItemProps) {
         <Link
             href={href}
             onClick={onClick}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+            className="group flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-[#faf9f6]"
         >
             <Icon
                 name={icon}
                 size={24}
-                className="text-slate-600 dark:text-slate-400 group-hover:text-primary"
+                className="text-[#83746b] group-hover:text-[#6f4627]"
             />
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-primary">
+            <span className="text-sm font-medium text-[#1a1c1a] group-hover:text-[#6f4627]">
                 {label}
             </span>
         </Link>
@@ -56,10 +55,10 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
 
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
-            <SheetContent side="left" className="w-[280px] sm:w-[320px] p-0">
+            <SheetContent side="left" className="w-[280px] bg-[#f3f0eb] sm:w-[320px] p-0 text-[#1a1c1a]">
                 <SheetHeader className="p-6 pb-4">
                     <SheetTitle className="flex items-center gap-2 text-left">
-                        <div className="text-primary">
+                        <div className="text-[#6f4627]">
                             <Icon name="apartment" size={28} />
                         </div>
                         <span className="text-xl font-bold">Cherry Sky</span>
@@ -99,7 +98,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
 
                     {/* Filter Categories */}
                     <div className="mb-6">
-                        <p className="px-3 mb-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-[#83746b]">
                             Kategori
                         </p>
                         <div className="space-y-1">
@@ -128,7 +127,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
 
                     {/* Quick Filters */}
                     <div className="mb-6">
-                        <p className="px-3 mb-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-[#83746b]">
                             Fasilitas
                         </p>
                         <div className="space-y-1">
@@ -157,7 +156,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
 
                     {/* Account Section */}
                     <div className="space-y-1">
-                        <p className="px-3 mb-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-[#83746b]">
                             Akun
                         </p>
                         <MenuItem
@@ -190,7 +189,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
 
                     {/* Language Switcher */}
                     <div className="pt-4">
-                        <p className="px-3 mb-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-[#83746b]">
                             Language
                         </p>
                         <LanguageSwitcher variant="sidebar" />

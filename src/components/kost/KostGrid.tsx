@@ -5,7 +5,6 @@
 
 'use client';
 
-import { useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -20,52 +19,12 @@ interface KostGridProps {
     isLoading?: boolean;
 }
 
-export function KostGrid({ kosts, filters, isLoading }: KostGridProps) {
+export function KostGrid({ kosts, isLoading }: KostGridProps) {
     const t = useTranslations();
     const locale = useLocale();
 
-    // Apply filters and sorting
-    const filteredKosts = useMemo(() => {
-        let result = [...kosts];
-
-        // Filter by price range
-        if (filters.priceMin || filters.priceMax) {
-            result = result.filter(
-                (kost) =>
-                    kost.priceRange.min >= (filters.priceMin || 0) &&
-                    kost.priceRange.min <= (filters.priceMax || Infinity)
-            );
-        }
-
-        // Filter by bathroom type
-        if (filters.bathroomType && filters.bathroomType.length > 0) {
-            result = result.filter((kost) =>
-                kost.roomTypes.some((room) =>
-                    filters.bathroomType?.includes(room.bathroomType)
-                )
-            );
-        }
-
-        // Sort
-        if (filters.sortBy) {
-            switch (filters.sortBy) {
-                case 'price-asc':
-                    result.sort((a, b) => a.priceRange.min - b.priceRange.min);
-                    break;
-                case 'price-desc':
-                    result.sort((a, b) => b.priceRange.min - a.priceRange.min);
-                    break;
-                case 'newest':
-                    result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-                    break;
-                case 'popular':
-                    result.sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0));
-                    break;
-            }
-        }
-
-        return result;
-    }, [kosts, filters]);
+    // Results are filtered server-side; display as provided.
+    const filteredKosts = kosts;
 
     if (isLoading) {
         return (
@@ -94,10 +53,10 @@ export function KostGrid({ kosts, filters, isLoading }: KostGridProps) {
                         className="text-slate-300 dark:text-slate-700 mx-auto mb-4"
                     />
                     <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-                        Tidak ada hasil
+                        {t('search.noResults')}
                     </h3>
                     <p className="text-slate-600 dark:text-slate-400 text-sm">
-                        Coba sesuaikan filter Anda untuk menemukan kost yang sempurna.
+                        {t('search.tryDifferentFilters')}
                     </p>
                 </div>
             </motion.div>
@@ -132,7 +91,7 @@ export function KostGrid({ kosts, filters, isLoading }: KostGridProps) {
                     variants={item}
                     className="group"
                 >
-                    <Link href={`/${locale}/kosts/${kost.slug}`} className="block h-full">
+                    <Link href={`/${locale}/kosts/${kost.id}`} className="block h-full">
                         <div className="relative h-full bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                             {/* Image Section */}
                             <div className="relative h-64 w-full overflow-hidden bg-slate-200 dark:bg-slate-800">

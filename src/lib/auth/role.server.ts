@@ -22,10 +22,14 @@ export async function fetchProfileRoleFromCookies(): Promise<string | undefined>
   return normalizeRole(payload.data?.role ?? payload.role);
 }
 
-export async function resolveTenantRole(
+/** Resolve role from session, falling back to profile when the session omits it. */
+export async function resolveSessionRole(
   sessionRole: unknown,
 ): Promise<string | undefined> {
   const fromSession = normalizeRole(sessionRole);
   if (fromSession) return fromSession;
   return fetchProfileRoleFromCookies();
 }
+
+/** @deprecated Use {@link resolveSessionRole}. */
+export const resolveTenantRole = resolveSessionRole;

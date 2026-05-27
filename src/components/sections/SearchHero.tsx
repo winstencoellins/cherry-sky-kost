@@ -12,13 +12,19 @@ import { Button } from '@/components/ui/button';
 
 interface SearchHeroProps {
     onFilterFocus?: () => void;
+    searchQuery?: string;
+    onSearchQueryChange?: (value: string) => void;
 }
 
-export function SearchHero({ onFilterFocus }: SearchHeroProps) {
+export function SearchHero({
+    onFilterFocus,
+    searchQuery = '',
+    onSearchQueryChange,
+}: SearchHeroProps) {
     const t = useTranslations('search');
 
     return (
-        <div className="relative w-full h-[400px] md:h-[500px] flex items-center justify-center bg-[#0f172a] overflow-hidden">
+        <section className="relative flex h-[400px] w-full items-center justify-center overflow-hidden bg-[#faf9f6] md:h-[500px]">
             {/* Background Image */}
             <motion.div
                 initial={{ scale: 1.1 }}
@@ -32,22 +38,22 @@ export function SearchHero({ onFilterFocus }: SearchHeroProps) {
                         backgroundImage: 'url("https://images.unsplash.com/photo-1521333573892-e44906baee46?w=1920&h=1080&fit=crop")',
                     }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a]/95 via-[#0f172a]/70 to-[#0f172a]/50" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#3b2311]/85 via-[#6f4627]/65 to-[#faf9f6]/10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a130f] via-transparent to-transparent opacity-90" />
             </motion.div>
 
             {/* Decorative Gradients */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#d4af37]/10 rounded-full blur-[120px]" />
+            <div className="pointer-events-none absolute top-0 right-0 h-[420px] w-[420px] -translate-y-1/2 translate-x-1/3 rounded-full bg-[#f5e4d4]/70 blur-[120px]" />
+            <div className="pointer-events-none absolute bottom-0 left-0 h-[380px] w-[380px] translate-y-1/3 -translate-x-1/3 rounded-full bg-[#e3e2e0]/70 blur-[100px]" />
 
             {/* Content */}
-            <div className="relative z-10 max-w-4xl w-full px-6 lg:px-10 flex flex-col items-center gap-8 text-center">
+            <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-8 px-6 text-center lg:px-10">
                 {/* Accent Line */}
                 <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: 80 }}
                     transition={{ delay: 0.5, duration: 0.8 }}
-                    className="h-1 bg-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.5)] rounded-full"
+                    className="h-1 rounded-full bg-[#6f4627] shadow-[0_0_16px_rgba(111,70,39,0.45)]"
                 />
 
                 {/* Title */}
@@ -56,21 +62,34 @@ export function SearchHero({ onFilterFocus }: SearchHeroProps) {
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.8, type: "spring", stiffness: 50 }}
-                        className="text-white text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight"
+                        className="text-4xl font-bold leading-[1.1] tracking-tight text-[#faf9f6] drop-shadow-md md:text-5xl lg:text-6xl"
                     >
                         {t('title')}
                     </motion.h1>
                 </div>
 
-                {/* Subtitle */}
-                <motion.p
+                {/* Search input */}
+                <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
-                    className="text-slate-300 text-lg md:text-xl font-light max-w-2xl leading-relaxed"
+                    className="w-full max-w-xl"
                 >
-                    {t('placeholder')}
-                </motion.p>
+                    <div className="relative">
+                        <Icon
+                            name="search"
+                            size={20}
+                            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#83746b]"
+                        />
+                        <input
+                            type="search"
+                            value={searchQuery}
+                            onChange={(e) => onSearchQueryChange?.(e.target.value)}
+                            placeholder={t('placeholder')}
+                            className="w-full rounded-xl border border-white/20 bg-white/95 py-3 pl-12 pr-4 text-base text-[#1a1c1a] shadow-lg placeholder:text-[#83746b]/70 focus:border-[#6f4627] focus:outline-none focus:ring-2 focus:ring-[#6f4627]/25"
+                        />
+                    </div>
+                </motion.div>
 
                 {/* CTA Button */}
                 <motion.div
@@ -82,13 +101,13 @@ export function SearchHero({ onFilterFocus }: SearchHeroProps) {
                     <Button
                         onClick={onFilterFocus}
                         size="lg"
-                        className="bg-primary hover:bg-primary/90 text-white font-bold px-8 h-12 rounded-lg transition-all hover:scale-105 shadow-lg shadow-primary/30"
+                        className="h-12 rounded-xl bg-[#6f4627] px-8 text-sm font-semibold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#805533] focus-visible:ring-[#8b5e3c]/40"
                     >
                         <Icon name="search" size={20} className="mr-2" />
                         {t('title')}
                     </Button>
                 </motion.div>
             </div>
-        </div>
+        </section>
     );
 }

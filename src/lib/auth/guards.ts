@@ -1,9 +1,23 @@
 import { redirect } from "@/i18n/routing";
 import { getHomePathForRole } from "@/lib/auth/redirects";
-import { assertCanAccessTenantPortal } from "@/lib/auth/role";
-import { resolveTenantRole } from "@/lib/auth/role.server";
-import { type AuthSession, getSession } from "@/lib/auth/server";
+import {
+  assertCanAccessAdminPortal,
+  assertCanAccessTenantPortal,
+} from "@/lib/auth/role";
+import { resolveSessionRole } from "@/lib/auth/role.server";
+import { type AuthSession, getSession, signOutSession } from "@/lib/auth/server";
 import type { UserRole } from "@/lib/types/auth";
+
+const FORBIDDEN_QUERY = "?error=forbidden";
+
+async function rejectWrongPortal(
+  locale: string,
+  loginPath: "/admin/login" | "/tenant/login",
+): Promise<never> {
+  await signOutSession();
+  redirect({ href: `${loginPath}${FORBIDDEN_QUERY}`, locale });
+  throw new Error("Forbidden");
+}
 
 export async function requireAdmin(locale: string): Promise<AuthSession> {
   const session = await getSession();
@@ -13,12 +27,17 @@ export async function requireAdmin(locale: string): Promise<AuthSession> {
     throw new Error("Unauthorized");
   }
 
-  // if (!isStaffRole(session.user.role)) {
-  //   redirect({ href: "/admin/login?error=forbidden", locale });
-  //   throw new Error("Forbidden");
-  // }
+  const role = await resolveSessionRole(session.user.role);
+  const access = assertCanAccessAdminPortal(role);
 
-  return session;
+  if (!access.ok) {
+    await rejectWrongPortal(locale, "/admin/login");
+  }
+
+  return {
+    ...session,
+    user: { ...session.user, role: role as UserRole },
+  };
 }
 
 export async function requireTenant(locale: string): Promise<AuthSession> {
@@ -29,17 +48,11 @@ export async function requireTenant(locale: string): Promise<AuthSession> {
     throw new Error("Unauthorized");
   }
 
-  const role = await resolveTenantRole(session.user.role);
+  const role = await resolveSessionRole(session.user.role);
   const access = assertCanAccessTenantPortal(role);
 
-  if (access.isStaff) {
-    redirect({ href: "/admin", locale });
-    throw new Error("Forbidden");
-  }
-
   if (!access.ok) {
-    redirect({ href: "/tenant/login", locale });
-    throw new Error("Forbidden");
+    await rejectWrongPortal(locale, "/tenant/login");
   }
 
   return {
@@ -53,7 +66,7 @@ export async function requireGuest(locale: string) {
   const session = await getSession();
 
   if (session) {
-    const role = await resolveTenantRole(session.user.role);
+    const role = await resolveSessionRole(session.user.role);
     redirect({
       href: getHomePathForRole(role ?? session.user.role),
       locale,

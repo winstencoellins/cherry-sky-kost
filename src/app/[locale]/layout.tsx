@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { AppProviders } from "@/components/providers/app-providers";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
+import "flag-icons/css/flag-icons.min.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",

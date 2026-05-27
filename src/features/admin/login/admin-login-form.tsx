@@ -15,6 +15,7 @@ import { AdminLoginShell } from "@/features/admin/login/admin-login-shell";
 import { authClient } from "@/lib/auth/client";
 import { getRoleFromAuthUser, getRoleFromSignInData } from "@/lib/auth/post-login";
 import { getHomePathForRole } from "@/lib/auth/redirects";
+import { assertCanAccessAdminPortal } from "@/lib/auth/role";
 import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 
@@ -87,9 +88,19 @@ export function AdminLoginForm() {
         );
       }
 
+      const access = assertCanAccessAdminPortal(role);
+
+      if (!access.ok || !role) {
+        await authClient.signOut();
+        toast.error(
+          access.isTenant ? t("errors.forbidden") : t("errors.invalid"),
+        );
+        return;
+      }
+
       toast.success(t("success"));
       router.refresh();
-      router.push(role ? getHomePathForRole(role) : "/admin");
+      router.push(getHomePathForRole(role));
     },
   });
 

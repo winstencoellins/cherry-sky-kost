@@ -15,7 +15,6 @@ import { Badge } from '@/components/ui/badge';
 import { ImageGallery } from '@/components/kost/ImageGallery';
 import { RoomDetailSidebar } from '@/components/kost/RoomDetailSidebar';
 import { FacilityList } from '@/components/kost/FacilityList';
-import { cn } from '@/lib/utils';
 import { useKost } from '@/lib/hooks/use-kost-data';
 
 export default function RoomDetailPage() {
@@ -35,9 +34,9 @@ export default function RoomDetailPage() {
     if (isLoading) {
         return (
             <AppLayout>
-                <div className="flex items-center justify-center min-h-screen">
+                <div className="flex min-h-screen items-center justify-center bg-[#faf9f6] pt-16">
                     <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                        <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-[#6f4627] border-t-transparent" />
                         <p className="text-slate-500 dark:text-slate-400">{t('common.loading')}</p>
                     </div>
                 </div>
@@ -48,9 +47,9 @@ export default function RoomDetailPage() {
     if (!kost) {
         return (
             <AppLayout>
-                <div className="flex items-center justify-center min-h-screen">
+                <div className="flex min-h-screen items-center justify-center bg-[#faf9f6] pt-16">
                     <div className="text-center">
-                        <Icon name="error" size={64} className="text-slate-400 mx-auto mb-4" />
+                        <Icon name="error" size={64} className="mx-auto mb-4 text-[#83746b]" />
                         <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                             {locale === 'id' ? 'Kamar tidak ditemukan' : 'Room not found'}
                         </h2>
@@ -77,37 +76,8 @@ export default function RoomDetailPage() {
 
     return (
         <AppLayout>
-            {/* Header Toolbar */}
-            <div className="sticky top-0 z-30 bg-white/95 dark:bg-[#15202b]/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-                    <div className="flex items-center justify-between">
-                        <Link
-                            href={`/${locale}`}
-                            className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors"
-                        >
-                            <Icon name="arrow_back" size={20} />
-                            <span className="hidden sm:inline font-medium">{t('roomDetail.backToHome')}</span>
-                        </Link>
-                        <div className="flex gap-2">
-                            <button
-                                className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
-                                title={t('roomDetail.share')}
-                            >
-                                <Icon name="share" size={24} />
-                            </button>
-                            <button
-                                className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
-                                title={t('roomDetail.save')}
-                            >
-                                <Icon name="favorite_border" size={24} />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Content */}
-            <div className="bg-background-light dark:bg-background-dark min-h-screen pb-24 md:pb-8">
+            {/* Main Content — pt-16 clears fixed navbar */}
+            <div className="min-h-screen bg-[#faf9f6] pb-24 pt-16 md:pb-8">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col lg:flex-row">
                         {/* Left Column: Details */}

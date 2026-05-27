@@ -12,11 +12,11 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Icon } from '@/components/shared/Icon';
-import type { SearchFilters, BathroomType } from '@/lib/types';
+import type { SearchFilters as SearchFiltersState, BathroomType } from '@/lib/types';
 
 interface SearchFiltersProps {
-    filters: SearchFilters;
-    onFiltersChange: (filters: SearchFilters) => void;
+    filters: SearchFiltersState;
+    onFiltersChange: (filters: SearchFiltersState) => void;
     onReset?: () => void;
 }
 
@@ -68,16 +68,17 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 sticky top-24 z-40"
+            className="sticky top-24 z-40 rounded-2xl border border-[#e3e2e0] bg-white/90 p-6 shadow-sm"
         >
             <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <h3 className="flex items-center gap-2 text-base font-semibold text-[#1a1c1a]">
                     <Icon name="tune" size={20} />
                     Filter Pencarian
                 </h3>
                 <button
+                    type="button"
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="md:hidden p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                    className="rounded-xl p-2 transition-colors hover:bg-[#faf9f6] md:hidden"
                 >
                     <Icon name={isExpanded ? 'expand_less' : 'expand_more'} size={20} />
                 </button>
@@ -85,35 +86,79 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
 
             {isExpanded && (
                 <>
+                    {/* Location / keyword */}
+                    <div className="mb-8 border-b border-[#e3e2e0] pb-8">
+                        <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
+                            <Icon name="location_on" size={16} />
+                            {t('search.location')}
+                        </h4>
+                        <input
+                            type="search"
+                            value={filters.location ?? ''}
+                            onChange={(e) =>
+                                onFiltersChange({
+                                    ...filters,
+                                    location: e.target.value || undefined,
+                                })
+                            }
+                            placeholder={t('search.placeholder')}
+                            className="w-full rounded-lg border border-[#e3e2e0] bg-[#faf9f6] px-3 py-2.5 text-sm text-[#1a1c1a] placeholder:text-[#83746b]/60 focus:border-[#6f4627] focus:outline-none focus:ring-2 focus:ring-[#6f4627]/25"
+                        />
+                    </div>
+
+                    {/* Rent duration (maps to durationDays on API) */}
+                    <div className="mb-8 border-b border-[#e3e2e0] pb-8">
+                        <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
+                            <Icon name="calendar_month" size={16} />
+                            {t('search.durationLabel')}
+                        </h4>
+                        <select
+                            value={filters.durationDays?.toString() ?? ''}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                onFiltersChange({
+                                    ...filters,
+                                    durationDays: value ? Number(value) : undefined,
+                                });
+                            }}
+                            className="w-full rounded-lg border border-[#e3e2e0] bg-[#faf9f6] px-3 py-2.5 text-sm text-[#1a1c1a] focus:border-[#6f4627] focus:outline-none focus:ring-2 focus:ring-[#6f4627]/25"
+                        >
+                            <option value="">{t('search.durationAny')}</option>
+                            <option value="7">{t('search.duration7')}</option>
+                            <option value="12">{t('search.duration12')}</option>
+                            <option value="30">{t('search.duration30')}</option>
+                        </select>
+                    </div>
+
                     {/* Price Range */}
-                    <div className="mb-8 pb-8 border-b border-slate-200 dark:border-slate-800">
-                        <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                    <div className="mb-8 border-b border-[#e3e2e0] pb-8">
+                        <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
                             <Icon name="local_offer" size={16} />
                             Rentang Harga
                         </h4>
                         <div className="space-y-4">
                             <Slider
-                                defaultValue={[filters.priceMin || 500000, filters.priceMax || 2500000]}
+                                value={[filters.priceMin || 500000, filters.priceMax || 2500000]}
                                 min={500000}
-                                max={2500000}
+                                max={5000000}
                                 step={100000}
                                 onValueChange={handlePriceChange}
                                 className="w-full"
                             />
                             <div className="flex items-center justify-between text-sm">
-                                <span className="text-slate-600 dark:text-slate-400">
+                                <span className="text-[#83746b]">
                                     Rp {((filters.priceMin || 500000) / 1000000).toFixed(1)}M
                                 </span>
-                                <span className="text-slate-600 dark:text-slate-400">
-                                    Rp {((filters.priceMax || 2500000) / 1000000).toFixed(1)}M
+                                <span className="text-[#83746b]">
+                                    Rp {((filters.priceMax || 2500000) / 1000000).toFixed(1)}M+
                                 </span>
                             </div>
                         </div>
                     </div>
 
                     {/* Bathroom Type */}
-                    <div className="mb-8 pb-8 border-b border-slate-200 dark:border-slate-800">
-                        <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                    <div className="mb-8 border-b border-[#e3e2e0] pb-8">
+                        <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
                             <Icon name="bathroom" size={16} />
                             Tipe Kamar Mandi
                         </h4>
@@ -121,14 +166,16 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
                             {bathroomOptions.map((option) => (
                                 <label
                                     key={option.id}
+                                    htmlFor={`bathroom-${option.id}`}
                                     className="flex items-center gap-3 cursor-pointer group"
                                 >
                                     <Checkbox
+                                        id={`bathroom-${option.id}`}
                                         checked={filters.bathroomType?.includes(option.id) ?? false}
                                         onCheckedChange={() => handleBathroomToggle(option.id)}
                                         className="w-4 h-4"
                                     />
-                                    <span className="text-sm text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+                                    <span className="text-sm text-[#83746b] transition-colors group-hover:text-[#1a1c1a]">
                                         {option.label}
                                     </span>
                                 </label>
@@ -137,20 +184,21 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
                     </div>
 
                     {/* Sort By */}
-                    <div className="mb-6 pb-6 border-b border-slate-200 dark:border-slate-800">
-                        <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                    <div className="mb-6 border-b border-[#e3e2e0] pb-6">
+                        <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
                             <Icon name="sort" size={16} />
                             Urutkan
                         </h4>
                         <div className="space-y-2">
                             {sortOptions.map((option) => (
                                 <button
+                                    type="button"
                                     key={option.id}
                                     onClick={() => handleSortChange(option.id)}
                                     className={`w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                                         filters.sortBy === option.id
-                                            ? 'bg-primary text-white'
-                                            : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                            ? 'bg-[#6f4627] text-white'
+                                            : 'bg-[#faf9f6] text-[#51443c] hover:bg-white'
                                     }`}
                                 >
                                     {option.label}
@@ -164,12 +212,12 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
                         <Button
                             onClick={onReset}
                             variant="outline"
-                            className="flex-1 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
+                            className="flex-1 rounded-xl border-[#e3e2e0] bg-white/80 text-[#1a1c1a] hover:bg-white hover:text-[#6f4627]"
                         >
                             <Icon name="restart_alt" size={16} className="mr-2" />
                             Reset
                         </Button>
-                        <Button className="flex-1 bg-primary hover:bg-primary/90 text-white">
+                        <Button className="flex-1 rounded-xl bg-[#6f4627] text-white hover:bg-[#805533]">
                             <Icon name="search" size={16} className="mr-2" />
                             Cari
                         </Button>

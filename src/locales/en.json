@@ -182,7 +182,15 @@
         "bathroomType": "Bathroom Type",
         "availability": "Availability",
         "noResults": "No kost found",
-        "tryDifferentFilters": "Try using different filters"
+        "tryDifferentFilters": "Try using different filters",
+        "resultsCount": "Showing {count} properties ({total} rooms matched)",
+        "updating": "Updating…",
+        "loadError": "Could not load search results. Check that the API is running and try again.",
+        "durationLabel": "Rent duration (days)",
+        "durationAny": "Any duration",
+        "duration7": "7 days",
+        "duration12": "12 days",
+        "duration30": "30 days"
     },
     "property": {
         "flagship": "Flagship Property",
@@ -544,7 +552,7 @@
             "success": "Welcome back!",
             "errors": {
                 "invalid": "Invalid email or password.",
-                "forbidden": "You do not have admin access."
+                "forbidden": "You cannot sign in here. Tenant accounts must use the tenant portal."
             }
         },
         "crud": {
@@ -786,7 +794,7 @@
             "success": "Welcome back!",
             "errors": {
                 "invalid": "Invalid email or password.",
-                "forbidden": "This account cannot access the tenant portal. Use the admin login instead."
+                "forbidden": "You cannot sign in here. Admin accounts must use the admin login."
             }
         },
         "common": {

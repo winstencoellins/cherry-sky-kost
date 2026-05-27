@@ -21,6 +21,7 @@ export function ContactInfo() {
 
     const contactDetails: ContactDetail[] = [
         {
+            id: 'address',
             icon: 'location_on',
             title: t('address'),
             items: [
@@ -30,18 +31,21 @@ export function ContactInfo() {
             link: 'https://maps.google.com',
         },
         {
+            id: 'phone',
             icon: 'call',
             title: t('phone'),
             items: ['+62 812-3456-7890', '+62 812-3456-7891'],
             link: 'tel:+6281234567890',
         },
         {
+            id: 'email',
             icon: 'mail',
             title: t('email'),
             items: ['info@cherryskykost.com', 'support@cherryskykost.com'],
             link: 'mailto:info@cherryskykost.com',
         },
         {
+            id: 'hours',
             icon: 'schedule',
             title: t('hours'),
             items: [t('weekdaysHours'), t('saturdayHours'), t('weekendClosed')],
@@ -64,7 +68,7 @@ export function ContactInfo() {
     };
 
     return (
-        <section className="w-full py-24 px-6 lg:px-10 bg-white dark:bg-slate-900">
+        <section className="w-full bg-[#faf9f6] py-16 px-6 lg:px-10">
             <div className="max-w-[1080px] mx-auto">
                 {/* Section Header */}
                 <div className="text-center mb-16">
@@ -72,7 +76,7 @@ export function ContactInfo() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary dark:text-primary/80 text-xs font-bold tracking-widest uppercase mb-6"
+                        className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#e3e2e0] bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#6f4627]"
                     >
                         <Icon name="info" size={14} />
                         <span>{t('subtitle')}</span>
@@ -82,7 +86,7 @@ export function ContactInfo() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="text-3xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight"
+                        className="mb-4 text-2xl font-semibold tracking-tight text-[#1a1c1a] md:text-3xl"
                     >
                         {t('title')}
                     </motion.h2>
@@ -96,35 +100,35 @@ export function ContactInfo() {
                     viewport={{ once: true, margin: "-50px" }}
                     className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
                 >
-                    {contactDetails.map((detail, index) => (
+                    {contactDetails.map((detail) => (
                         <motion.div
-                            key={index}
+                            key={detail.id}
                             variants={item}
                             className="group"
                         >
                             <a
                                 href={detail.link || '#'}
-                                className="block bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                                className="relative block rounded-2xl border border-[#e3e2e0] bg-white/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#d0b59b] hover:shadow-md"
                             >
                                 {/* Icon Container */}
                                 <div className="relative mb-5">
-                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-blue-700 text-white shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform duration-300">
+                                    <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[#f5e4d4]/60 text-[#6f4627] shadow-sm transition-transform duration-300 group-hover:scale-110">
                                         <Icon name={detail.icon} size={28} />
                                     </div>
                                     {/* Glow effect */}
-                                    <div className="absolute inset-0 w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-blue-700 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300" />
+                                    <div className="absolute inset-0 h-14 w-14 rounded-xl bg-[#f5e4d4] opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-40" />
                                 </div>
 
                                 {/* Content */}
-                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
+                                <h3 className="mb-4 text-base font-semibold text-[#1a1c1a]">
                                     {detail.title}
                                 </h3>
 
                                 <div className="space-y-2">
-                                    {detail.items.map((item, idx) => (
+                                    {detail.items.map((item) => (
                                         <p
-                                            key={idx}
-                                            className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+                                            key={item}
+                                            className="text-sm leading-relaxed text-[#83746b]"
                                         >
                                             {item}
                                         </p>
@@ -133,16 +137,20 @@ export function ContactInfo() {
 
                                 {/* Arrow Icon */}
                                 {detail.link && (
-                                    <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                                        <span className="text-xs font-semibold text-primary dark:text-primary/80 uppercase tracking-wider">
+                                    <div className="mt-4 flex items-center justify-between border-t border-[#e3e2e0] pt-4">
+                                        <span className="text-xs font-semibold uppercase tracking-wider text-[#6f4627]">
                                             {detail.icon === 'location_on' ? 'View Map' : 'Contact'}
                                         </span>
-                                        <Icon name="arrow_forward" size={16} className="text-primary group-hover:translate-x-1 transition-transform" />
+                                        <Icon
+                                            name="arrow_forward"
+                                            size={16}
+                                            className="text-[#6f4627] transition-transform group-hover:translate-x-1"
+                                        />
                                     </div>
                                 )}
 
                                 {/* Decorative corner */}
-                                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-transparent to-primary/5 dark:to-primary/10 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-transparent to-[#f5e4d4]/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                             </a>
                         </motion.div>
                     ))}

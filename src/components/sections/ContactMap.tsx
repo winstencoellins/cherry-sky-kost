@@ -8,7 +8,6 @@
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Icon } from '@/components/shared/Icon';
-import { Button } from '@/components/ui/button';
 
 interface MapLocation {
     id: string;
@@ -63,7 +62,7 @@ export function ContactMap() {
     };
 
     return (
-        <section className="w-full py-24 px-6 lg:px-10 bg-white dark:bg-slate-900">
+        <section className="w-full bg-[#faf9f6] py-16 px-6 lg:px-10">
             <div className="max-w-[1080px] mx-auto">
                 {/* Section Header */}
                 <div className="text-center mb-16">
@@ -71,7 +70,7 @@ export function ContactMap() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary dark:text-primary/80 text-xs font-bold tracking-widest uppercase mb-6"
+                        className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#e3e2e0] bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#6f4627]"
                     >
                         <Icon name="map" size={14} />
                         <span>{t('subtitle')}</span>
@@ -81,7 +80,7 @@ export function ContactMap() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="text-3xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight"
+                        className="mb-4 text-2xl font-semibold tracking-tight text-[#1a1c1a] md:text-3xl"
                     >
                         {t('title')}
                     </motion.h2>
@@ -94,7 +93,7 @@ export function ContactMap() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="lg:col-span-2 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 h-96 shadow-xl"
+                        className="h-96 overflow-hidden rounded-2xl border border-[#e3e2e0] shadow-sm lg:col-span-2"
                     >
                         <iframe
                             src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.3280502394305!2d98.66400!3d3.1955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30313339d7c0a50d%3A0x${Math.random().toString(16).substr(2, 8)}!2sMedan!5e0!3m2!1sen!2sid!4v1234567890`}
@@ -120,24 +119,28 @@ export function ContactMap() {
                             <motion.div
                                 key={location.id}
                                 variants={item}
-                                className="group bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                                className="group relative rounded-2xl border border-[#e3e2e0] bg-white/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#d0b59b] hover:shadow-md"
                             >
                                 {/* Location Number */}
-                                <div className="absolute top-4 right-4 inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white text-xs font-bold">
+                                <div className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#6f4627] text-xs font-bold text-white">
                                     {index + 1}
                                 </div>
 
                                 {/* Content */}
                                 <div className="space-y-3">
                                     {/* Name */}
-                                    <h3 className="text-lg font-bold text-slate-900 dark:text-white pr-8">
+                                    <h3 className="pr-8 text-base font-semibold text-[#1a1c1a]">
                                         {location.name}
                                     </h3>
 
                                     {/* Address */}
                                     <div className="flex items-start gap-3">
-                                        <Icon name="location_on" size={16} className="text-red-500 flex-shrink-0 mt-1" />
-                                        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                        <Icon
+                                            name="location_on"
+                                            size={16}
+                                            className="mt-1 flex-shrink-0 text-[#ba1a1a]"
+                                        />
+                                        <p className="text-sm leading-relaxed text-[#83746b]">
                                             {location.address}
                                         </p>
                                     </div>
@@ -145,16 +148,16 @@ export function ContactMap() {
                                     {/* Phone */}
                                     <a
                                         href={`tel:${location.phone}`}
-                                        className="flex items-center gap-3 hover:text-primary transition-colors"
+                                        className="flex items-center gap-3 transition-colors hover:text-[#6f4627]"
                                     >
-                                        <Icon name="call" size={16} className="text-primary flex-shrink-0" />
-                                        <span className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+                                        <Icon name="call" size={16} className="flex-shrink-0 text-[#6f4627]" />
+                                        <span className="text-sm text-[#83746b] transition-colors hover:text-[#1a1c1a]">
                                             {location.phone}
                                         </span>
                                     </a>
 
                                     {/* Coordinates */}
-                                    <div className="flex items-center gap-2 pt-2 text-xs text-slate-500 dark:text-slate-500 bg-slate-50 dark:bg-slate-900 px-3 py-2 rounded-lg">
+                                    <div className="flex items-center gap-2 rounded-lg bg-[#faf9f6] px-3 py-2 pt-2 text-xs text-[#83746b]">
                                         <Icon name="location_on" size={12} />
                                         <span>
                                             {location.latitude.toFixed(4)}, {location.longitude.toFixed(4)}
@@ -166,7 +169,7 @@ export function ContactMap() {
                                         href={getMapsURL(location)}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center justify-center gap-2 w-full px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm font-semibold rounded-lg transition-colors mt-4"
+                                        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6f4627] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#805533]"
                                     >
                                         <Icon name="directions" size={16} />
                                         {t('directionsButton')}
@@ -182,21 +185,21 @@ export function ContactMap() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-16 p-8 bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-2xl border border-primary/20 text-center"
+                    className="mt-16 rounded-2xl border border-[#e3e2e0] bg-white/80 p-8 text-center shadow-sm"
                 >
                     <div className="flex items-center justify-center gap-3 mb-4">
-                        <Icon name="info" size={20} className="text-primary" />
+                        <Icon name="info" size={20} className="text-[#6f4627]" />
                         <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                             Planning a Visit?
                         </h3>
                     </div>
-                    <p className="text-slate-600 dark:text-slate-400 mb-4 max-w-2xl mx-auto">
+                    <p className="mx-auto mb-4 max-w-2xl text-sm text-[#83746b]">
                         Feel free to visit our properties during business hours. Call ahead to schedule a tour and
                         ensure someone is available to show you around.
                     </p>
                     <a
                         href="tel:+6281234567890"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors"
+                        className="inline-flex items-center gap-2 rounded-xl bg-[#6f4627] px-6 py-3 font-semibold text-white transition-colors hover:bg-[#805533]"
                     >
                         <Icon name="call" size={18} />
                         Call to Schedule Tour

@@ -20,13 +20,20 @@ export async function getSession(): Promise<AuthSession | null> {
   const headerStore = await headers();
   const cookieHeader = cookieStore.toString();
 
-  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/get-session`, {
-    headers: {
-      cookie: cookieHeader,
-      "user-agent": headerStore.get("user-agent") ?? "",
-    },
-    cache: "no-store",
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/get-session`, {
+      headers: {
+        cookie: cookieHeader,
+        "user-agent": headerStore.get("user-agent") ?? "",
+      },
+      cache: "no-store",
+    });
+  } catch {
+    // API unreachable (e.g. ECONNREFUSED when backend is not running)
+    return null;
+  }
 
   if (!response.ok) return null;
 
@@ -41,4 +48,29 @@ export async function getSession(): Promise<AuthSession | null> {
     },
     session: data.session,
   };
+}
+
+const SESSION_COOKIE = "better-auth.session_token";
+
+/**
+ * Invalidate the current session on the API.
+ *
+ * Note: we intentionally do not mutate Next.js cookies here, because this
+ * helper is used from layouts/other server components where cookie mutation
+ * is not allowed. The Better Auth backend is responsible for clearing its
+ * own session cookie on the API origin.
+ */
+export async function signOutSession(): Promise<void> {
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore.toString();
+
+  try {
+    await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/sign-out`, {
+      method: "POST",
+      headers: cookieHeader ? { cookie: cookieHeader } : undefined,
+      cache: "no-store",
+    });
+  } catch {
+    // API unreachable — nothing else to do here.
+  }
 }

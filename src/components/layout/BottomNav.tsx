@@ -28,7 +28,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
             <div
                 className={cn(
                     'p-2 rounded-xl transition-all duration-300 relative',
-                    isActive ? 'bg-primary/10 -translate-y-0.5' : ''
+                    isActive ? 'bg-[#f5e4d4]/70 -translate-y-0.5' : ''
                 )}
             >
                 <Icon
@@ -38,8 +38,8 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
                     className={cn(
                         'transition-all duration-300',
                         isActive
-                            ? 'text-primary scale-110'
-                            : 'text-slate-400 dark:text-slate-500'
+                            ? 'text-[#6f4627] scale-110'
+                            : 'text-[#b0a29a]'
                     )}
                 />
 
@@ -47,7 +47,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
                 {isActive && (
                     <motion.div
                         layoutId="activeDot"
-                        className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"
+                        className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#6f4627] rounded-full"
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                 )}
@@ -56,7 +56,7 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
             <span
                 className={cn(
                     'text-[10px] font-medium transition-colors',
-                    isActive ? 'text-primary' : 'text-slate-500 dark:text-slate-400'
+                    isActive ? 'text-[#6f4627]' : 'text-[#83746b]'
                 )}
             >
                 {label}
@@ -122,7 +122,7 @@ export function BottomNav() {
 
     return (
         <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
-            <div className="bg-white/90 dark:bg-[#0f172a]/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-2xl h-[68px] px-1 flex items-center justify-around gap-0.5">
+            <div className="flex h-[68px] items-center justify-around gap-0.5 rounded-2xl border border-[#e3e2e0] bg-[#faf9f6]/90 px-1 shadow-[0_8px_30px_rgb(0,0,0,0.10)] backdrop-blur-xl">
                 {navItems.map((item) => {
                     // Handle locale-based routing - check if pathname ends with the href or matches exactly
                     const cleanPathname = pathname?.split('?')[0]; // Remove query params

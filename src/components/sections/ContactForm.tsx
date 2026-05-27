@@ -109,7 +109,7 @@ ${formData.message}
 
             window.location.href = mailtoLink;
             handleSuccess();
-        } catch (error) {
+        } catch (_error) {
             setSubmitStatus('error');
             setTimeout(() => setSubmitStatus('idle'), 3000);
         } finally {
@@ -145,7 +145,7 @@ ${formData.message}
     };
 
     return (
-        <section className="w-full py-24 px-6 lg:px-10 bg-[#f6f7f8] dark:bg-[#101922]">
+        <section className="w-full bg-[#faf9f6] py-16 px-6 lg:px-10">
             <div className="max-w-[1080px] mx-auto">
                 {/* Section Header */}
                 <div className="text-center mb-16">
@@ -153,7 +153,7 @@ ${formData.message}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary dark:text-primary/80 text-xs font-bold tracking-widest uppercase mb-6"
+                        className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#e3e2e0] bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#6f4627]"
                     >
                         <Icon name="mail" size={14} />
                         <span>{t('subtitle')}</span>
@@ -163,7 +163,7 @@ ${formData.message}
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="text-3xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight"
+                        className="mb-4 text-2xl font-semibold tracking-tight text-[#1a1c1a] md:text-3xl"
                     >
                         {t('title')}
                     </motion.h2>
@@ -176,7 +176,7 @@ ${formData.message}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: true, margin: "-50px" }}
-                        className="bg-white dark:bg-slate-900 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl"
+                        className="rounded-2xl border border-[#e3e2e0] bg-white/90 p-8 shadow-sm"
                     >
                         {/* Form Fields */}
                         <div className="space-y-6">
@@ -184,21 +184,25 @@ ${formData.message}
                             <motion.div variants={item} className="grid sm:grid-cols-2 gap-6">
                                 {/* Name */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                                    <label
+                                        htmlFor="contact-name"
+                                        className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
+                                    >
                                         {t('name')}
                                         <span className="text-red-500">*</span>
                                     </label>
                                     <input
+                                        id="contact-name"
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleInputChange}
                                         placeholder={t('namePlaceholder')}
-                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
+                                        className={`w-full rounded-xl border px-4 py-3 transition-colors focus:outline-none focus:border-[#8b5e3c]/60 focus:ring-2 focus:ring-[#8b5e3c]/15 ${
                                             errors.name
-                                                ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
-                                                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
-                                        } text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400`}
+                                                ? 'border-red-500 bg-red-50'
+                                                : 'border-[#e3e2e0] bg-white'
+                                        } text-[#1a1c1a] placeholder:text-[#b0a29a]`}
                                     />
                                     {errors.name && (
                                         <p className="text-xs text-red-500 mt-1">{errors.name}</p>
@@ -207,21 +211,25 @@ ${formData.message}
 
                                 {/* Email */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                                    <label
+                                        htmlFor="contact-email"
+                                        className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
+                                    >
                                         {t('email')}
                                         <span className="text-red-500">*</span>
                                     </label>
                                     <input
+                                        id="contact-email"
                                         type="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleInputChange}
                                         placeholder={t('emailPlaceholder')}
-                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
+                                        className={`w-full rounded-xl border px-4 py-3 transition-colors focus:outline-none focus:border-[#8b5e3c]/60 focus:ring-2 focus:ring-[#8b5e3c]/15 ${
                                             errors.email
-                                                ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
-                                                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
-                                        } text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400`}
+                                                ? 'border-red-500 bg-red-50'
+                                                : 'border-[#e3e2e0] bg-white'
+                                        } text-[#1a1c1a] placeholder:text-[#b0a29a]`}
                                     />
                                     {errors.email && (
                                         <p className="text-xs text-red-500 mt-1">{errors.email}</p>
@@ -233,21 +241,25 @@ ${formData.message}
                             <motion.div variants={item} className="grid sm:grid-cols-2 gap-6">
                                 {/* Phone */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                                    <label
+                                        htmlFor="contact-phone"
+                                        className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
+                                    >
                                         {t('phone')}
                                         <span className="text-red-500">*</span>
                                     </label>
                                     <input
+                                        id="contact-phone"
                                         type="tel"
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleInputChange}
                                         placeholder={t('phonePlaceholder')}
-                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
+                                        className={`w-full rounded-xl border px-4 py-3 transition-colors focus:outline-none focus:border-[#8b5e3c]/60 focus:ring-2 focus:ring-[#8b5e3c]/15 ${
                                             errors.phone
-                                                ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
-                                                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
-                                        } text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400`}
+                                                ? 'border-red-500 bg-red-50'
+                                                : 'border-[#e3e2e0] bg-white'
+                                        } text-[#1a1c1a] placeholder:text-[#b0a29a]`}
                                     />
                                     {errors.phone && (
                                         <p className="text-xs text-red-500 mt-1">{errors.phone}</p>
@@ -256,21 +268,25 @@ ${formData.message}
 
                                 {/* Subject */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                                    <label
+                                        htmlFor="contact-subject"
+                                        className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
+                                    >
                                         {t('subject')}
                                         <span className="text-red-500">*</span>
                                     </label>
                                     <input
+                                        id="contact-subject"
                                         type="text"
                                         name="subject"
                                         value={formData.subject}
                                         onChange={handleInputChange}
                                         placeholder={t('subjectPlaceholder')}
-                                        className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
+                                        className={`w-full rounded-xl border px-4 py-3 transition-colors focus:outline-none focus:border-[#8b5e3c]/60 focus:ring-2 focus:ring-[#8b5e3c]/15 ${
                                             errors.subject
-                                                ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
-                                                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
-                                        } text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400`}
+                                                ? 'border-red-500 bg-red-50'
+                                                : 'border-[#e3e2e0] bg-white'
+                                        } text-[#1a1c1a] placeholder:text-[#b0a29a]`}
                                     />
                                     {errors.subject && (
                                         <p className="text-xs text-red-500 mt-1">{errors.subject}</p>
@@ -280,21 +296,25 @@ ${formData.message}
 
                             {/* Message */}
                             <motion.div variants={item}>
-                                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                                <label
+                                    htmlFor="contact-message"
+                                    className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
+                                >
                                     {t('message')}
                                     <span className="text-red-500">*</span>
                                 </label>
                                 <textarea
+                                    id="contact-message"
                                     name="message"
                                     value={formData.message}
                                     onChange={handleInputChange}
                                     placeholder={t('messagePlaceholder')}
                                     rows={5}
-                                    className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
+                                    className={`w-full resize-none rounded-xl border px-4 py-3 transition-colors focus:outline-none focus:border-[#8b5e3c]/60 focus:ring-2 focus:ring-[#8b5e3c]/15 ${
                                         errors.message
-                                            ? 'border-red-500 bg-red-50 dark:bg-red-950/20'
-                                            : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
-                                    } text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400`}
+                                            ? 'border-red-500 bg-red-50'
+                                            : 'border-[#e3e2e0] bg-white'
+                                    } text-[#1a1c1a] placeholder:text-[#b0a29a]`}
                                 />
                                 {errors.message && (
                                     <p className="text-xs text-red-500 mt-1">{errors.message}</p>
@@ -331,12 +351,12 @@ ${formData.message}
                             {/* Action Buttons */}
                             <motion.div
                                 variants={item}
-                                className="grid sm:grid-cols-2 gap-4 pt-6 border-t border-slate-200 dark:border-slate-800"
+                                className="grid gap-4 border-t border-[#e3e2e0] pt-6 sm:grid-cols-2"
                             >
                                 <Button
                                     onClick={handleSendViaWhatsApp}
                                     disabled={isSubmitting}
-                                    className="bg-[#25D366] hover:bg-[#1fb855] text-white font-semibold flex items-center justify-center gap-2"
+                                    className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] font-semibold text-white hover:bg-[#1fb855]"
                                 >
                                     <Icon name="chat" size={18} />
                                     {t('sendViaWhatsApp')}
@@ -344,7 +364,7 @@ ${formData.message}
                                 <Button
                                     onClick={handleSendViaEmail}
                                     disabled={isSubmitting}
-                                    className="bg-primary hover:bg-primary/90 text-white font-semibold flex items-center justify-center gap-2"
+                                    className="flex items-center justify-center gap-2 rounded-xl bg-[#6f4627] font-semibold text-white hover:bg-[#805533]"
                                 >
                                     <Icon name="mail" size={18} />
                                     {t('sendViaEmail')}
