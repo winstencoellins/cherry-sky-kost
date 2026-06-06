@@ -15,6 +15,12 @@ import {
   useUnitPricings,
   useUnits,
 } from "@/features/admin/hooks/use-admin-queries";
+import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import {
+  resolvePricingUnitTypeName,
+  resolveUnitPropertyName,
+  resolveUnitTypeNameForUnit,
+} from "@/features/admin/lib/entity-display";
 import { formatIdrTable, toDateInputValue } from "@/features/admin/lib/format";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
@@ -48,6 +54,7 @@ export function LeaseForm({ id }: { id?: string }) {
   const { data: tenants = [], isLoading: tenantsLoading } = useTenantUsers();
   const { data: lease, isLoading } = useLease(id ?? "", isEdit);
   const mutations = useLeaseMutations();
+  const lookups = useAdminLookups();
   const [form, setForm] = useState<FormState>(emptyForm);
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -150,8 +157,10 @@ export function LeaseForm({ id }: { id?: string }) {
               <option value="">{t("selectUnit")}</option>
               {units.map((u) => (
                 <option key={u.id} value={u.id}>
-                  {u.name} ({u.unitType?.name ?? "—"})
-                  {u.property?.name ? ` — ${u.property.name}` : ""}
+                  {u.name} ({resolveUnitTypeNameForUnit(u, lookups)})
+                  {resolveUnitPropertyName(u, lookups) !== "—"
+                    ? ` — ${resolveUnitPropertyName(u, lookups)}`
+                    : ""}
                 </option>
               ))}
             </select>
@@ -212,8 +221,8 @@ export function LeaseForm({ id }: { id?: string }) {
           <option value="">{t("selectPricing")}</option>
           {(isEdit ? pricings : pricingOptions).map((p) => (
             <option key={p.id} value={p.id}>
-              {p.unitType?.name ?? "—"} · {p.durationDays} {t("days")} —{" "}
-              {formatIdrTable(p.price)}
+              {resolvePricingUnitTypeName(p, lookups)} · {p.durationDays}{" "}
+              {t("days")} — {formatIdrTable(p.price)}
             </option>
           ))}
         </select>
@@ -239,9 +248,9 @@ export function LeaseForm({ id }: { id?: string }) {
               setForm((f) => ({ ...f, status: e.target.value as LeaseStatus }))
             }
           >
-            <option value="unpaid">unpaid</option>
-            <option value="waiting_for_review">waiting_for_review</option>
-            <option value="paid">paid</option>
+            <option value="unpaid">Unpaid</option>
+            <option value="waiting_for_review">Waiting for Review</option>
+            <option value="paid">Paid</option>
           </select>
         </AdminField>
       )}

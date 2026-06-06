@@ -161,6 +161,29 @@ All errors return a consistent JSON body:
 | Leases | `/admin/leases` |
 | Tenants (users) | `/admin/users` |
 | Ledger entries | `/admin/ledger-entries` |
+| Attachments | `/admin/attachments` |
+| Meta (relationship map) | `/admin/meta` |
+
+#### `GET /admin/meta/relationships`
+
+Returns the admin entity relationship map: which models link to each other, nested fields returned by each list/detail endpoint, and the property hierarchy tree. Use this to wire the admin frontend without guessing includes.
+
+**Auth required:** yes
+
+**Response `200`** — `{ data: { entities, endpoints, hierarchy } }`
+
+Admin list/detail responses also embed related data directly (see each resource below). Key nesting:
+
+| Resource | Nested on GET |
+|---|---|
+| Property (list) | `propertyAttachments`, `unitTypes` (+ pricings, attachments, counts), `_count` |
+| Property (detail) | above + `unitTypes.units`, flat `units.unitType.pricings`, `unitPricings` |
+| Unit type | `property`, `pricings`, `units`, `unitTypeAttachments`, `_count` |
+| Unit pricing | `property`, `unitType` (+ property, attachments); detail adds `leases` |
+| Unit | `property`, `unitType` (+ pricings, attachments), `activeLease` or `leases` |
+| Lease | `property`, `unit`, `user`, `unitPricing`, `createdBy`, `updatedBy` |
+| Tenant (detail) | profile fields + `leases` (full lease graph) |
+| Ledger entry | `property`, `createdBy` |
 
 ---
 
@@ -326,7 +349,6 @@ Categories of units within a property (e.g. Studio, 1 Bedroom). Pricing packages
   "name": "Studio",
   "propertyId": "clx...",
   "description": "Compact single room",
-  "totalFloor": 2,
   "size": 18
 }
 ```
@@ -335,9 +357,8 @@ Categories of units within a property (e.g. Studio, 1 Bedroom). Pricing packages
 |---|---|---|
 | `name` | string | yes |
 | `propertyId` | string | yes |
-| `description` | string | no |
-| `totalFloor` | integer | no |
-| `size` | integer (m²) | no |
+| `description` | string | yes |
+| `size` | integer (m²) \| null | no |
 
 **Errors:** `404` property not found · `409` duplicate name in property · `422` validation failed
 
@@ -450,9 +471,15 @@ Full unit with `property`, `unitType`, and lease history.
 {
   "name": "Room 101",
   "unitTypeId": "clx...",
-  "floor": 2
+  "maxOccupancy": 2
 }
 ```
+
+| Field | Type | Required |
+|---|---|---|
+| `name` | string | yes |
+| `unitTypeId` | string | yes |
+| `maxOccupancy` | integer \| null | no |
 
 New units default to `status: "vacant"`.
 
@@ -462,7 +489,7 @@ New units default to `status: "vacant"`.
 
 #### `PUT /admin/units/:id`
 
-Optional: `name`, `floor`, `status` (`vacant` \| `occupied`).
+Optional: `name`, `maxOccupancy`, `status` (`vacant` \| `occupied`). Send `null` for `maxOccupancy` to clear.
 
 **Errors:** `404` · `409` duplicate name · `422`
 
@@ -698,6 +725,282 @@ All fields optional (same as create).
 
 ---
 
+### Attachments
+
+Upload files to DigitalOcean Spaces and persist metadata in attachment tables.
+
+#### `GET /admin/attachments/checkup`
+
+Runs a storage health check by uploading and deleting a small probe file in DigitalOcean Spaces.
+
+**Response `200`**
+
+```json
+{
+  "data": {
+    "ok": true,
+    "bucket": "your-space-bucket-name",
+    "endpoint": "https://sgp1.digitaloceanspaces.com",
+    "region": "sgp1"
+  }
+}
+```
+
+**Errors:** `422` storage credentials/config/signing issue
+
+---
+
+#### `POST /admin/attachments/property`
+
+`multipart/form-data` body:
+
+| Field | Type | Required |
+|---|---|---|
+| `propertyId` | string | yes |
+| `file` | file | yes |
+
+**Errors:** `404` property not found · `422` invalid data
+
+---
+
+#### `POST /admin/attachments/unit-type`
+
+`multipart/form-data` body:
+
+| Field | Type | Required |
+|---|---|---|
+| `unitTypeId` | string | yes |
+| `file` | file | yes |
+
+**Errors:** `404` unit type not found · `422` invalid data
+
+---
+
+#### `DELETE /admin/attachments/property/:id`
+
+Deletes a property attachment by ID. Removes the object from DigitalOcean Spaces, then deletes the database record.
+
+**Path params**
+
+| Param | Type | Description |
+|---|---|---|
+| `id` | string | `PropertyAttachment` ID |
+
+**Response `200`** — deleted attachment record.
+
+**Errors:** `404` attachment not found · `422` storage delete failed
+
+---
+
+#### `DELETE /admin/attachments/unit-type/:id`
+
+Deletes a unit type attachment by ID. Removes the object from DigitalOcean Spaces, then deletes the database record.
+
+**Path params**
+
+| Param | Type | Description |
+|---|---|---|
+| `id` | string | `UnitTypeAttachment` ID |
+
+**Response `200`** — deleted attachment record.
+
+**Errors:** `404` attachment not found · `422` storage delete failed
+
+---
+
+## Public Routes
+
+> No authentication required. Intended for the public-facing frontend (landing page, search kosts, property listings).
+> All public routes are prefixed with `/public`.
+
+| Resource | Prefix |
+|---|---|
+| Properties | `/public/properties` |
+| Search rooms | `/public/search` |
+
+### Properties (Public)
+
+Read-only property catalogue with nested unit types, units, and all pricing packages.
+
+#### `GET /public/properties`
+
+Returns all properties with their unit types, units, pricing options, and attachment images.
+
+**Images on each property / unit type**
+
+| Field | Description |
+|---|---|
+| `propertyAttachments` | Array of property images; each item has a resolved `url` (from DB or built from `objectKey` + CDN/Spaces) |
+| `primaryImageUrl` | First image attachment URL for the property (convenience for cards) |
+| `unitTypes[].unitTypeAttachments` | Images for that unit type |
+| `unitTypes[].primaryImageUrl` | First image URL for that unit type |
+
+**Auth required:** no
+
+**Response `200`**
+
+```json
+{
+  "data": [
+    {
+      "id": "clx...",
+      "name": "Cherry Sky Kost A",
+      "address": "Jl. Sudirman No. 12",
+      "city": "Jakarta",
+      "unitTypes": [
+        {
+          "id": "clx...",
+          "name": "Studio",
+          "description": "Compact single room",
+          "size": 18,
+          "pricings": [
+            { "id": "clx...", "durationDays": 7, "price": 450000 },
+            { "id": "clx...", "durationDays": 30, "price": 1500000 }
+          ],
+          "units": [
+            { "id": "clx...", "name": "Room 101", "maxOccupancy": 2, "status": "vacant" },
+            { "id": "clx...", "name": "Room 102", "maxOccupancy": 2, "status": "occupied" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+#### `GET /public/properties/:id`
+
+Returns a single property with full unit and pricing detail.
+
+**Auth required:** no
+
+**Path params**
+
+| Param | Type | Description |
+|---|---|---|
+| `id` | string | Property ID |
+
+**Response `200`** — same shape as a single item from the list above.
+
+**Error `404`** — property not found.
+
+---
+
+### Search rooms (Public)
+
+Search rentable units across all properties. Intended for the public **search kosts** page (e.g. `/en/search-kosts` on the frontend).
+
+#### `GET /public/search`
+
+Returns a flat list of matching units with property, unit type, pricing packages, and attachment images. Each `property` and `unitType` includes `propertyAttachments` / `unitTypeAttachments` (with resolved `url`) and `primaryImageUrl` for display. No authentication required.
+
+**Auth required:** no
+
+**Query params**
+
+| Param | Type | Required | Description |
+|---|---|---|---|
+| `q` | string | no | Free-text search (unit name, property name/address/city, unit type name) |
+| `city` | string | no | Filter by property city (case-insensitive partial match) |
+| `propertyId` | string | no | Limit to a single property |
+| `unitTypeId` | string | no | Limit to a single unit type |
+| `status` | `vacant` \| `occupied` | no | Filter by unit status |
+| `startDate` | string (ISO date) | no* | Availability window start |
+| `endDate` | string (ISO date) | no* | Availability window end |
+| `minPrice` | integer | no | Minimum price (smallest currency unit, e.g. Rupiah) |
+| `maxPrice` | integer | no | Maximum price |
+| `durationDays` | integer | no | Require a pricing row with this exact duration (see below) |
+
+\* `startDate` and `endDate` must be provided together. Units with a lease overlapping that range are excluded.
+
+**How price filters work**
+
+`minPrice` / `maxPrice` apply to a single `unit_pricing` row on the unit’s type:
+
+- **Without `durationDays`** — any package whose price falls in range counts (e.g. a 7-day package at Rp 450.000 matches `minPrice=500000` only if you lower the min, or if another package is in range).
+- **With `durationDays`** — only that duration’s package is checked. Example: `durationDays=30` + price range requires a **30-day** row in range. If the DB only has `durationDays: 7`, the unit is **excluded** even when a 7-day price would match the slider.
+
+That is why `GET /public/search?status=vacant&minPrice=500000&maxPrice=2500000&durationDays=30` can return **0** while the same query **without** `durationDays` returns results: the frontend was sending `durationDays=30` on every load while data only had 7-day (or other) packages.
+
+**Recommended default (search-kosts page load)**
+
+Do **not** send `durationDays` until the user picks 7, 12, or 30 in the UI:
+
+```
+GET /public/search?status=vacant&minPrice=500000&maxPrice=2500000
+```
+
+**Example requests**
+
+```
+# Default page load (vacant + price slider only)
+GET /public/search?status=vacant&minPrice=500000&maxPrice=2500000
+
+# Text search
+GET /public/search?q=Medan&status=vacant
+
+# Duration chosen in UI — must exist in DB for that unit type
+GET /public/search?status=vacant&durationDays=7&minPrice=500000&maxPrice=2500000
+
+# All units (no filters)
+GET /public/search
+```
+
+To support monthly search in the UI, add admin pricing with `durationDays: 30` for the relevant unit types (or default the frontend duration dropdown to a duration that exists in data).
+
+**Response `200`**
+
+```json
+{
+  "data": [
+    {
+      "id": "clx...",
+      "name": "Room 101",
+      "maxOccupancy": 2,
+      "status": "vacant",
+      "property": {
+        "id": "clx...",
+        "name": "Cherry Sky Kost A",
+        "address": "Jl. Sudirman No. 12",
+        "city": "Jakarta"
+      },
+      "unitType": {
+        "id": "clx...",
+        "name": "Studio",
+        "description": "Compact single room",
+        "size": 18,
+        "pricings": [
+          { "id": "clx...", "durationDays": 7, "price": 450000 },
+          { "id": "clx...", "durationDays": 30, "price": 1500000 }
+        ]
+      }
+    }
+  ],
+  "meta": {
+    "total": 1
+  }
+}
+```
+
+**Error `422`** — invalid query (e.g. only one of `startDate`/`endDate` sent, or `minPrice` > `maxPrice`).
+
+**Frontend usage**
+
+```ts
+const params = new URLSearchParams({
+  city: "Jakarta",
+  status: "vacant",
+  startDate: "2026-06-01",
+  endDate: "2026-07-01",
+});
+const res = await fetch(`http://localhost:8000/public/search?${params}`);
+const { data, meta } = await res.json();
+```
+
+---
+
 ## Tenant Routes
 
 > Auth required. Not under `/admin`.
@@ -802,8 +1105,7 @@ Returns all leases for the authenticated user.
 |---|---|---|
 | `id` | string (cuid) | Unique identifier |
 | `name` | string | Type name (unique per property) |
-| `description` | string \| null | Optional notes |
-| `totalFloor` | integer \| null | Optional floor count |
+| `description` | string | Notes about what distinguishes this type |
 | `size` | integer \| null | Floor area in m² |
 | `propertyId` | string | Parent property |
 
@@ -823,7 +1125,7 @@ Returns all leases for the authenticated user.
 |---|---|---|
 | `id` | string (cuid) | Unique identifier |
 | `name` | string | Room identifier (unique per property) |
-| `floor` | integer \| null | Floor number |
+| `maxOccupancy` | integer \| null | Maximum tenants allowed |
 | `status` | `vacant` \| `occupied` | Occupancy status |
 | `unitTypeId` | string | Unit category |
 | `propertyId` | string | Parent property |

@@ -13,9 +13,9 @@ const leaseStyles: Record<LeaseStatus, string> = {
 };
 
 const leaseLabels: Record<LeaseStatus, string> = {
-  paid: "PAID",
-  unpaid: "UNPAID",
-  waiting_for_review: "WAITING_FOR_REVIEW",
+  paid: "Paid",
+  unpaid: "Unpaid",
+  waiting_for_review: "Waiting for Review",
 };
 
 export function UnitStatusBadge({ status }: { status: UnitStatus | string }) {

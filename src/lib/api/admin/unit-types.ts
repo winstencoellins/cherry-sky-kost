@@ -25,8 +25,7 @@ export async function getUnitType(id: string): Promise<UnitType> {
 export async function createUnitType(input: {
   name: string;
   propertyId: string;
-  description?: string | null;
-  totalFloor?: number | null;
+  description: string;
   size?: number | null;
 }): Promise<UnitType> {
   const res = await apiFetch<ApiDataResponse<UnitType>>("/admin/unit-types", {
@@ -41,7 +40,6 @@ export async function updateUnitType(
   input: Partial<{
     name: string;
     description: string | null;
-    totalFloor: number | null;
     size: number | null;
   }>,
 ): Promise<UnitType> {

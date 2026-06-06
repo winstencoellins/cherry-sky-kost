@@ -9,6 +9,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/shared/Icon';
 import type { Kost, SearchFilters } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils/format';
@@ -23,7 +24,6 @@ export function KostGrid({ kosts, isLoading }: KostGridProps) {
     const t = useTranslations();
     const locale = useLocale();
 
-    // Results are filtered server-side; display as provided.
     const filteredKosts = kosts;
 
     if (isLoading) {
@@ -85,7 +85,7 @@ export function KostGrid({ kosts, isLoading }: KostGridProps) {
             animate="show"
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-            {filteredKosts.map((kost, index) => (
+            {filteredKosts.map((kost) => (
                 <motion.div
                     key={kost.id}
                     variants={item}
@@ -93,7 +93,6 @@ export function KostGrid({ kosts, isLoading }: KostGridProps) {
                 >
                     <Link href={`/${locale}/kosts/${kost.id}`} className="block h-full">
                         <div className="relative h-full bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                            {/* Image Section */}
                             <div className="relative h-64 w-full overflow-hidden bg-slate-200 dark:bg-slate-800">
                                 {kost.thumbnail ? (
                                     <Image
@@ -108,17 +107,6 @@ export function KostGrid({ kosts, isLoading }: KostGridProps) {
                                     </div>
                                 )}
 
-                                {/* Badge */}
-                                <div className="absolute top-4 right-4">
-                                    {kost.isFeatured && (
-                                        <div className="px-3 py-1 bg-gradient-to-r from-[#d4af37] to-yellow-500 text-white text-xs font-bold rounded-full shadow-lg">
-                                            <Icon name="star" size={12} className="inline mr-1" />
-                                            Featured
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Available Rooms Badge */}
                                 <div className="absolute bottom-4 left-4">
                                     <div className="px-3 py-1 bg-emerald-500 text-white text-xs font-semibold rounded-full backdrop-blur-sm">
                                         {kost.availableRooms}/{kost.totalRooms} tersedia
@@ -126,36 +114,54 @@ export function KostGrid({ kosts, isLoading }: KostGridProps) {
                                 </div>
                             </div>
 
-                            {/* Content Section */}
                             <div className="p-5 flex flex-col gap-4">
-                                {/* Title & Location */}
                                 <div>
                                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1 line-clamp-1">
                                         {kost.name}
                                     </h3>
-                                    <p className="text-sm text-slate-600 dark:text-slate-400 flex items-center gap-1 line-clamp-1">
-                                        <Icon name="location_on" size={14} />
-                                        {kost.location.district}, {kost.location.city}
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 flex items-start gap-1 line-clamp-2">
+                                        <Icon name="location_on" size={14} className="mt-0.5 shrink-0" />
+                                        <span>
+                                            {kost.location.address}
+                                            {kost.location.city ? `, ${kost.location.city}` : ''}
+                                        </span>
                                     </p>
                                 </div>
 
-                                {/* Description */}
-                                <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
-                                    {kost.description}
-                                </p>
+                                {kost.roomTypes.length > 0 && (
+                                    <div className="flex flex-wrap gap-2">
+                                        {kost.roomTypes.map((roomType) => (
+                                            <Badge
+                                                key={roomType.id}
+                                                variant="secondary"
+                                                className="px-2.5 py-0.5 text-xs font-medium"
+                                            >
+                                                {roomType.name}
+                                            </Badge>
+                                        ))}
+                                    </div>
+                                )}
 
-                                {/* Price Range */}
-                                <div className="border-t border-slate-200 dark:border-slate-800 pt-4">
-                                    <p className="text-xs text-slate-500 dark:text-slate-500 mb-1 uppercase font-semibold">
-                                        Mulai dari
+                                {kost.description ? (
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                                        {kost.description}
                                     </p>
-                                    <p className="text-2xl font-bold text-slate-900 dark:text-white">
-                                        {formatCurrency(kost.priceRange.min)}
-                                        <span className="text-xs text-slate-400 font-normal">/bulan</span>
-                                    </p>
-                                </div>
+                                ) : null}
 
-                                {/* Facilities Preview */}
+                                {kost.priceRange.min > 0 && (
+                                    <div className="border-t border-slate-200 dark:border-slate-800 pt-4">
+                                        <p className="text-xs text-slate-500 dark:text-slate-500 mb-1 uppercase font-semibold">
+                                            {t('pricing.startingFrom')}
+                                        </p>
+                                        <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                                            {formatCurrency(kost.priceRange.min)}
+                                            <span className="text-xs text-slate-400 font-normal">
+                                                {t('pricing.perMonth')}
+                                            </span>
+                                        </p>
+                                    </div>
+                                )}
+
                                 <div className="flex flex-wrap gap-2 pt-2">
                                     {kost.facilities.slice(0, 3).map((facility) => (
                                         <div
@@ -176,7 +182,6 @@ export function KostGrid({ kosts, isLoading }: KostGridProps) {
                                     )}
                                 </div>
 
-                                {/* CTAs */}
                                 <div className="grid grid-cols-2 gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
                                     <button
                                         onClick={(e) => {
@@ -196,7 +201,6 @@ export function KostGrid({ kosts, isLoading }: KostGridProps) {
                                     </button>
                                 </div>
 
-                                {/* Rating */}
                                 {kost.rating && (
                                     <div className="flex items-center justify-between text-xs">
                                         <div className="flex items-center gap-1">

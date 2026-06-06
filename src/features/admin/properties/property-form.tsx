@@ -1,19 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import {
   AdminField,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
+import { AdminAttachmentsList } from "@/features/admin/components/admin-attachments-list";
 import { AdminFormPage } from "@/features/admin/crud/admin-form-page";
 import {
   useProperty,
   usePropertyMutations,
 } from "@/features/admin/hooks/use-admin-queries";
+import {
+  deletePropertyAttachment,
+  uploadPropertyImage,
+} from "@/lib/api/admin/attachments";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
+import { adminKeys } from "@/lib/query/keys";
 
 const BASE = "/admin/properties";
 
@@ -24,12 +31,27 @@ const emptyForm: FormState = { name: "", address: "", city: "" };
 export function PropertyForm({ id }: { id?: string }) {
   const t = useTranslations("admin.crud");
   const tp = useTranslations("admin.pages.properties");
+  const ta = useTranslations("admin.attachments");
   const router = useRouter();
+  const qc = useQueryClient();
   const isEdit = !!id;
   const { data: property, isLoading } = useProperty(id ?? "", isEdit);
   const mutations = usePropertyMutations();
   const [form, setForm] = useState<FormState>(emptyForm);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const [imagePending, setImagePending] = useState(false);
+  const [deletePending, setDeletePending] = useState(false);
+
+  const attachments = property?.propertyAttachments ?? [];
+
+  function invalidateProperty() {
+    void qc.invalidateQueries({ queryKey: adminKeys.properties.all() });
+    if (id) {
+      void qc.invalidateQueries({ queryKey: adminKeys.properties.detail(id) });
+    }
+  }
 
   useEffect(() => {
     if (property) {
@@ -52,12 +74,53 @@ export function PropertyForm({ id }: { id?: string }) {
         await mutations.create.mutateAsync(form);
         showApiSuccess(t("created"));
       }
+
       router.push(BASE);
       router.refresh();
     } catch (err) {
       const msg = getErrorMessage(err, t("saveFailed"));
       setFormError(msg);
       showApiError(err, t("saveFailed"));
+    }
+  }
+
+  async function handleImageUpload() {
+    if (!isEdit || !id) {
+      setImageError(tp("saveFirstToUpload"));
+      return;
+    }
+    if (!imageFile) {
+      setImageError(tp("imageRequired"));
+      return;
+    }
+
+    setImageError(null);
+    setImagePending(true);
+    try {
+      await uploadPropertyImage(id, imageFile);
+      showApiSuccess(tp("imageUploaded"));
+      setImageFile(null);
+      invalidateProperty();
+    } catch (err) {
+      const msg = getErrorMessage(err, tp("imageUploadFailed"));
+      setImageError(msg);
+      showApiError(err, msg);
+    } finally {
+      setImagePending(false);
+    }
+  }
+
+  async function handleDeleteAttachment(attachmentId: string) {
+    setDeletePending(true);
+    try {
+      await deletePropertyAttachment(attachmentId);
+      showApiSuccess(ta("deleted"));
+      invalidateProperty();
+    } catch (err) {
+      showApiError(err, ta("deleteFailed"));
+      throw err;
+    } finally {
+      setDeletePending(false);
     }
   }
 
@@ -113,6 +176,48 @@ export function PropertyForm({ id }: { id?: string }) {
           onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
         />
       </AdminField>
+      <AdminField label={tp("image")} htmlFor="prop-image">
+        <input
+          id="prop-image"
+          type="file"
+          accept="image/*"
+          className={adminInputClassName}
+          onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
+        />
+        <p className="mt-1 text-xs text-[#83746b]">{tp("imageHint")}</p>
+        <div className="mt-2 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => void handleImageUpload()}
+            disabled={imagePending}
+            className="rounded-lg border border-[#6f4627] bg-[#faf9f6] px-3 py-1.5 text-sm font-semibold text-[#6f4627] transition-colors hover:bg-[#efeeeb] disabled:opacity-50"
+          >
+            {imagePending ? tp("uploadingImage") : tp("uploadImage")}
+          </button>
+          {!isEdit ? (
+            <span className="text-xs text-[#83746b]">{tp("saveFirstToUpload")}</span>
+          ) : null}
+        </div>
+        {imageError ? (
+          <p className="mt-1 text-xs text-[#ba1a1a]">{imageError}</p>
+        ) : null}
+      </AdminField>
+
+      {isEdit ? (
+        <div className="space-y-3">
+          <div>
+            <h3 className="text-sm font-bold text-[#1a1c1a]">
+              {ta("title")}
+            </h3>
+            <p className="text-xs text-[#83746b]">{ta("subtitle")}</p>
+          </div>
+          <AdminAttachmentsList
+            attachments={attachments}
+            onDelete={handleDeleteAttachment}
+            deletePending={deletePending}
+          />
+        </div>
+      ) : null}
     </AdminFormPage>
   );
 }

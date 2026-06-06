@@ -19,10 +19,6 @@ interface NavbarProps {
     onMenuClick?: () => void;
 }
 
-function isKostDetailPath(pathname: string) {
-    return /\/kosts\/[^/]+/.test(pathname);
-}
-
 /** Pages with a full-width dark hero behind the navbar. */
 function hasHeroOverlay(pathname: string) {
     return (
@@ -37,7 +33,6 @@ export function Navbar({ onMenuClick }: NavbarProps) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-    const isKostDetail = isKostDetailPath(pathname);
     const isSolid = isScrolled || !hasHeroOverlay(pathname);
 
     useEffect(() => {
@@ -69,22 +64,8 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         >
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between gap-3">
-                    {/* Left: back (detail) + logo */}
+                    {/* Left: logo */}
                     <div className="flex min-w-0 items-center gap-2">
-                        {isKostDetail && (
-                            <Link
-                                href="/"
-                                className={cn(
-                                    'flex shrink-0 items-center justify-center rounded-xl p-2 transition-colors',
-                                    isSolid
-                                        ? 'text-[#51443c] hover:bg-white/70'
-                                        : 'text-[#faf9f6] hover:bg-white/10',
-                                )}
-                                aria-label={t('roomDetail.backToHome')}
-                            >
-                                <Icon name="arrow_back" size={22} />
-                            </Link>
-                        )}
                         <Link href="/" className="group flex min-w-0 items-center gap-2">
                             <div
                                 className={cn(
@@ -111,21 +92,19 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                         </Link>
                     </div>
 
-                    {/* Center: desktop nav (hidden on detail to save space) */}
-                    {!isKostDetail && (
-                        <div className="hidden items-center gap-1 md:flex">
-                            {[
-                                { href: '/', label: t('nav.home') },
-                                { href: '/about', label: t('nav.about') },
-                                { href: '/search-kosts', label: t('nav.search') },
-                                { href: '/contact', label: t('nav.contact') },
-                            ].map((link) => (
-                                <Link key={link.href} href={link.href} className={navLinkClass}>
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </div>
-                    )}
+                    {/* Center: desktop nav */}
+                    <div className="hidden items-center gap-1 md:flex">
+                        {[
+                            { href: '/', label: t('nav.home') },
+                            { href: '/about', label: t('nav.about') },
+                            { href: '/search-kosts', label: t('nav.search') },
+                            { href: '/contact', label: t('nav.contact') },
+                        ].map((link) => (
+                            <Link key={link.href} href={link.href} className={navLinkClass}>
+                                {link.label}
+                            </Link>
+                        ))}
+                    </div>
 
                     {/* Right: actions */}
                     <div className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -147,18 +126,16 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                             />
                         </button>
 
-                        {!isKostDetail && (
-                            <Button
-                                className={cn(
-                                    'hidden h-9 rounded-xl px-5 text-sm font-semibold transition-all sm:flex',
-                                    isSolid
-                                        ? 'bg-[#6f4627] text-white hover:bg-[#805533]'
-                                        : 'bg-[#faf9f6] text-[#1a1c1a] shadow-lg hover:bg-white',
-                                )}
-                            >
-                                {t('hero.scheduleVisit')}
-                            </Button>
-                        )}
+                        <Button
+                            className={cn(
+                                'hidden h-9 rounded-xl px-5 text-sm font-semibold transition-all sm:flex',
+                                isSolid
+                                    ? 'bg-[#6f4627] text-white hover:bg-[#805533]'
+                                    : 'bg-[#faf9f6] text-[#1a1c1a] shadow-lg hover:bg-white',
+                            )}
+                        >
+                            {t('hero.scheduleVisit')}
+                        </Button>
                     </div>
                 </div>
             </div>

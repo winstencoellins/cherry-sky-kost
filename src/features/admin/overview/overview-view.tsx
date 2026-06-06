@@ -13,6 +13,12 @@ import {
   useUnitPricings,
   useUnits,
 } from "@/features/admin/hooks/use-admin-queries";
+import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import {
+  getLeaseEndDateValue,
+  resolveLeasePropertyName,
+  resolveLeaseTenantLabel,
+} from "@/features/admin/lib/entity-display";
 import {
   formatDate,
   formatIdrCompact,
@@ -20,6 +26,8 @@ import {
   isExpiringWithinDays,
 } from "@/features/admin/lib/format";
 import { isUnitOccupied, type Lease } from "@/lib/types/admin";
+
+const EXPIRING_SOON_DAYS = 5;
 
 const quickActions = [
   { href: "/admin/properties", icon: "add_home", labelKey: "quickActions.addProperty" as const },
@@ -53,9 +61,10 @@ export function OverviewView() {
     const occupancy =
       totalUnits > 0 ? Math.round((occupied / totalUnits) * 100) : 0;
     const activeLeases = leaseList.filter((l) => l.status === "paid").length;
-    const expiring = leaseList.filter(
-      (l) => l.endDate && isExpiringWithinDays(l.endDate, 30),
-    ).length;
+    const expiring = leaseList.filter((l) => {
+      const end = getLeaseEndDateValue(l);
+      return end != null && isExpiringWithinDays(end, EXPIRING_SOON_DAYS);
+    }).length;
     const collected = leaseList
       .filter((l) => l.status === "paid")
       .reduce((sum, l) => sum + (l.unitPricing?.price ?? 0), 0);
@@ -213,9 +222,13 @@ export function OverviewView() {
 }
 
 function RecentLeaseRow({ lease }: { lease: Lease }) {
-  const tenant = lease.user?.name ?? lease.userId;
+  const t = useTranslations("admin.pages.overview.recent");
+  const lookups = useAdminLookups();
+  const tenant = resolveLeaseTenantLabel(lease);
+  const endDate = getLeaseEndDateValue(lease);
+  const propertyName = resolveLeasePropertyName(lease, lookups);
   const expiring =
-    !!lease.endDate && isExpiringWithinDays(lease.endDate, 30);
+    !!endDate && isExpiringWithinDays(endDate, EXPIRING_SOON_DAYS);
 
   return (
     <li className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-[#faf9f6]/80">
@@ -226,16 +239,16 @@ function RecentLeaseRow({ lease }: { lease: Lease }) {
         <p className="truncate font-medium text-[#1a1c1a]">{tenant}</p>
         <p className="truncate text-xs text-[#83746b]">
           {lease.unit?.name ?? lease.unitId}
-          {lease.unit?.property?.name ? ` · ${lease.unit.property.name}` : ""}
+          {propertyName !== "—" ? ` · ${propertyName}` : ""}
         </p>
       </div>
       <div className="hidden text-right sm:block">
         <p className="text-xs text-[#83746b]">
           {formatDate(lease.startDate)} –{" "}
-          {lease.endDate ? formatDate(lease.endDate) : "—"}
+          {endDate ? formatDate(endDate) : "—"}
         </p>
         {expiring && (
-          <p className="text-xs font-medium text-[#ba1a1a]">Expiring soon</p>
+          <p className="text-xs font-medium text-[#ba1a1a]">{t("expiringSoon")}</p>
         )}
       </div>
       <LeaseStatusBadge status={lease.status} />

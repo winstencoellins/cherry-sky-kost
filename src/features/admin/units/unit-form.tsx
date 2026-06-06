@@ -14,6 +14,8 @@ import {
   useUnitMutations,
   useUnitTypes,
 } from "@/features/admin/hooks/use-admin-queries";
+import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import { resolveUnitTypePropertyName } from "@/features/admin/lib/entity-display";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
 import type { UnitStatus } from "@/lib/types/admin";
@@ -22,14 +24,14 @@ const BASE = "/admin/units";
 
 type FormState = {
   name: string;
-  floor: string;
+  maxOccupancy: string;
   propertyId: string;
   unitTypeId: string;
 };
 
 const emptyForm: FormState = {
   name: "",
-  floor: "",
+  maxOccupancy: "",
   propertyId: "",
   unitTypeId: "",
 };
@@ -42,6 +44,7 @@ export function UnitForm({ id }: { id?: string }) {
   const { data: properties = [] } = useProperties();
   const { data: unit, isLoading } = useUnit(id ?? "", isEdit);
   const mutations = useUnitMutations();
+  const lookups = useAdminLookups();
   const [form, setForm] = useState<FormState>(emptyForm);
   const [status, setStatus] = useState<UnitStatus>("vacant");
   const [formError, setFormError] = useState<string | null>(null);
@@ -57,7 +60,8 @@ export function UnitForm({ id }: { id?: string }) {
     if (unit) {
       setForm({
         name: unit.name,
-        floor: unit.floor != null ? String(unit.floor) : "",
+        maxOccupancy:
+          unit.maxOccupancy != null ? String(unit.maxOccupancy) : "",
         propertyId: unit.propertyId,
         unitTypeId: unit.unitTypeId,
       });
@@ -69,14 +73,16 @@ export function UnitForm({ id }: { id?: string }) {
     e.preventDefault();
     setFormError(null);
 
-    const floor = form.floor ? Number(form.floor) : undefined;
+    const maxOccupancy = form.maxOccupancy
+      ? Number(form.maxOccupancy)
+      : undefined;
 
     try {
       if (isEdit && id) {
         await mutations.update.mutateAsync({
           id,
           name: form.name,
-          floor: floor ?? null,
+          maxOccupancy: maxOccupancy ?? null,
           status,
         });
         showApiSuccess(t("updated"));
@@ -88,7 +94,7 @@ export function UnitForm({ id }: { id?: string }) {
         await mutations.create.mutateAsync({
           name: form.name,
           unitTypeId: form.unitTypeId,
-          floor,
+          maxOccupancy,
         });
         showApiSuccess(t("created"));
       }
@@ -164,7 +170,9 @@ export function UnitForm({ id }: { id?: string }) {
           {(isEdit ? unitTypes : availableUnitTypes).map((ut) => (
             <option key={ut.id} value={ut.id}>
               {ut.name}
-              {ut.property?.name ? ` — ${ut.property.name}` : ""}
+              {resolveUnitTypePropertyName(ut, lookups) !== "—"
+                ? ` — ${resolveUnitTypePropertyName(ut, lookups)}`
+                : ""}
             </option>
           ))}
         </select>
@@ -180,13 +188,16 @@ export function UnitForm({ id }: { id?: string }) {
         />
       </AdminField>
 
-      <AdminField label={t("floor")} htmlFor="unit-floor">
+      <AdminField label={t("maxOccupancy")} htmlFor="unit-max-occupancy">
         <input
-          id="unit-floor"
+          id="unit-max-occupancy"
           type="number"
+          min={1}
           className={adminInputClassName}
-          value={form.floor}
-          onChange={(e) => setForm((f) => ({ ...f, floor: e.target.value }))}
+          value={form.maxOccupancy}
+          onChange={(e) =>
+            setForm((f) => ({ ...f, maxOccupancy: e.target.value }))
+          }
         />
       </AdminField>
 

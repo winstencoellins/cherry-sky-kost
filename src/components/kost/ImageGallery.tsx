@@ -8,33 +8,60 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { Icon } from '@/components/shared/Icon';
 import { cn } from '@/lib/utils';
 
 interface ImageGalleryProps {
     images: string[];
     alt?: string;
+    variant?: 'default' | 'compact';
+    backHref?: string;
+    backLabel?: string;
 }
 
-export function ImageGallery({ images, alt = 'Room image' }: ImageGalleryProps) {
+export function ImageGallery({
+    images,
+    alt = 'Room image',
+    variant = 'default',
+    backHref,
+    backLabel,
+}: ImageGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [showAllPhotos, setShowAllPhotos] = useState(false);
     const t = useTranslations();
 
-    const visibleThumbnails = images.slice(1, 4);
-    const remainingCount = Math.max(0, images.length - 4);
+    const visibleThumbnails = images.slice(1, variant === 'compact' ? 3 : 4);
+    const remainingCount = Math.max(0, images.length - (variant === 'compact' ? 4 : 4));
+
+    const isCompact = variant === 'compact';
 
     return (
         <>
-            <div className="space-y-4">
+            <div className={cn('space-y-4', isCompact && 'space-y-3')}>
+                {backHref && backLabel && (
+                    <Link
+                        href={backHref}
+                        className="inline-flex items-center gap-2 text-sm font-medium text-[#51443c] transition-colors hover:text-[#6f4627] dark:text-slate-400 dark:hover:text-primary"
+                    >
+                        <Icon name="arrow_back" size={18} />
+                        {backLabel}
+                    </Link>
+                )}
+
                 {/* Main Hero Image */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="w-full aspect-video rounded-xl bg-slate-200 dark:bg-slate-700 overflow-hidden relative group cursor-pointer"
+                    className={cn(
+                        'relative w-full cursor-pointer overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-700 group',
+                        isCompact
+                            ? 'aspect-[16/9] max-h-48 sm:max-h-56 md:max-h-64'
+                            : 'aspect-video',
+                    )}
                     onClick={() => setShowAllPhotos(true)}
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={isCompact ? undefined : { scale: 1.02 }}
                 >
                     <img
                         src={images[selectedIndex] || '/placeholder-room.jpg'}
@@ -48,11 +75,15 @@ export function ImageGallery({ images, alt = 'Room image' }: ImageGalleryProps) 
                 </motion.div>
 
                 {/* Thumbnails */}
+                {images.length > 1 && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="grid grid-cols-4 gap-4"
+                    className={cn(
+                        'grid gap-2',
+                        isCompact ? 'grid-cols-3 sm:grid-cols-4' : 'grid-cols-4 gap-4',
+                    )}
                 >
                     {visibleThumbnails.map((image, index) => {
                         const actualIndex = index + 1;
@@ -60,11 +91,12 @@ export function ImageGallery({ images, alt = 'Room image' }: ImageGalleryProps) 
                             <motion.div
                                 key={actualIndex}
                                 className={cn(
-                                    'aspect-[4/3] rounded-lg bg-slate-200 dark:bg-slate-700 cursor-pointer overflow-hidden relative',
-                                    selectedIndex === actualIndex && 'ring-2 ring-primary'
+                                    'relative cursor-pointer overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-700',
+                                    isCompact ? 'aspect-[4/3] max-h-16 sm:max-h-20' : 'aspect-[4/3]',
+                                    selectedIndex === actualIndex && 'ring-2 ring-primary',
                                 )}
                                 onClick={() => setSelectedIndex(actualIndex)}
-                                whileHover={{ scale: 1.05 }}
+                                whileHover={isCompact ? undefined : { scale: 1.05 }}
                                 transition={{ duration: 0.2 }}
                             >
                                 <img
@@ -77,15 +109,22 @@ export function ImageGallery({ images, alt = 'Room image' }: ImageGalleryProps) 
                     })}
                     {remainingCount > 0 && (
                         <div
-                            className="aspect-[4/3] rounded-lg bg-slate-100 dark:bg-slate-800 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center justify-center"
+                            className={cn(
+                                'flex cursor-pointer items-center justify-center rounded-lg bg-slate-100 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700',
+                                isCompact ? 'aspect-[4/3] max-h-16 sm:max-h-20' : 'aspect-[4/3]',
+                            )}
                             onClick={() => setShowAllPhotos(true)}
                         >
-                            <span className="font-semibold text-sm text-slate-600 dark:text-slate-300">
+                            <span className={cn(
+                                'font-semibold text-slate-600 dark:text-slate-300',
+                                isCompact ? 'text-xs' : 'text-sm',
+                            )}>
                                 {t('roomDetail.morePhotos', { count: remainingCount })}
                             </span>
                         </div>
                     )}
                 </motion.div>
+                )}
             </div>
 
             {/* Full Screen Gallery Modal */}

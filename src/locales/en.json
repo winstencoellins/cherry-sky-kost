@@ -184,13 +184,18 @@
         "noResults": "No kost found",
         "tryDifferentFilters": "Try using different filters",
         "resultsCount": "Showing {count} properties ({total} rooms matched)",
+        "unitTypeResultsCount": "Showing {count} unit types ({total} matching rooms)",
         "updating": "Updating…",
         "loadError": "Could not load search results. Check that the API is running and try again.",
         "durationLabel": "Rent duration (days)",
         "durationAny": "Any duration",
         "duration7": "7 days",
         "duration12": "12 days",
-        "duration30": "30 days"
+        "duration30": "30 days",
+        "durationDaysCount": "{days} days",
+        "unitTypes": "Unit Types",
+        "unitsAvailable": "{count} rooms available",
+        "noPricing": "Pricing not available"
     },
     "property": {
         "flagship": "Flagship Property",
@@ -200,6 +205,16 @@
         "details": "Property Details",
         "rules": "Rules",
         "amenities": "Amenities"
+    },
+    "propertyDetail": {
+        "notFound": "Property not found",
+        "notFoundDescription": "The property you are looking for is not available",
+        "unitTypes": "Room Types",
+        "unitTypesDescription": "Choose a room type to view details and availability",
+        "noUnitTypes": "No room types available for this property yet",
+        "availableRooms": "{available} of {total} rooms available",
+        "backToProperty": "Back to Property",
+        "unitTypeNotFound": "Room type not found"
     },
     "footer": {
         "tagline": "Finding comfortable living for a better life",
@@ -589,6 +604,8 @@
             "size": "Size (m²)",
             "description": "Description",
             "floor": "Floor",
+            "maxOccupancy": "Max occupancy",
+            "descriptionRequired": "Description is required.",
             "duration": "Duration (days)",
             "days": "days",
             "price": "Price (IDR)",
@@ -608,6 +625,16 @@
             "selectTenant": "Select a tenant",
             "noTenantsAvailable": "No tenant accounts found. Register a user with the tenant role first."
         },
+        "attachments": {
+            "column": "Images",
+            "title": "Uploaded images",
+            "subtitle": "Images stored for this record. Open to preview or remove ones you no longer need.",
+            "empty": "No images uploaded yet.",
+            "view": "View full size",
+            "remove": "Remove",
+            "deleted": "Image removed.",
+            "deleteFailed": "Failed to remove image."
+        },
         "pages": {
             "overview": {
                 "title": "Dashboard",
@@ -625,7 +652,7 @@
                     "units": "Total units",
                     "unitsHint": "{occupied} currently occupied",
                     "leases": "Active leases",
-                    "leasesHint": "{expiring} expiring within 30 days",
+                    "leasesHint": "{expiring} expiring within 5 days",
                     "revenue": "Monthly revenue",
                     "revenueHint": "From paid leases",
                     "pricing": "Price packages",
@@ -643,18 +670,35 @@
                     "title": "Recent leases",
                     "subtitle": "Latest rental activity",
                     "viewAll": "View all",
-                    "empty": "No leases yet. Create your first lease to get started."
+                    "empty": "No leases yet. Create your first lease to get started.",
+                    "expiringSoon": "Expiring soon"
                 }
             },
             "properties": {
                 "title": "Properties",
                 "description": "Manage kost buildings.",
-                "formDescription": "Enter the property details for your kost portfolio."
+                "formDescription": "Enter the property details for your kost portfolio.",
+                "image": "Property image",
+                "imageHint": "Optional. Upload an image for this property.",
+                "imageUploaded": "Property image uploaded successfully.",
+                "uploadImage": "Upload image",
+                "uploadingImage": "Uploading…",
+                "saveFirstToUpload": "Save this property first, then upload its image.",
+                "imageRequired": "Please choose an image file first.",
+                "imageUploadFailed": "Failed to upload property image."
             },
             "unitTypes": {
                 "title": "Unit types",
                 "description": "Room categories per property (e.g. Studio, 1BR).",
-                "formDescription": "Define a room category and link it to a property."
+                "formDescription": "Define a room category and link it to a property.",
+                "image": "Unit type image",
+                "imageHint": "Optional. Upload an image for this unit type.",
+                "imageUploaded": "Unit type image uploaded successfully.",
+                "uploadImage": "Upload image",
+                "uploadingImage": "Uploading…",
+                "saveFirstToUpload": "Save this unit type first, then upload its image.",
+                "imageRequired": "Please choose an image file first.",
+                "imageUploadFailed": "Failed to upload unit type image."
             },
             "units": {
                 "title": "Units",

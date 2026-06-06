@@ -8,6 +8,15 @@ export type PropertyType = 'putra' | 'putri' | 'campur';
 export type FacilityCategory = 'room' | 'building' | 'service' | 'security';
 
 /**
+ * Pricing package for a room type (e.g. 7-day, 30-day rent)
+ */
+export interface RoomTypePricing {
+  id: string;
+  durationDays: number;
+  price: number;
+}
+
+/**
  * Room Type Interface
  * Represents different room configurations within a kost property
  */
@@ -15,6 +24,7 @@ export interface RoomType {
   id: string;
   name: string;
   price: number;
+  pricings?: RoomTypePricing[];
   bathroomType: BathroomType;
   capacity: string; // e.g., "1-2 orang"
   size?: number; // in square meters
@@ -85,6 +95,27 @@ export interface Kost {
   rules?: string[];
   createdAt: Date;
   updatedAt: Date;
+}
+
+/**
+ * Flattened unit type result for public search listings
+ */
+export interface SearchUnitTypeResult {
+  id: string;
+  propertyId: string;
+  name: string;
+  propertyName: string;
+  address: string;
+  city: string;
+  images: string[];
+  thumbnail: string;
+  availableCount: number;
+  totalCount: number;
+  pricings: RoomTypePricing[];
+  minPrice: number;
+  whatsappNumber: string;
+  size?: number;
+  description?: string;
 }
 
 /**

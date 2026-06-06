@@ -30,6 +30,8 @@ import {
   useLedgerEntries,
   useLedgerEntryMutations,
 } from "@/features/admin/hooks/use-admin-queries";
+import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import { resolveLeasePropertyName } from "@/features/admin/lib/entity-display";
 import {
   formatDate,
   formatIdrCompact,
@@ -83,6 +85,7 @@ export function BookkeepingList() {
   );
   const mutations = useLedgerEntryMutations();
   const deleteDialog = useDeleteDialog<LedgerEntry>();
+  const lookups = useAdminLookups();
 
   const leaseIncomeEntries = useMemo(() => {
     if (typeFilter === "expense") return [];
@@ -92,12 +95,12 @@ export function BookkeepingList() {
           lease,
           tp("leaseIncomeDescription", {
             unit: lease.unit?.name ?? lease.unitId,
-            property: lease.unit?.property?.name ?? "—",
+            property: resolveLeasePropertyName(lease, lookups),
           }),
         ),
       )
       .filter((row): row is LedgerEntry => row != null);
-  }, [leases, typeFilter, tp]);
+  }, [leases, typeFilter, tp, lookups]);
 
   const allEntries = useMemo(
     () => [...leaseIncomeEntries, ...entries],

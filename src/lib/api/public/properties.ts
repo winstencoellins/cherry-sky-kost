@@ -1,4 +1,10 @@
 import { apiFetch } from "@/lib/api/client";
+import { ApiError } from "@/lib/api/errors";
+
+export interface PublicAttachment {
+  id: string;
+  url: string;
+}
 
 export interface PublicPricing {
   id: string;
@@ -17,8 +23,8 @@ export interface PublicUnitType {
   id: string;
   name: string;
   description: string | null;
-  totalFloor: number | null;
   size: number | null;
+  unitTypeAttachments?: PublicAttachment[];
   pricings: PublicPricing[];
   units: PublicUnit[];
 }
@@ -28,6 +34,7 @@ export interface PublicProperty {
   name: string;
   address: string;
   city: string;
+  propertyAttachments?: PublicAttachment[];
   unitTypes: PublicUnitType[];
 }
 
@@ -40,10 +47,24 @@ export interface PublicPropertyResponse {
 }
 
 export async function listPublicProperties(): Promise<PublicPropertiesResponse> {
-  return apiFetch<PublicPropertiesResponse>("/public/properties");
+  try {
+    return await apiFetch<PublicPropertiesResponse>("/public/properties");
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      return apiFetch<PublicPropertiesResponse>("/properties");
+    }
+    throw error;
+  }
 }
 
 export async function getPublicProperty(id: string): Promise<PublicPropertyResponse> {
-  return apiFetch<PublicPropertyResponse>(`/public/properties/${id}`);
+  try {
+    return await apiFetch<PublicPropertyResponse>(`/public/properties/${id}`);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      return apiFetch<PublicPropertyResponse>(`/properties/${id}`);
+    }
+    throw error;
+  }
 }
 

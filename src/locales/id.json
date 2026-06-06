@@ -184,13 +184,18 @@
         "noResults": "Tidak ada kost yang ditemukan",
         "tryDifferentFilters": "Coba gunakan filter yang berbeda",
         "resultsCount": "Menampilkan {count} properti ({total} kamar cocok)",
+        "unitTypeResultsCount": "Menampilkan {count} tipe unit ({total} kamar cocok)",
         "updating": "Memperbarui…",
         "loadError": "Gagal memuat hasil pencarian. Pastikan API berjalan lalu coba lagi.",
         "durationLabel": "Durasi sewa (hari)",
         "durationAny": "Semua durasi",
         "duration7": "7 hari",
         "duration12": "12 hari",
-        "duration30": "30 hari"
+        "duration30": "30 hari",
+        "durationDaysCount": "{days} hari",
+        "unitTypes": "Tipe Unit",
+        "unitsAvailable": "{count} kamar tersedia",
+        "noPricing": "Harga belum tersedia"
     },
     "property": {
         "flagship": "Properti Unggulan",
@@ -200,6 +205,16 @@
         "details": "Detail Properti",
         "rules": "Peraturan",
         "amenities": "Fasilitas Umum"
+    },
+    "propertyDetail": {
+        "notFound": "Properti tidak ditemukan",
+        "notFoundDescription": "Properti yang Anda cari tidak tersedia",
+        "unitTypes": "Tipe Kamar",
+        "unitTypesDescription": "Pilih tipe kamar untuk melihat detail dan ketersediaan",
+        "noUnitTypes": "Belum ada tipe kamar untuk properti ini",
+        "availableRooms": "{available} dari {total} kamar tersedia",
+        "backToProperty": "Kembali ke Properti",
+        "unitTypeNotFound": "Tipe kamar tidak ditemukan"
     },
     "footer": {
         "tagline": "Menemukan hunian nyaman untuk hidup yang lebih baik",
@@ -589,6 +604,8 @@
             "size": "Luas (m²)",
             "description": "Deskripsi",
             "floor": "Lantai",
+            "maxOccupancy": "Kapasitas maks.",
+            "descriptionRequired": "Deskripsi wajib diisi.",
             "duration": "Durasi (hari)",
             "days": "hari",
             "price": "Harga (IDR)",
@@ -608,6 +625,16 @@
             "selectTenant": "Pilih penyewa",
             "noTenantsAvailable": "Belum ada akun penyewa. Daftarkan pengguna dengan peran tenant terlebih dahulu."
         },
+        "attachments": {
+            "column": "Gambar",
+            "title": "Gambar terunggah",
+            "subtitle": "Gambar tersimpan untuk data ini. Buka untuk pratinjau atau hapus yang tidak diperlukan.",
+            "empty": "Belum ada gambar terunggah.",
+            "view": "Lihat ukuran penuh",
+            "remove": "Hapus",
+            "deleted": "Gambar dihapus.",
+            "deleteFailed": "Gagal menghapus gambar."
+        },
         "pages": {
             "overview": {
                 "title": "Dashboard",
@@ -625,7 +652,7 @@
                     "units": "Total unit",
                     "unitsHint": "{occupied} sedang terisi",
                     "leases": "Sewa aktif",
-                    "leasesHint": "{expiring} berakhir dalam 30 hari",
+                    "leasesHint": "{expiring} berakhir dalam 5 hari",
                     "revenue": "Pendapatan bulanan",
                     "revenueHint": "Dari sewa berstatus lunas",
                     "pricing": "Paket harga",
@@ -643,18 +670,35 @@
                     "title": "Sewa terbaru",
                     "subtitle": "Aktivitas sewa terakhir",
                     "viewAll": "Lihat semua",
-                    "empty": "Belum ada sewa. Buat sewa pertama untuk memulai."
+                    "empty": "Belum ada sewa. Buat sewa pertama untuk memulai.",
+                    "expiringSoon": "Segera berakhir"
                 }
             },
             "properties": {
                 "title": "Properti",
                 "description": "Kelola bangunan kost.",
-                "formDescription": "Masukkan detail properti untuk portofolio kost Anda."
+                "formDescription": "Masukkan detail properti untuk portofolio kost Anda.",
+                "image": "Gambar properti",
+                "imageHint": "Opsional. Unggah gambar untuk properti ini.",
+                "imageUploaded": "Gambar properti berhasil diunggah.",
+                "uploadImage": "Unggah gambar",
+                "uploadingImage": "Mengunggah…",
+                "saveFirstToUpload": "Simpan properti ini terlebih dahulu, lalu unggah gambarnya.",
+                "imageRequired": "Pilih file gambar terlebih dahulu.",
+                "imageUploadFailed": "Gagal mengunggah gambar properti."
             },
             "unitTypes": {
                 "title": "Tipe unit",
                 "description": "Kategori kamar per properti (mis. Studio, 1BR).",
-                "formDescription": "Tentukan kategori kamar dan hubungkan ke properti."
+                "formDescription": "Tentukan kategori kamar dan hubungkan ke properti.",
+                "image": "Gambar tipe unit",
+                "imageHint": "Opsional. Unggah gambar untuk tipe unit ini.",
+                "imageUploaded": "Gambar tipe unit berhasil diunggah.",
+                "uploadImage": "Unggah gambar",
+                "uploadingImage": "Mengunggah…",
+                "saveFirstToUpload": "Simpan tipe unit ini terlebih dahulu, lalu unggah gambarnya.",
+                "imageRequired": "Pilih file gambar terlebih dahulu.",
+                "imageUploadFailed": "Gagal mengunggah gambar tipe unit."
             },
             "units": {
                 "title": "Unit",

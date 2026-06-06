@@ -46,7 +46,7 @@ export function leaseToIncomeEntry(
   const amount = calculatePaidLeaseIncome(lease);
   if (amount <= 0) return null;
 
-  const property = lease.unit?.property;
+  const property = lease.property ?? lease.unit?.property;
 
   return {
     id: `lease-income-${lease.id}`,

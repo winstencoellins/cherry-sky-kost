@@ -9,10 +9,9 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Icon } from '@/components/shared/Icon';
-import type { SearchFilters as SearchFiltersState, BathroomType } from '@/lib/types';
+import type { SearchFilters as SearchFiltersState } from '@/lib/types';
 
 interface SearchFiltersProps {
     filters: SearchFiltersState;
@@ -32,29 +31,12 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
         });
     };
 
-    const handleBathroomToggle = (type: BathroomType) => {
-        const current = filters.bathroomType || [];
-        const updated = current.includes(type)
-            ? current.filter((t) => t !== type)
-            : [...current, type];
-        onFiltersChange({
-            ...filters,
-            bathroomType: updated.length > 0 ? updated : undefined,
-        });
-    };
-
     const handleSortChange = (sortBy: 'price-asc' | 'price-desc' | 'newest' | 'popular') => {
         onFiltersChange({
             ...filters,
             sortBy,
         });
     };
-
-    const bathroomOptions: Array<{ id: BathroomType; label: string }> = [
-        { id: 'dalam', label: t('bathroom.inside') },
-        { id: 'luar', label: t('bathroom.outside') },
-        { id: 'bersama', label: t('bathroom.shared') },
-    ];
 
     const sortOptions = [
         { id: 'price-asc', label: 'Harga: Terendah' },
@@ -153,33 +135,6 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
                                     Rp {((filters.priceMax || 2500000) / 1000000).toFixed(1)}M+
                                 </span>
                             </div>
-                        </div>
-                    </div>
-
-                    {/* Bathroom Type */}
-                    <div className="mb-8 border-b border-[#e3e2e0] pb-8">
-                        <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
-                            <Icon name="bathroom" size={16} />
-                            Tipe Kamar Mandi
-                        </h4>
-                        <div className="space-y-3">
-                            {bathroomOptions.map((option) => (
-                                <label
-                                    key={option.id}
-                                    htmlFor={`bathroom-${option.id}`}
-                                    className="flex items-center gap-3 cursor-pointer group"
-                                >
-                                    <Checkbox
-                                        id={`bathroom-${option.id}`}
-                                        checked={filters.bathroomType?.includes(option.id) ?? false}
-                                        onCheckedChange={() => handleBathroomToggle(option.id)}
-                                        className="w-4 h-4"
-                                    />
-                                    <span className="text-sm text-[#83746b] transition-colors group-hover:text-[#1a1c1a]">
-                                        {option.label}
-                                    </span>
-                                </label>
-                            ))}
                         </div>
                     </div>
 

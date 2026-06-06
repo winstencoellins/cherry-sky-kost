@@ -5,18 +5,16 @@
 
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
 import { Amenities } from '@/components/sections/Amenities';
-import { KostSection } from '@/components/kost/KostSection';
-import { KostSectionSkeleton } from '@/components/kost/SkeletonLoaders';
-import { useFeaturedKosts } from '@/lib/hooks/use-kost-data';
+import { KostGrid } from '@/components/kost/KostGrid';
+import { DEFAULT_SEARCH_FILTERS } from '@/lib/api/public/search-contract';
+import { useKosts } from '@/lib/hooks/use-kost-data';
 
 export default function HomePage() {
-  const t = useTranslations();
-  const { data: kosts, isLoading } = useFeaturedKosts();
+  const { data: kosts, isLoading } = useKosts();
 
   return (
     <AppLayout>
@@ -46,22 +44,11 @@ export default function HomePage() {
             </p>
           </div>
 
-          {isLoading ? (
-            <>
-              <KostSectionSkeleton />
-              <KostSectionSkeleton />
-            </>
-          ) : kosts && kosts.length > 0 ? (
-            kosts.map((kost) => (
-              <KostSection key={kost.id} kost={kost} showFacilities={true} />
-            ))
-          ) : (
-            <div className="py-12 text-center">
-              <p className="text-sm text-[#83746b]">
-                {t('search.noResults')}
-              </p>
-            </div>
-          )}
+          <KostGrid
+            kosts={kosts ?? []}
+            filters={DEFAULT_SEARCH_FILTERS}
+            isLoading={isLoading}
+          />
         </div>
       </section>
 

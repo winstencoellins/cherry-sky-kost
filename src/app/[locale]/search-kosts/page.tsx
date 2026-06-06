@@ -11,15 +11,15 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { Footer } from '@/components/layout/Footer';
 import { SearchHero } from '@/components/sections/SearchHero';
 import { SearchFilters } from '@/components/sections/SearchFilters';
-import { KostGrid } from '@/components/kost/KostGrid';
+import { UnitTypeSearchGrid } from '@/components/kost/UnitTypeSearchGrid';
 import { DEFAULT_SEARCH_FILTERS } from '@/lib/api/public/search-contract';
-import { useSearchKosts } from '@/lib/hooks/use-kost-data';
+import { useSearchUnitTypes } from '@/lib/hooks/use-kost-data';
 import type { SearchFilters as SearchFiltersType } from '@/lib/types';
 
 export default function SearchKostsPage() {
     const t = useTranslations('search');
     const [filters, setFilters] = useState<SearchFiltersType>(DEFAULT_SEARCH_FILTERS);
-    const { data: kosts, total, isLoading, isFetching, error } = useSearchKosts(filters);
+    const { data: unitTypes, total, isLoading, isFetching, error } = useSearchUnitTypes(filters);
     const filterRef = useRef<HTMLDivElement>(null);
 
     const handleFiltersFocus = () => {
@@ -37,7 +37,7 @@ export default function SearchKostsPage() {
         setFilters(DEFAULT_SEARCH_FILTERS);
     };
 
-    const resultCount = kosts?.length ?? 0;
+    const resultCount = unitTypes?.length ?? 0;
 
     return (
         <AppLayout>
@@ -53,7 +53,7 @@ export default function SearchKostsPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-8 space-y-2">
                         <p className="text-sm text-[#83746b]">
-                            {t('resultsCount', { count: resultCount, total })}
+                            {t('unitTypeResultsCount', { count: resultCount, total })}
                             {isFetching && !isLoading ? (
                                 <span className="ml-2 text-[#6f4627]">{t('updating')}</span>
                             ) : null}
@@ -75,9 +75,8 @@ export default function SearchKostsPage() {
                         </div>
 
                         <div className="lg:col-span-3">
-                            <KostGrid
-                                kosts={kosts ?? []}
-                                filters={filters}
+                            <UnitTypeSearchGrid
+                                unitTypes={unitTypes ?? []}
                                 isLoading={isLoading}
                             />
                         </div>

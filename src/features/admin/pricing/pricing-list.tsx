@@ -21,6 +21,11 @@ import {
   useUnitPricingMutations,
   useUnitPricings,
 } from "@/features/admin/hooks/use-admin-queries";
+import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import {
+  resolvePricingPropertyName,
+  resolvePricingUnitTypeName,
+} from "@/features/admin/lib/entity-display";
 import { formatIdrTable } from "@/features/admin/lib/format";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
@@ -38,6 +43,7 @@ export function PricingList() {
   });
   const mutations = useUnitPricingMutations();
   const deleteDialog = useDeleteDialog<UnitPricing>();
+  const lookups = useAdminLookups();
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -137,10 +143,10 @@ export function PricingList() {
             {pageData.map((row) => (
               <AdminCrudTableRow key={row.id}>
                 <AdminCrudTableCell className="font-semibold">
-                  {row.unitType?.name ?? "—"}
+                  {resolvePricingUnitTypeName(row, lookups)}
                 </AdminCrudTableCell>
                 <AdminCrudTableCell className="text-[#51443c]">
-                  {row.property?.name ?? "—"}
+                  {resolvePricingPropertyName(row, lookups)}
                 </AdminCrudTableCell>
                 <AdminCrudTableCell>
                   {row.durationDays} {t("days")}

@@ -20,6 +20,11 @@ import {
 } from "@/features/admin/crud/admin-crud-table";
 import { useClientPagination } from "@/features/admin/crud/use-client-pagination";
 import { useVacantUnits } from "@/features/admin/hooks/use-admin-queries";
+import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import {
+  resolveUnitPropertyName,
+  resolveUnitTypeNameForUnit,
+} from "@/features/admin/lib/entity-display";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { toDateInputValue } from "@/features/admin/lib/format";
 
@@ -43,6 +48,7 @@ export function VacantUnitsSearch() {
     propertyId?: string;
   } | null>(null);
   const [dateError, setDateError] = useState<string | null>(null);
+  const lookups = useAdminLookups();
 
   const queryParams = submitted ?? {
     startDate: "",
@@ -65,11 +71,15 @@ export function VacantUnitsSearch() {
     return data.filter((unit) => {
       return (
         unit.name.toLowerCase().includes(q) ||
-        (unit.unitType?.name ?? "").toLowerCase().includes(q) ||
-        (unit.property?.name ?? "").toLowerCase().includes(q)
+        resolveUnitTypeNameForUnit(unit, lookups)
+          .toLowerCase()
+          .includes(q) ||
+        resolveUnitPropertyName(unit, lookups)
+          .toLowerCase()
+          .includes(q)
       );
     });
-  }, [data, search]);
+  }, [data, search, lookups]);
 
   const { page, setPage, pageData, total, pageSize } =
     useClientPagination(filtered);
@@ -193,7 +203,7 @@ export function VacantUnitsSearch() {
                   { key: "name", label: t("name") },
                   { key: "unitType", label: t("unitType") },
                   { key: "property", label: t("property") },
-                  { key: "floor", label: t("floor") },
+                  { key: "maxOccupancy", label: t("maxOccupancy") },
                   { key: "status", label: t("status") },
                 ]}
               >
@@ -203,13 +213,13 @@ export function VacantUnitsSearch() {
                       {unit.name}
                     </AdminCrudTableCell>
                     <AdminCrudTableCell className="text-[#51443c]">
-                      {unit.unitType?.name ?? "—"}
+                      {resolveUnitTypeNameForUnit(unit, lookups)}
                     </AdminCrudTableCell>
                     <AdminCrudTableCell className="text-[#51443c]">
-                      {unit.property?.name ?? "—"}
+                      {resolveUnitPropertyName(unit, lookups)}
                     </AdminCrudTableCell>
                     <AdminCrudTableCell>
-                      {unit.floor != null ? unit.floor : "—"}
+                      {unit.maxOccupancy != null ? unit.maxOccupancy : "—"}
                     </AdminCrudTableCell>
                     <AdminCrudTableCell>
                       <UnitStatusBadge status={unit.status} />

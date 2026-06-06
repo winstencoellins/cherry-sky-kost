@@ -22,6 +22,12 @@ import {
   useLeaseMutations,
   useLeases,
 } from "@/features/admin/hooks/use-admin-queries";
+import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import {
+  getLeaseEndDateValue,
+  resolveLeasePropertyName,
+  resolveLeaseTenantLabel,
+} from "@/features/admin/lib/entity-display";
 import {
   formatDate,
   formatIdrTable,
@@ -42,20 +48,21 @@ export function LeasesList() {
   });
   const mutations = useLeaseMutations();
   const deleteDialog = useDeleteDialog<Lease>();
+  const lookups = useAdminLookups();
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return data;
     return data.filter((lease) => {
-      const unit = lease.unit?.name ?? "";
-      const property = lease.unit?.property?.name ?? "";
-      const tenant = lease.user?.name ?? lease.user?.email ?? "";
+      const unit = lease.unit?.name ?? lease.unitId;
+      const property = resolveLeasePropertyName(lease, lookups);
+      const tenant = resolveLeaseTenantLabel(lease);
       return [unit, property, tenant, lease.userId]
         .join(" ")
         .toLowerCase()
         .includes(q);
     });
-  }, [data, search]);
+  }, [data, search, lookups]);
 
   const { page, setPage, pageData, total, pageSize } =
     useClientPagination(filtered);
@@ -138,8 +145,8 @@ export function LeasesList() {
           >
             {pageData.map((lease) => {
               const rent = lease.unitPricing?.price ?? 0;
-              const tenantName =
-                lease.user?.name ?? lease.user?.email ?? lease.userId;
+              const tenantName = resolveLeaseTenantLabel(lease);
+              const endDate = getLeaseEndDateValue(lease);
 
               return (
                 <AdminCrudTableRow key={lease.id}>
@@ -147,7 +154,7 @@ export function LeasesList() {
                     <div>
                       <p>{lease.unit?.name ?? lease.unitId}</p>
                       <p className="text-xs font-normal text-[#83746b]">
-                        {lease.unit?.property?.name ?? "—"}
+                        {resolveLeasePropertyName(lease, lookups)}
                       </p>
                     </div>
                   </AdminCrudTableCell>
@@ -159,7 +166,7 @@ export function LeasesList() {
                       <p>{formatDate(lease.startDate)}</p>
                       <p className="text-xs text-[#83746b]">
                         {tp("to")}{" "}
-                        {lease.endDate ? formatDate(lease.endDate) : "—"}
+                        {endDate ? formatDate(endDate) : "—"}
                       </p>
                     </div>
                   </AdminCrudTableCell>

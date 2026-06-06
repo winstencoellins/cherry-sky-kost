@@ -1,19 +1,24 @@
 import { apiFetch } from "@/lib/api/client";
-import type { PublicPricing } from "@/lib/api/public/properties";
+import { ApiError } from "@/lib/api/errors";
+import type {
+  PublicAttachment,
+  PublicPricing,
+} from "@/lib/api/public/properties";
 
 export interface PublicSearchProperty {
   id: string;
   name: string;
   address: string;
   city: string;
+  propertyAttachments?: PublicAttachment[];
 }
 
 export interface PublicSearchUnitType {
   id: string;
   name: string;
   description: string | null;
-  totalFloor: number | null;
   size: number | null;
+  unitTypeAttachments?: PublicAttachment[];
   pricings: PublicPricing[];
 }
 
@@ -69,5 +74,14 @@ function buildQueryString(params: PublicSearchParams): string {
 export async function searchPublicUnits(
   params: PublicSearchParams = {},
 ): Promise<PublicSearchResponse> {
-  return apiFetch<PublicSearchResponse>(`/public/search${buildQueryString(params)}`);
+  const query = buildQueryString(params);
+  try {
+    return await apiFetch<PublicSearchResponse>(`/public/search${query}`);
+  } catch (error) {
+    // Backend route may be exposed without the /public prefix.
+    if (error instanceof ApiError && error.status === 404) {
+      return apiFetch<PublicSearchResponse>(`/search${query}`);
+    }
+    throw error;
+  }
 }

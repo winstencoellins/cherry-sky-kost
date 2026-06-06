@@ -20,6 +20,7 @@ import {
   useProperties,
   usePropertyMutations,
 } from "@/features/admin/hooks/use-admin-queries";
+import { countPropertyAttachments } from "@/features/admin/lib/attachments";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
 import type { Property } from "@/lib/types/admin";
@@ -29,6 +30,7 @@ const BASE = "/admin/properties";
 export function PropertiesList() {
   const t = useTranslations("admin.crud");
   const tp = useTranslations("admin.pages.properties");
+  const ta = useTranslations("admin.attachments");
   const { data = [], isLoading, error } = useProperties();
   const mutations = usePropertyMutations();
   const deleteDialog = useDeleteDialog<Property>();
@@ -116,6 +118,7 @@ export function PropertiesList() {
               { key: "name", label: t("name") },
               { key: "address", label: t("address") },
               { key: "city", label: t("city") },
+              { key: "attachments", label: ta("column") },
               { key: "actions", label: t("actions"), align: "right" },
             ]}
           >
@@ -128,6 +131,9 @@ export function PropertiesList() {
                   {property.address}
                 </AdminCrudTableCell>
                 <AdminCrudTableCell>{property.city}</AdminCrudTableCell>
+                <AdminCrudTableCell className="tabular-nums text-[#51443c]">
+                  {countPropertyAttachments(property)}
+                </AdminCrudTableCell>
                 <AdminCrudTableCell align="right">
                   <AdminRowActions
                     editHref={`${BASE}/${property.id}/edit`}

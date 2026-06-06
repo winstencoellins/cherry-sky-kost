@@ -21,6 +21,9 @@ import {
   useUnitTypeMutations,
   useUnitTypes,
 } from "@/features/admin/hooks/use-admin-queries";
+import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import { countUnitTypeAttachments } from "@/features/admin/lib/attachments";
+import { resolveUnitTypePropertyName } from "@/features/admin/lib/entity-display";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
 import type { UnitType } from "@/lib/types/admin";
@@ -30,6 +33,7 @@ const BASE = "/admin/unit-types";
 export function UnitTypesList() {
   const t = useTranslations("admin.crud");
   const tp = useTranslations("admin.pages.unitTypes");
+  const ta = useTranslations("admin.attachments");
   const [propertyFilter, setPropertyFilter] = useState("");
   const [search, setSearch] = useState("");
   const { data = [], isLoading, error } = useUnitTypes(
@@ -37,6 +41,7 @@ export function UnitTypesList() {
   );
   const mutations = useUnitTypeMutations();
   const deleteDialog = useDeleteDialog<UnitType>();
+  const lookups = useAdminLookups();
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -124,6 +129,7 @@ export function UnitTypesList() {
               { key: "property", label: t("property") },
               { key: "size", label: t("size") },
               { key: "units", label: t("unit") },
+              { key: "attachments", label: ta("column") },
               { key: "actions", label: t("actions"), align: "right" },
             ]}
           >
@@ -140,12 +146,15 @@ export function UnitTypesList() {
                   </div>
                 </AdminCrudTableCell>
                 <AdminCrudTableCell className="text-[#51443c]">
-                  {row.property?.name ?? "—"}
+                  {resolveUnitTypePropertyName(row, lookups)}
                 </AdminCrudTableCell>
                 <AdminCrudTableCell>
                   {row.size != null ? `${row.size} m²` : "—"}
                 </AdminCrudTableCell>
                 <AdminCrudTableCell>{row._count?.units ?? 0}</AdminCrudTableCell>
+                <AdminCrudTableCell className="tabular-nums text-[#51443c]">
+                  {countUnitTypeAttachments(row)}
+                </AdminCrudTableCell>
                 <AdminCrudTableCell align="right">
                   <AdminRowActions
                     editHref={`${BASE}/${row.id}/edit`}

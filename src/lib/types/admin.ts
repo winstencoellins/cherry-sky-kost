@@ -4,30 +4,58 @@ export type LeaseStatus = "paid" | "unpaid" | "waiting_for_review";
 
 export type LedgerEntryType = "income" | "expense";
 
+export interface PropertyAttachment {
+  id: string;
+  propertyId: string;
+  url: string;
+  key?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface UnitTypeAttachment {
+  id: string;
+  unitTypeId: string;
+  url: string;
+  key?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
 export interface Property {
   id: string;
   name: string;
   address: string;
   city: string;
+  propertyAttachments?: PropertyAttachment[];
   createdById: string;
   updatedById: string;
   createdAt: string;
   updatedAt: string;
+  _count?: {
+    propertyAttachments?: number;
+    unitTypes?: number;
+    units?: number;
+  };
 }
 
 export interface UnitType {
   id: string;
   name: string;
   description: string | null;
-  totalFloor: number | null;
   size: number | null;
   propertyId: string;
   property?: Property;
   createdById: string;
   updatedById: string;
+  unitTypeAttachments?: UnitTypeAttachment[];
   createdAt: string;
   updatedAt: string;
-  _count?: { units: number; pricings: number };
+  _count?: {
+    units: number;
+    pricings: number;
+    unitTypeAttachments?: number;
+  };
 }
 
 export interface UnitPricing {
@@ -67,7 +95,7 @@ export interface ResetTenantPasswordResult {
 export interface Unit {
   id: string;
   name: string;
-  floor: number | null;
+  maxOccupancy: number | null;
   status: UnitStatus;
   unitTypeId: string;
   propertyId: string;
@@ -90,6 +118,7 @@ export interface Lease {
   userId: string;
   propertyId: string;
   unitPricingId: string;
+  property?: Property;
   unit?: Unit & { property?: Property; unitType?: UnitType };
   user?: UnitUserRef;
   unitPricing?: UnitPricing;

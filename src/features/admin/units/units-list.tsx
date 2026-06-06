@@ -22,6 +22,11 @@ import {
   useUnitMutations,
   useUnits,
 } from "@/features/admin/hooks/use-admin-queries";
+import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import {
+  resolveUnitTenantLabel,
+  resolveUnitTypeNameForUnit,
+} from "@/features/admin/lib/entity-display";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
 import type { Unit } from "@/lib/types/admin";
@@ -36,23 +41,23 @@ export function UnitsList() {
   const { data = [], isLoading, error } = useUnits(propertyFilter || undefined);
   const mutations = useUnitMutations();
   const deleteDialog = useDeleteDialog<Unit>();
+  const lookups = useAdminLookups();
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return data;
     return data.filter((unit) => {
-      const tenant =
-        unit.activeLease?.user?.name ??
-        unit.activeLease?.user?.email ??
-        "";
+      const tenant = resolveUnitTenantLabel(unit);
       return (
         unit.name.toLowerCase().includes(q) ||
-        (unit.unitType?.name ?? "").toLowerCase().includes(q) ||
+        resolveUnitTypeNameForUnit(unit, lookups)
+          .toLowerCase()
+          .includes(q) ||
         (unit.property?.name ?? "").toLowerCase().includes(q) ||
         tenant.toLowerCase().includes(q)
       );
     });
-  }, [data, search]);
+  }, [data, search, lookups]);
 
   const { page, setPage, pageData, total, pageSize } =
     useClientPagination(filtered);
@@ -127,7 +132,7 @@ export function UnitsList() {
             columns={[
               { key: "name", label: t("name") },
               { key: "unitType", label: t("unitType") },
-              { key: "floor", label: t("floor") },
+              { key: "maxOccupancy", label: t("maxOccupancy") },
               { key: "tenant", label: t("tenant") },
               { key: "status", label: t("status") },
               { key: "actions", label: t("actions"), align: "right" },
@@ -139,15 +144,13 @@ export function UnitsList() {
                   {unit.name}
                 </AdminCrudTableCell>
                 <AdminCrudTableCell className="text-[#51443c]">
-                  {unit.unitType?.name ?? "—"}
+                  {resolveUnitTypeNameForUnit(unit, lookups)}
                 </AdminCrudTableCell>
                 <AdminCrudTableCell>
-                  {unit.floor != null ? unit.floor : "—"}
+                  {unit.maxOccupancy != null ? unit.maxOccupancy : "—"}
                 </AdminCrudTableCell>
                 <AdminCrudTableCell className="text-[#51443c]">
-                  {unit.activeLease?.user?.name ??
-                    unit.activeLease?.user?.email ??
-                    "—"}
+                  {resolveUnitTenantLabel(unit)}
                 </AdminCrudTableCell>
                 <AdminCrudTableCell>
                   <UnitStatusBadge status={unit.status} />
