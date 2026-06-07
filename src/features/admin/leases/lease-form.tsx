@@ -5,7 +5,9 @@ import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
 import {
+  AdminDatePicker,
   AdminField,
+  AdminSelect,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminFormPage } from "@/features/admin/crud/admin-form-page";
@@ -13,10 +15,10 @@ import { AdminLeaseRenewalActions } from "@/features/admin/leases/lease-renewal-
 import {
   useLease,
   useLeaseMutations,
-  useTenantUsers,
   useUnitPricings,
   useUnits,
 } from "@/features/admin/hooks/use-admin-queries";
+import { TenantCombobox } from "@/features/admin/users/tenant-combobox";
 import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
 import {
   resolvePricingUnitTypeName,
@@ -26,6 +28,7 @@ import {
 import { formatIdrTable, toDateInputValue } from "@/features/admin/lib/format";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
+import { createLeaseFormSchema } from "@/features/admin/leases/lease-form.schema";
 import type { LeaseStatus } from "@/lib/types/admin";
 
 const BASE = "/admin/leases";
@@ -57,7 +60,6 @@ export function LeaseForm({ id }: { id?: string }) {
   const isEdit = !!id;
   const { data: units = [] } = useUnits();
   const { data: pricings = [] } = useUnitPricings();
-  const { data: tenants = [], isLoading: tenantsLoading } = useTenantUsers();
   const { data: lease, isLoading } = useLease(id ?? "", isEdit);
   const mutations = useLeaseMutations();
   const lookups = useAdminLookups();
@@ -73,6 +75,16 @@ export function LeaseForm({ id }: { id?: string }) {
     if (!renewalId || !unitId || !userId) return null;
     return { renewalId, unitId, userId, startDate: startDate ?? "" };
   }, [isEdit, searchParams]);
+
+  const unitPrefill = useMemo(() => {
+    if (isEdit || renewalPrefill) return null;
+    const unitId = searchParams.get("unitId");
+    if (!unitId) return null;
+    return {
+      unitId,
+      startDate: searchParams.get("startDate") ?? "",
+    };
+  }, [isEdit, renewalPrefill, searchParams]);
 
   const selectedUnit = useMemo(
     () => units.find((u) => u.id === form.unitId),
@@ -95,19 +107,39 @@ export function LeaseForm({ id }: { id?: string }) {
         leaseRenewalId: "",
       });
     } else if (!isEdit) {
+      const startDate =
+        renewalPrefill?.startDate ||
+        unitPrefill?.startDate ||
+        toDateInputValue(new Date());
       setForm((f) => ({
         ...f,
-        startDate: renewalPrefill?.startDate || toDateInputValue(new Date()),
-        unitId: renewalPrefill?.unitId ?? f.unitId,
+        startDate,
+        unitId: renewalPrefill?.unitId ?? unitPrefill?.unitId ?? f.unitId,
         userId: renewalPrefill?.userId ?? f.userId,
         leaseRenewalId: renewalPrefill?.renewalId ?? "",
       }));
     }
-  }, [lease, isEdit, renewalPrefill]);
+  }, [lease, isEdit, renewalPrefill, unitPrefill]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setFormError(null);
+
+    if (!isEdit) {
+      const parsed = createLeaseFormSchema({
+        unit: t("selectUnit"),
+        tenant: t("selectTenant"),
+        startDate: t("pickDate"),
+        pricing: t("selectPricing"),
+      }).safeParse(form);
+
+      if (!parsed.success) {
+        const msg = parsed.error.issues[0]?.message ?? t("saveFailed");
+        setFormError(msg);
+        return;
+      }
+    }
+
     try {
       if (isEdit && id) {
         await mutations.update.mutateAsync({
@@ -164,15 +196,22 @@ export function LeaseForm({ id }: { id?: string }) {
           {tr("renewalFormHint")}
         </div>
       )}
+      {!isEdit && unitPrefill && selectedUnit && (
+        <div className="rounded-xl border border-emerald-200/80 bg-emerald-50/60 px-4 py-3 text-sm text-[#51443c]">
+          {tp("unitPrefillHint", {
+            unit: selectedUnit.name,
+            property: resolveUnitPropertyName(selectedUnit, lookups),
+          })}
+        </div>
+      )}
       {!isEdit && (
         <>
           <AdminField label={t("unit")} htmlFor="lease-unit">
-            <select
+            <AdminSelect
               id="lease-unit"
               required
-              className={adminInputClassName}
               value={form.unitId}
-              disabled={!!renewalPrefill}
+              disabled={!!renewalPrefill || !!unitPrefill}
               onChange={(e) =>
                 setForm((f) => ({
                   ...f,
@@ -190,53 +229,35 @@ export function LeaseForm({ id }: { id?: string }) {
                     : ""}
                 </option>
               ))}
-            </select>
+            </AdminSelect>
           </AdminField>
           <AdminField label={t("tenant")} htmlFor="lease-user">
-            <select
+            <TenantCombobox
               id="lease-user"
               required
-              className={adminInputClassName}
               value={form.userId}
-              disabled={tenantsLoading || !!renewalPrefill}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, userId: e.target.value }))
+              disabled={!!renewalPrefill}
+              onChange={(userId) =>
+                setForm((f) => ({ ...f, userId }))
               }
-            >
-              <option value="">
-                {tenantsLoading ? t("loading") : t("selectTenant")}
-              </option>
-              {tenants.map((tenant) => (
-                <option key={tenant.id} value={tenant.id}>
-                  {tenant.name} ({tenant.email})
-                </option>
-              ))}
-            </select>
-            {!tenantsLoading && tenants.length === 0 && (
-              <p className="mt-1 text-xs text-[#ba1a1a]">
-                {t("noTenantsAvailable")}
-              </p>
-            )}
+            />
           </AdminField>
         </>
       )}
       <AdminField label={t("startDate")} htmlFor="lease-start">
-        <input
+        <AdminDatePicker
           id="lease-start"
-          type="date"
-          required
-          className={adminInputClassName}
           value={form.startDate}
-          onChange={(e) =>
-            setForm((f) => ({ ...f, startDate: e.target.value }))
+          onChange={(startDate) =>
+            setForm((f) => ({ ...f, startDate }))
           }
+          placeholder={t("pickDate")}
         />
       </AdminField>
       <AdminField label={t("pricing")} htmlFor="lease-pricing">
-        <select
+        <AdminSelect
           id="lease-pricing"
           required={!isEdit}
-          className={adminInputClassName}
           value={form.unitPricingId}
           onChange={(e) =>
             setForm((f) => ({
@@ -252,7 +273,10 @@ export function LeaseForm({ id }: { id?: string }) {
               {t("days")} — {formatIdrTable(p.price)}
             </option>
           ))}
-        </select>
+        </AdminSelect>
+        {!isEdit && selectedUnit && pricingOptions.length === 0 && (
+          <p className="mt-1 text-xs text-[#ba1a1a]">{tp("noPricingForUnit")}</p>
+        )}
       </AdminField>
       {isEdit && lease?.user && (
         <AdminField label={t("tenant")} htmlFor="lease-tenant-readonly">
@@ -267,9 +291,8 @@ export function LeaseForm({ id }: { id?: string }) {
       )}
       {isEdit && (
         <AdminField label={t("status")} htmlFor="lease-status">
-          <select
+          <AdminSelect
             id="lease-status"
-            className={adminInputClassName}
             value={form.status}
             onChange={(e) =>
               setForm((f) => ({ ...f, status: e.target.value as LeaseStatus }))
@@ -278,7 +301,7 @@ export function LeaseForm({ id }: { id?: string }) {
             <option value="unpaid">Unpaid</option>
             <option value="waiting_for_review">Waiting for Review</option>
             <option value="paid">Paid</option>
-          </select>
+          </AdminSelect>
         </AdminField>
       )}
       {isEdit && lease?.leaseRenewal && (

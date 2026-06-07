@@ -6,9 +6,13 @@ export function formatIdr(amount: number): string {
   }).format(amount);
 }
 
-export function formatDate(value: string | Date): string {
+function dateLocale(appLocale?: string): string {
+  return appLocale === "en" ? "en-US" : "id-ID";
+}
+
+export function formatDate(value: string | Date, appLocale?: string): string {
   const date = typeof value === "string" ? new Date(value) : value;
-  return new Intl.DateTimeFormat("id-ID", {
+  return new Intl.DateTimeFormat(dateLocale(appLocale), {
     day: "numeric",
     month: "short",
     year: "numeric",

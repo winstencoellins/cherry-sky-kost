@@ -1,25 +1,19 @@
 /**
  * Room Type Card Component
- * Displays individual room type with pricing and availability
+ * Displays individual room type with backend pricing, description, and availability
  */
 
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/shared/Icon';
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton';
 import type { RoomTypeCardProps } from '@/lib/types';
-import {
-    formatCurrency,
-    formatAvailability,
-    generateInquiryMessage,
-} from '@/lib/utils/format';
+import { formatCurrency, generateInquiryMessage } from '@/lib/utils/format';
+import { getDurationLabel } from '@/lib/utils/kost-display';
 import { cn } from '@/lib/utils';
 
 export function RoomTypeCard({
@@ -27,115 +21,149 @@ export function RoomTypeCard({
     kostName,
     kostId,
     whatsappNumber,
-    onBookClick,
     index = 0,
 }: RoomTypeCardProps & { index?: number; kostId?: string }) {
     const t = useTranslations();
-    const locale = useLocale();
     const isAvailable = roomType.status === 'available' && roomType.availableCount > 0;
-    const isAlmostFull = isAvailable && roomType.availableCount <= 2;
-
-    const bathroomText =
-        roomType.bathroomType === 'dalam'
-            ? t('bathroom.inside')
-            : roomType.bathroomType === 'luar'
-                ? t('bathroom.outside')
-                : t('bathroom.shared');
 
     const whatsappMessage = generateInquiryMessage(kostName, roomType.name);
-    const detailUrl = kostId ? `/${locale}/kosts/${kostId}--${roomType.id}` : '#';
+    const detailHref = kostId ? `/kosts/${kostId}--${roomType.id}` : null;
+
+    const pricingRows =
+        roomType.pricings && roomType.pricings.length > 0
+            ? roomType.pricings
+            : roomType.price > 0
+              ? [{ id: roomType.id, durationDays: 30, price: roomType.price }]
+              : [];
+
+    const cardInner = (
+                <div
+                    className={cn(
+                        'group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#e8dfd6] bg-white transition-all duration-300',
+                        'hover:-translate-y-1 hover:border-[#d4c4b4] hover:shadow-lg',
+                        !isAvailable && 'opacity-80',
+                    )}
+                >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#f5e4d4]">
+                        {roomType.images?.[0] ? (
+                            <Image
+                                src={roomType.images[0]}
+                                alt={roomType.name}
+                                fill
+                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                        ) : (
+                            <div className="flex h-full w-full items-center justify-center">
+                                <Icon name="image" size={48} className="text-[#c4b5a8]" />
+                            </div>
+                        )}
+
+                        {isAvailable ? (
+                            <div className="absolute bottom-3 left-3">
+                                <span className="rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white shadow-sm">
+                                    {t('propertyDetail.availableRooms', {
+                                        available: roomType.availableCount,
+                                        total: roomType.totalCount,
+                                    })}
+                                </span>
+                            </div>
+                        ) : (
+                            <div className="absolute bottom-3 left-3">
+                                <span className="rounded-full bg-[#83746b] px-3 py-1 text-xs font-semibold text-white shadow-sm">
+                                    {t('status.full')}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex flex-1 flex-col gap-3 p-5">
+                        <div>
+                            <h3 className="mb-1 line-clamp-1 text-lg font-bold text-[#1a1c1a] transition-colors group-hover:text-[#6f4627]">
+                                {roomType.name}
+                            </h3>
+                            {roomType.description && (
+                                <p className="line-clamp-2 text-sm leading-relaxed text-[#83746b]">
+                                    {roomType.description}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-3 text-xs text-[#83746b]">
+                            {roomType.size != null && (
+                                <span className="inline-flex items-center gap-1">
+                                    <Icon name="square_foot" size={14} />
+                                    {roomType.size} m²
+                                </span>
+                            )}
+                            <span className="inline-flex items-center gap-1">
+                                <Icon name="group" size={14} />
+                                {roomType.capacity}
+                            </span>
+                        </div>
+
+                        {pricingRows.length > 0 ? (
+                            <ul className="space-y-1.5 rounded-xl border border-[#f0e6dc] bg-[#faf9f6] p-3">
+                                {pricingRows.map((pricing) => (
+                                    <li
+                                        key={`${pricing.id}-${pricing.durationDays}`}
+                                        className="flex items-center justify-between gap-3 text-sm"
+                                    >
+                                        <span className="text-[#83746b]">
+                                            {getDurationLabel(pricing.durationDays, t)}
+                                        </span>
+                                        <span className="shrink-0 font-semibold text-[#1a1c1a]">
+                                            {formatCurrency(pricing.price)}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="text-xs text-[#83746b]">{t('search.noPricing')}</p>
+                        )}
+
+                        <div className="mt-auto grid grid-cols-2 gap-2 border-t border-[#f0e6dc] pt-4">
+                            <span
+                                className="flex items-center justify-center gap-1.5 rounded-lg bg-[#6f4627] px-3 py-2.5 text-xs font-semibold text-white"
+                                onClick={(e) => e.preventDefault()}
+                            >
+                                <Icon name="visibility" size={14} />
+                                {t('cta.viewDetails')}
+                            </span>
+                            <div onClick={(e) => e.preventDefault()}>
+                                {isAvailable ? (
+                                    <WhatsAppButton
+                                        phoneNumber={whatsappNumber}
+                                        message={whatsappMessage}
+                                        variant="compact"
+                                        className="h-full w-full rounded-lg bg-[#25D366] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#1fb855]"
+                                        label="WhatsApp"
+                                    />
+                                ) : (
+                                    <span className="flex h-full items-center justify-center rounded-lg bg-[#f0e6dc] px-3 py-2.5 text-xs font-semibold text-[#83746b]">
+                                        {t('status.full')}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    );
 
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
+            transition={{ delay: index * 0.08, duration: 0.45 }}
             className="h-full"
         >
-            <Link href={detailUrl} className="block h-full">
-                <div className={cn(
-                    "group relative h-full flex flex-col bg-white dark:bg-slate-900 rounded-2xl overflow-hidden transition-all duration-500 cursor-pointer",
-                    "hover:shadow-xl hover:-translate-y-1 border border-slate-100 dark:border-slate-800",
-                    !isAvailable && "opacity-70"
-                )}>
-                    {/* Image Section */}
-                    <div className="relative aspect-16/10 w-full overflow-hidden">
-                        {roomType.images && roomType.images[0] ? (
-                            <Image
-                                src={roomType.images[0]}
-                                alt={roomType.name}
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                        ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-300">
-                                <Icon name="image" size={48} />
-                            </div>
-                        )}
-
-                    {/* Status Badge */}
-                    <div className="absolute top-3 right-3">
-                        {isAvailable ? (
-                            isAlmostFull ? (
-                                <span className="px-2.5 py-1 text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 rounded-full shadow-lg">
-                                    {roomType.availableCount} tersisa
-                                </span>
-                            ) : (
-                                <span className="px-2.5 py-1 text-[10px] font-bold text-emerald-700 bg-emerald-50/90 dark:bg-emerald-500/20 dark:text-emerald-300 rounded-full backdrop-blur-sm">
-                                    Tersedia
-                                </span>
-                            )
-                        ) : (
-                            <span className="px-2.5 py-1 text-[10px] font-bold text-slate-600 bg-slate-200/90 dark:bg-slate-700/50 dark:text-slate-400 rounded-full backdrop-blur-sm">
-                                Penuh
-                            </span>
-                        )}
-                    </div>
-                </div>
-
-                {/* Content Section - Compact */}
-                <div className="flex flex-col flex-1 p-4 gap-3">
-                    <div>
-                        <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-1 line-clamp-1 group-hover:text-primary transition-colors">
-                            {roomType.name}
-                        </h3>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                        <Icon name="bathroom" size={14} />
-                        <span>{bathroomText}</span>
-                        <span className="w-0.5 h-0.5 bg-slate-300 rounded-full" />
-                        <Icon name="group" size={14} />
-                        <span>{roomType.capacity} orang</span>
-                    </div>
-
-                    <div className="mt-auto flex items-end justify-between gap-3">
-                        <div>
-                            <p className="text-2xl font-bold text-slate-900 dark:text-white">
-                                {formatCurrency(roomType.price)}
-                                <span className="text-xs text-slate-400 font-normal ml-1">/bln</span>
-                            </p>
-                        </div>
-
-                        <div onClick={(e) => e.preventDefault()}>
-                            {isAvailable ? (
-                                <WhatsAppButton
-                                    phoneNumber={whatsappNumber}
-                                    message={whatsappMessage}
-                                    variant="compact"
-                                    className="h-9 px-4 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold transition-all hover:shadow-lg hover:shadow-primary/30"
-                                    label={t('cta.bookNow')}
-                                />
-                            ) : (
-                                <Button disabled size="sm" className="rounded-xl h-9 bg-slate-100 text-slate-400 text-xs">
-                                    Penuh
-                                </Button>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Link>
+            {detailHref ? (
+                <Link href={detailHref} className="block h-full">
+                    {cardInner}
+                </Link>
+            ) : (
+                <div className="block h-full">{cardInner}</div>
+            )}
         </motion.div>
     );
 }

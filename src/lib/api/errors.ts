@@ -5,6 +5,7 @@ export type ApiErrorCode =
   | "NOT_FOUND"
   | "CONFLICT"
   | "UNPROCESSABLE"
+  | "TOO_MANY_REQUESTS"
   | "INTERNAL_SERVER_ERROR"
   | "NETWORK";
 
@@ -46,6 +47,7 @@ export function parseApiError(
     404: "NOT_FOUND",
     409: "CONFLICT",
     422: "UNPROCESSABLE",
+    429: "TOO_MANY_REQUESTS",
   };
 
   return new ApiError(statusToCode[status] ?? code, message, status);

@@ -40,7 +40,7 @@ export const colors = {
 
   status: {
     vacant: "#059669",
-    occupied: "#2563eb",
+    occupied: "#ba1a1a",
     unpaid: "#dc2626",
     paid: "#047857",
     waitingForReview: "#d97706",

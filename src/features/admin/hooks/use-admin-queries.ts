@@ -18,6 +18,11 @@ import {
   type LedgerEntryFilters,
 } from "@/lib/api/admin/ledger-entries";
 import {
+  changeAdminPassword,
+  getAdminProfile,
+  updateAdminProfile,
+} from "@/lib/api/admin/profile";
+import {
   createProperty,
   deleteProperty,
   getProperty,
@@ -47,10 +52,20 @@ import {
   updateUnit,
 } from "@/lib/api/admin/units";
 import {
+  createStaffUser,
+  getStaffUser,
+  listStaffUsers,
+  resetStaffPassword,
+  setStaffUserActive,
+  updateStaffUser,
+} from "@/lib/api/admin/staff";
+import {
   createTenantUser,
+  updateTenantUser,
   getTenantUser,
   listTenantUsers,
   resetTenantPassword,
+  setTenantUserActive,
 } from "@/lib/api/admin/users";
 import { adminKeys } from "@/lib/query/keys";
 import type { LeaseStatus, LedgerEntryType, UnitStatus } from "@/lib/types/admin";
@@ -243,10 +258,14 @@ export function useLease(id: string, enabled = true) {
   });
 }
 
-export function useTenantUsers(search?: string) {
+export function useTenantUsers(
+  search?: string,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: adminKeys.users.list(search),
     queryFn: () => listTenantUsers(search),
+    enabled: options?.enabled ?? true,
   });
 }
 
@@ -265,7 +284,66 @@ export function useTenantUserMutations() {
 
   return {
     create: useMutation({ mutationFn: createTenantUser, onSuccess: invalidate }),
+    update: useMutation({
+      mutationFn: ({
+        id,
+        ...input
+      }: {
+        id: string;
+        name: string;
+        email: string;
+      }) => updateTenantUser(id, input),
+      onSuccess: invalidate,
+    }),
+    setActive: useMutation({
+      mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
+        setTenantUserActive(id, isActive),
+      onSuccess: invalidate,
+    }),
     resetPassword: useMutation({ mutationFn: resetTenantPassword }),
+  };
+}
+
+export function useStaffUsers(search?: string) {
+  return useQuery({
+    queryKey: adminKeys.staff.list(search),
+    queryFn: () => listStaffUsers(search),
+  });
+}
+
+export function useStaffUser(id: string, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.staff.detail(id),
+    queryFn: () => getStaffUser(id),
+    enabled: enabled && !!id,
+  });
+}
+
+export function useStaffUserMutations() {
+  const qc = useQueryClient();
+  const invalidate = () =>
+    void qc.invalidateQueries({ queryKey: adminKeys.staff.all() });
+
+  return {
+    create: useMutation({ mutationFn: createStaffUser, onSuccess: invalidate }),
+    update: useMutation({
+      mutationFn: ({
+        id,
+        ...input
+      }: {
+        id: string;
+        name: string;
+        email: string;
+        role: "admin" | "superadmin";
+      }) => updateStaffUser(id, input),
+      onSuccess: invalidate,
+    }),
+    setActive: useMutation({
+      mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
+        setStaffUserActive(id, isActive),
+      onSuccess: invalidate,
+    }),
+    resetPassword: useMutation({ mutationFn: resetStaffPassword }),
   };
 }
 
@@ -346,5 +424,28 @@ export function useLedgerEntryMutations() {
       onSuccess: invalidate,
     }),
     remove: useMutation({ mutationFn: deleteLedgerEntry, onSuccess: invalidate }),
+  };
+}
+
+export function useAdminProfile() {
+  return useQuery({
+    queryKey: adminKeys.profile.all(),
+    queryFn: getAdminProfile,
+  });
+}
+
+export function useAdminProfileMutations() {
+  const qc = useQueryClient();
+  const invalidateProfile = () =>
+    void qc.invalidateQueries({ queryKey: adminKeys.profile.all() });
+
+  return {
+    updateProfile: useMutation({
+      mutationFn: updateAdminProfile,
+      onSuccess: invalidateProfile,
+    }),
+    changePassword: useMutation({
+      mutationFn: changeAdminPassword,
+    }),
   };
 }

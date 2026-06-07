@@ -18,6 +18,10 @@ interface MapLocation {
     phone: string;
 }
 
+/** Stable embed URL — must not use Math.random() or other runtime values (hydration mismatch). */
+const MEDAN_MAP_EMBED_URL =
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.3280502394305!2d98.6767!3d3.195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30313339d7c0a50d%3A0xf8e2a1b0!2sMedan%2C%20North%20Sumatra!5e0!3m2!1sen!2sid!4v1700000000000';
+
 export function ContactMap() {
     const t = useTranslations('contact.map');
 
@@ -96,7 +100,7 @@ export function ContactMap() {
                         className="h-96 overflow-hidden rounded-2xl border border-[#e3e2e0] shadow-sm lg:col-span-2"
                     >
                         <iframe
-                            src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.3280502394305!2d98.66400!3d3.1955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30313339d7c0a50d%3A0x${Math.random().toString(16).substr(2, 8)}!2sMedan!5e0!3m2!1sen!2sid!4v1234567890`}
+                            src={MEDAN_MAP_EMBED_URL}
                             width="100%"
                             height="100%"
                             style={{ border: 0 }}

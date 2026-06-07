@@ -9,7 +9,6 @@ export interface TranslationKeys {
     nav: {
         home: string;
         search: string;
-        favorites: string;
         contact: string;
         account: string;
         login: string;

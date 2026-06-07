@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import {
   AdminField,
+  AdminSelect,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminAttachmentsList } from "@/features/admin/components/admin-attachments-list";
@@ -182,11 +183,10 @@ export function UnitTypeForm({ id }: { id?: string }) {
       cancelLabel={t("cancel")}
     >
       <AdminField label={t("property")} htmlFor="ut-property">
-        <select
+        <AdminSelect
           id="ut-property"
           required
           disabled={isEdit}
-          className={adminInputClassName}
           value={form.propertyId}
           onChange={(e) =>
             setForm((f) => ({ ...f, propertyId: e.target.value }))
@@ -198,7 +198,7 @@ export function UnitTypeForm({ id }: { id?: string }) {
               {p.name}
             </option>
           ))}
-        </select>
+        </AdminSelect>
       </AdminField>
 
       <AdminField label={t("name")} htmlFor="ut-name">

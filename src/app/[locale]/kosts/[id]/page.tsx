@@ -6,9 +6,9 @@
 
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Icon } from '@/components/shared/Icon';
 import { PropertyDetailView } from '@/components/kost/PropertyDetailView';
@@ -17,7 +17,6 @@ import { useKost } from '@/lib/hooks/use-kost-data';
 
 export default function KostDetailPage() {
     const t = useTranslations();
-    const locale = useLocale();
     const params = useParams();
     const routeId = params.id as string;
 
@@ -53,7 +52,7 @@ export default function KostDetailPage() {
                             {t('propertyDetail.notFoundDescription')}
                         </p>
                         <Link
-                            href={`/${locale}`}
+                            href="/"
                             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-white transition-colors hover:bg-primary/90"
                         >
                             <Icon name="home" size={20} />

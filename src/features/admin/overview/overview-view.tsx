@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { AdminAlert } from "@/features/admin/components/admin-alert";
 import { Icon } from "@/components/shared/Icon";
 import { Link } from "@/i18n/routing";
 import { AdminStatCard } from "@/features/admin/components/admin-stat-card";
@@ -13,7 +14,10 @@ import {
   useUnitPricings,
   useUnits,
 } from "@/features/admin/hooks/use-admin-queries";
-import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
+import {
+  useAdminLookups,
+  type AdminLookups,
+} from "@/features/admin/hooks/use-admin-lookups";
 import {
   getLeaseEndDateValue,
   resolveLeasePropertyName,
@@ -30,15 +34,17 @@ import { isUnitOccupied, type Lease } from "@/lib/types/admin";
 const EXPIRING_SOON_DAYS = 5;
 
 const quickActions = [
-  { href: "/admin/properties", icon: "add_home", labelKey: "quickActions.addProperty" as const },
-  { href: "/admin/unit-types", icon: "category", labelKey: "quickActions.addUnitType" as const },
-  { href: "/admin/units", icon: "bed", labelKey: "quickActions.addUnit" as const },
-  { href: "/admin/leases", icon: "post_add", labelKey: "quickActions.newLease" as const },
-  { href: "/admin/pricing", icon: "sell", labelKey: "quickActions.setPricing" as const },
+  { href: "/admin/properties/new", icon: "add_home", labelKey: "quickActions.addProperty" as const },
+  { href: "/admin/unit-types/new", icon: "category", labelKey: "quickActions.addUnitType" as const },
+  { href: "/admin/units/new", icon: "bed", labelKey: "quickActions.addUnit" as const },
+  { href: "/admin/leases/new", icon: "post_add", labelKey: "quickActions.newLease" as const },
+  { href: "/admin/pricing/new", icon: "sell", labelKey: "quickActions.setPricing" as const },
 ];
 
 export function OverviewView() {
   const t = useTranslations("admin.pages.overview");
+  const tc = useTranslations("admin.crud");
+  const locale = useLocale();
   const { user } = useAdminShell();
 
   const properties = useProperties();
@@ -52,7 +58,15 @@ export function OverviewView() {
     pricings.isLoading ||
     leases.isLoading;
 
+  const loadError =
+    properties.error ?? units.error ?? pricings.error ?? leases.error;
+
   const leaseList = leases.data ?? [];
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
   const unitList = units.data ?? [];
 
   const metrics = useMemo(() => {
@@ -60,17 +74,27 @@ export function OverviewView() {
     const totalUnits = unitList.length;
     const occupancy =
       totalUnits > 0 ? Math.round((occupied / totalUnits) * 100) : 0;
-    const activeLeases = leaseList.filter((l) => l.status === "paid").length;
+    const activeLeases = leaseList.filter((l) => {
+      if (l.status !== "paid") return false;
+      const end = getLeaseEndDateValue(l);
+      if (!end) return true;
+      return new Date(end) >= today;
+    }).length;
     const expiring = leaseList.filter((l) => {
       const end = getLeaseEndDateValue(l);
       return end != null && isExpiringWithinDays(end, EXPIRING_SOON_DAYS);
     }).length;
     const collected = leaseList
-      .filter((l) => l.status === "paid")
+      .filter((l) => {
+        if (l.status !== "paid") return false;
+        const end = getLeaseEndDateValue(l);
+        if (!end) return true;
+        return new Date(end) >= today;
+      })
       .reduce((sum, l) => sum + (l.unitPricing?.price ?? 0), 0);
 
     return { occupied, totalUnits, occupancy, activeLeases, expiring, collected };
-  }, [leaseList, unitList]);
+  }, [leaseList, unitList, today]);
 
   const recentLeases = useMemo(
     () =>
@@ -83,10 +107,15 @@ export function OverviewView() {
     [leaseList],
   );
 
+  const lookups = useAdminLookups();
   const greetingKey = getGreeting();
 
   return (
     <div className="space-y-8">
+      {loadError && (
+        <AdminAlert message={tc("loadFailed")} />
+      )}
+
       <section className="relative overflow-hidden rounded-2xl border border-[#e3e2e0]/80 bg-gradient-to-br from-[#6f4627] via-[#805533] to-[#8b5e3c] p-6 text-white shadow-lg shadow-[#6f4627]/20 sm:p-8">
         <div
           className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-white/10 blur-2xl"
@@ -211,7 +240,12 @@ export function OverviewView() {
           ) : (
             <ul className="divide-y divide-[#e3e2e0]/50">
               {recentLeases.map((lease) => (
-                <RecentLeaseRow key={lease.id} lease={lease} />
+                <RecentLeaseRow
+                  key={lease.id}
+                  lease={lease}
+                  locale={locale}
+                  lookups={lookups}
+                />
               ))}
             </ul>
           )}
@@ -221,9 +255,16 @@ export function OverviewView() {
   );
 }
 
-function RecentLeaseRow({ lease }: { lease: Lease }) {
+function RecentLeaseRow({
+  lease,
+  locale,
+  lookups,
+}: {
+  lease: Lease;
+  locale: string;
+  lookups: AdminLookups;
+}) {
   const t = useTranslations("admin.pages.overview.recent");
-  const lookups = useAdminLookups();
   const tenant = resolveLeaseTenantLabel(lease);
   const endDate = getLeaseEndDateValue(lease);
   const propertyName = resolveLeasePropertyName(lease, lookups);
@@ -244,8 +285,8 @@ function RecentLeaseRow({ lease }: { lease: Lease }) {
       </div>
       <div className="hidden text-right sm:block">
         <p className="text-xs text-[#83746b]">
-          {formatDate(lease.startDate)} –{" "}
-          {endDate ? formatDate(endDate) : "—"}
+          {formatDate(lease.startDate, locale)} –{" "}
+          {endDate ? formatDate(endDate, locale) : "—"}
         </p>
         {expiring && (
           <p className="text-xs font-medium text-[#ba1a1a]">{t("expiringSoon")}</p>

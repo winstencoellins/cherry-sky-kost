@@ -1,5 +1,6 @@
 import { env } from "@/env";
 import { ApiError, networkError, parseApiError } from "@/lib/api/errors";
+import { handleDeactivatedApiError } from "@/lib/auth/handle-api-auth-error";
 
 export type ApiFetchOptions = Omit<RequestInit, "body"> & {
   body?: unknown;
@@ -34,7 +35,9 @@ export async function apiFetch<T>(
   const payload = isJson ? await response.json().catch(() => null) : null;
 
   if (!response.ok) {
-    throw parseApiError(response.status, payload);
+    const error = parseApiError(response.status, payload);
+    void handleDeactivatedApiError(error);
+    throw error;
   }
 
   return payload as T;

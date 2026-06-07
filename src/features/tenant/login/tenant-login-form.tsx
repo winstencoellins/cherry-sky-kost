@@ -15,6 +15,7 @@ import {
 } from "@/features/admin/login/schemas";
 import { getTenantProfile } from "@/lib/api/tenant/profile";
 import { authClient } from "@/lib/auth/client";
+import { isDeactivatedAuthError } from "@/lib/auth/errors";
 import { getHomePathForRole } from "@/lib/auth/redirects";
 import {
   assertCanAccessTenantPortal,
@@ -47,6 +48,7 @@ export function TenantLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const forbiddenFromUrl = searchParams.get("error") === "forbidden";
+  const deactivatedFromUrl = searchParams.get("error") === "deactivated";
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -54,6 +56,12 @@ export function TenantLoginForm() {
       toast.error(t("errors.forbidden"));
     }
   }, [forbiddenFromUrl, t]);
+
+  useEffect(() => {
+    if (deactivatedFromUrl) {
+      toast.error(t("errors.deactivated"));
+    }
+  }, [deactivatedFromUrl, t]);
 
   const form = useForm({
     defaultValues: {
@@ -73,7 +81,11 @@ export function TenantLoginForm() {
       });
 
       if (result.error) {
-        toast.error(t("errors.invalid"));
+        toast.error(
+          isDeactivatedAuthError(result.error)
+            ? t("errors.deactivated")
+            : t("errors.invalid"),
+        );
         return;
       }
 

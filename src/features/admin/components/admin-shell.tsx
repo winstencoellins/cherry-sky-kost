@@ -1,6 +1,7 @@
 import { AdminHeader } from "@/features/admin/components/admin-header";
 import { AdminShellProvider } from "@/features/admin/components/admin-shell-context";
 import { AdminSidebar } from "@/features/admin/components/admin-sidebar";
+import { SessionGuard } from "@/lib/auth/session-guard";
 import type { User } from "@/lib/types/auth";
 
 interface AdminShellProps {
@@ -10,6 +11,7 @@ interface AdminShellProps {
 
 export function AdminShell({ children, user }: AdminShellProps) {
   return (
+    <SessionGuard portal="admin">
     <AdminShellProvider user={user}>
       <div className="relative min-h-screen bg-[#f5f4f1] text-[#1a1c1a] antialiased">
         <div
@@ -31,5 +33,6 @@ export function AdminShell({ children, user }: AdminShellProps) {
         </div>
       </div>
     </AdminShellProvider>
+    </SessionGuard>
   );
 }

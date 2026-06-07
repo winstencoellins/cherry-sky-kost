@@ -1,6 +1,6 @@
 /**
  * Room Detail Sidebar Component
- * Sticky sidebar with pricing, agent info, and CTA buttons
+ * Sticky sidebar with pricing packages and booking CTA
  */
 
 'use client';
@@ -9,130 +9,116 @@ import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Icon } from '@/components/shared/Icon';
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton';
-import { cn } from '@/lib/utils';
+import type { RoomTypePricing } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils/format';
+import { getDurationLabel } from '@/lib/utils/kost-display';
 
 interface RoomDetailSidebarProps {
-    price: number;
-    securityDeposit?: number;
+    pricings: RoomTypePricing[];
+    fallbackPrice: number;
     whatsappNumber: string;
     roomName: string;
     propertyName: string;
-    agentName?: string;
-    agentRole?: string;
-    agentImage?: string;
-    onFavorite?: () => void;
-    isFavorite?: boolean;
+    availableCount: number;
+    totalCount: number;
 }
 
 export function RoomDetailSidebar({
-    price,
-    securityDeposit = 500000,
+    pricings,
+    fallbackPrice,
     whatsappNumber,
     roomName,
     propertyName,
-    agentName = 'Customer Service',
-    agentRole = 'Property Manager',
-    agentImage,
-    onFavorite,
-    isFavorite = false,
+    availableCount,
+    totalCount,
 }: RoomDetailSidebarProps) {
     const t = useTranslations();
 
+    const pricingRows =
+        pricings.length > 0
+            ? pricings
+            : fallbackPrice > 0
+              ? [{ id: 'fallback', durationDays: 30, price: fallbackPrice }]
+              : [];
+
     return (
-        <div className="lg:w-100 shrink-0 border-l border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 p-6 lg:p-8">
-            <div className="sticky top-24 space-y-6">
-                {/* Price Card */}
+        <div className="shrink-0 border-t border-[#e8dfd6] bg-[#faf9f6] p-6 lg:w-[360px] lg:border-l lg:border-t-0 lg:p-8">
+            <div className="sticky top-24 space-y-5">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.5 }}
-                    className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-shadow"
+                    className="rounded-2xl border border-[#e8dfd6] bg-white p-6 shadow-sm"
                 >
-                    <div className="flex items-baseline gap-1 mb-1">
-                        <span className="text-3xl font-bold text-slate-900 dark:text-white">
-                            {formatCurrency(price)}
-                        </span>
-                        <span className="text-slate-500 dark:text-slate-400 font-medium">
-                            {t('pricing.perMonth')}
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
-                        <Icon name="shield" size={18} />
-                        <span>{t('roomDetail.deposit', { amount: formatCurrency(securityDeposit) })}</span>
-                    </div>
-                    <div className="space-y-3">
-                        <WhatsAppButton
-                            phoneNumber={whatsappNumber}
-                            message={`Halo, saya tertarik dengan ${roomName} di ${propertyName}. Apakah masih tersedia?`}
-                            className="w-full"
-                            label={t('cta.bookNow')}
-                        />
-                        <button
-                            className="w-full bg-white dark:bg-transparent border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-semibold py-3 px-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
-                            onClick={onFavorite}
-                        >
-                            <Icon name={isFavorite ? 'favorite' : 'favorite_border'} size={20} filled={isFavorite} />
-                            {isFavorite ? t('roomDetail.saved') : t('roomDetail.save')}
-                        </button>
-                    </div>
-                    <p className="text-center text-xs text-slate-400 mt-4">
+                    <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-[#83746b]">
+                        {t('pricing.packages')}
+                    </h3>
+
+                    {pricingRows.length > 0 ? (
+                        <ul className="mb-6 space-y-3">
+                            {pricingRows.map((pricing) => (
+                                <li
+                                    key={`${pricing.id}-${pricing.durationDays}`}
+                                    className="flex items-center justify-between gap-3 rounded-xl border border-[#f0e6dc] bg-[#faf9f6] px-4 py-3"
+                                >
+                                    <span className="text-sm text-[#83746b]">
+                                        {getDurationLabel(pricing.durationDays, t)}
+                                    </span>
+                                    <span className="text-lg font-bold text-[#1a1c1a]">
+                                        {formatCurrency(pricing.price)}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="mb-6 text-sm text-[#83746b]">{t('search.noPricing')}</p>
+                    )}
+
+                    {totalCount > 0 && (
+                        <p className="mb-4 flex items-center gap-2 text-sm text-[#83746b]">
+                            <Icon name="key" size={18} className="text-[#6f4627]" />
+                            {t('roomDetail.availableRooms', {
+                                available: availableCount,
+                                total: totalCount,
+                            })}
+                        </p>
+                    )}
+
+                    <WhatsAppButton
+                        phoneNumber={whatsappNumber}
+                        message={t('whatsapp.roomInquiry', {
+                            roomType: roomName,
+                            propertyName,
+                        })}
+                        className="w-full"
+                        label={t('cta.bookNow')}
+                    />
+                    <p className="mt-4 text-center text-xs text-[#b0a29a]">
                         {t('roomDetail.notChargedYet')}
                     </p>
                 </motion.div>
 
-                {/* Agent Profile */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="flex items-center gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-shadow"
+                    className="flex items-center gap-4 rounded-2xl border border-[#e8dfd6] bg-white p-4"
                 >
-                    <div className="relative">
-                        <div
-                            className={cn(
-                                'w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-700',
-                                agentImage && 'bg-cover bg-center'
-                            )}
-                            style={agentImage ? { backgroundImage: `url(${agentImage})` } : undefined}
-                        >
-                            {!agentImage && (
-                                <div className="w-full h-full flex items-center justify-center">
-                                    <Icon name="person" size={24} className="text-slate-400" />
-                                </div>
-                            )}
-                        </div>
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-slate-800" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f5e4d4]">
+                        <Icon name="support_agent" size={24} className="text-[#6f4627]" />
                     </div>
                     <div className="flex-1">
-                        <p className="font-semibold text-slate-900 dark:text-white">{agentName}</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">{agentRole}</p>
+                        <p className="font-semibold text-[#1a1c1a]">Customer Service</p>
+                        <p className="text-xs text-[#83746b]">Property Manager</p>
                     </div>
                     <a
                         href={`https://wa.me/${whatsappNumber}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-slate-400 hover:text-primary transition-colors"
+                        className="text-[#83746b] transition-colors hover:text-[#6f4627]"
                     >
                         <Icon name="chat" size={20} />
                     </a>
-                </motion.div>
-
-                {/* Map Preview */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
-                    className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 h-40 relative group cursor-pointer hover:shadow-md transition-shadow"
-                >
-                    <div className="absolute inset-0 bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
-                        <Icon name="map" size={48} className="text-slate-400" />
-                    </div>
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
-                    <div className="absolute bottom-3 left-3 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md text-slate-800 dark:text-white flex items-center gap-1.5\">
-                        <Icon name="map\" size={14} />
-                        {t('roomDetail.viewOnMap')}
-                    </div>
                 </motion.div>
             </div>
         </div>

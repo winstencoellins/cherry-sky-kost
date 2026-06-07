@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "react-day-picker/style.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -21,7 +22,7 @@
   --color-surface-tint: #805533;
 
   --color-status-vacant: #059669;
-  --color-status-occupied: #2563eb;
+  --color-status-occupied: #ba1a1a;
   --color-status-unpaid: #dc2626;
   --color-status-paid: #047857;
   --color-status-review: #d97706;

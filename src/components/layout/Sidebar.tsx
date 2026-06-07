@@ -5,8 +5,8 @@
 
 'use client';
 
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import {
     Sheet,
     SheetContent,
@@ -61,7 +61,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
                         <div className="text-[#6f4627]">
                             <Icon name="apartment" size={28} />
                         </div>
-                        <span className="text-xl font-bold">Cherry Sky</span>
+                        <span className="text-xl font-bold">{t('common.brand.name')}</span>
                     </SheetTitle>
                 </SheetHeader>
 
@@ -86,70 +86,6 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
                             label={t('nav.search')}
                             onClick={handleClose}
                         />
-                        <MenuItem
-                            href="/favourites"
-                            icon="favorite"
-                            label={t('nav.favorites')}
-                            onClick={handleClose}
-                        />
-                    </div>
-
-                    <Separator className="my-4" />
-
-                    {/* Filter Categories */}
-                    <div className="mb-6">
-                        <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-[#83746b]">
-                            Kategori
-                        </p>
-                        <div className="space-y-1">
-                            <MenuItem
-                                href="/cari?type=putra"
-                                icon="man"
-                                label="Kost Putra"
-                                onClick={handleClose}
-                            />
-                            <MenuItem
-                                href="/cari?type=putri"
-                                icon="woman"
-                                label="Kost Putri"
-                                onClick={handleClose}
-                            />
-                            <MenuItem
-                                href="/cari?type=campur"
-                                icon="groups"
-                                label="Kost Campur"
-                                onClick={handleClose}
-                            />
-                        </div>
-                    </div>
-
-                    <Separator className="my-4" />
-
-                    {/* Quick Filters */}
-                    <div className="mb-6">
-                        <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-[#83746b]">
-                            Fasilitas
-                        </p>
-                        <div className="space-y-1">
-                            <MenuItem
-                                href="/cari?facility=wifi"
-                                icon="wifi"
-                                label="Wi-Fi"
-                                onClick={handleClose}
-                            />
-                            <MenuItem
-                                href="/cari?facility=ac"
-                                icon="ac_unit"
-                                label="AC"
-                                onClick={handleClose}
-                            />
-                            <MenuItem
-                                href="/cari?facility=laundry"
-                                icon="local_laundry_service"
-                                label="Laundry Gratis"
-                                onClick={handleClose}
-                            />
-                        </div>
                     </div>
 
                     <Separator className="my-4" />
@@ -157,16 +93,16 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
                     {/* Account Section */}
                     <div className="space-y-1">
                         <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-[#83746b]">
-                            Akun
+                            {t('common.accountSection')}
                         </p>
                         <MenuItem
-                            href="/akun"
+                            href="/tenant/login"
                             icon="person"
                             label={t('nav.account')}
                             onClick={handleClose}
                         />
                         <MenuItem
-                            href="/login"
+                            href="/tenant/login"
                             icon="login"
                             label={t('nav.login')}
                             onClick={handleClose}
@@ -190,7 +126,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
                     {/* Language Switcher */}
                     <div className="pt-4">
                         <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-[#83746b]">
-                            Language
+                            {t('common.language')}
                         </p>
                         <LanguageSwitcher variant="sidebar" />
                     </div>

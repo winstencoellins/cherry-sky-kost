@@ -1,5 +1,10 @@
-import { VacantUnitsSearch } from "@/features/admin/units/vacant-units-search";
+import { redirect } from "@/i18n/routing";
 
-export default function AdminVacantUnitsPage() {
-  return <VacantUnitsSearch />;
+export default async function AdminVacantUnitsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  redirect({ href: "/admin/units", locale });
 }

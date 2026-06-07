@@ -9,6 +9,7 @@ import { type AuthSession, getSession, signOutSession } from "@/lib/auth/server"
 import type { UserRole } from "@/lib/types/auth";
 
 const FORBIDDEN_QUERY = "?error=forbidden";
+const DEACTIVATED_QUERY = "?error=deactivated";
 
 async function rejectWrongPortal(
   locale: string,
@@ -19,12 +20,25 @@ async function rejectWrongPortal(
   throw new Error("Forbidden");
 }
 
+async function rejectDeactivatedAccount(
+  locale: string,
+  loginPath: "/admin/login" | "/tenant/login",
+): Promise<never> {
+  await signOutSession();
+  redirect({ href: `${loginPath}${DEACTIVATED_QUERY}`, locale });
+  throw new Error("Deactivated");
+}
+
 export async function requireAdmin(locale: string): Promise<AuthSession> {
   const session = await getSession();
 
   if (!session) {
     redirect({ href: "/admin/login", locale });
     throw new Error("Unauthorized");
+  }
+
+  if (session.user.isActive === false) {
+    await rejectDeactivatedAccount(locale, "/admin/login");
   }
 
   const role = await resolveSessionRole(session.user.role);
@@ -46,6 +60,10 @@ export async function requireTenant(locale: string): Promise<AuthSession> {
   if (!session) {
     redirect({ href: "/tenant/login", locale });
     throw new Error("Unauthorized");
+  }
+
+  if (session.user.isActive === false) {
+    await rejectDeactivatedAccount(locale, "/tenant/login");
   }
 
   const role = await resolveSessionRole(session.user.role);

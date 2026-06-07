@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import { AdminAlert } from "@/features/admin/components/admin-alert";
 import {
@@ -42,6 +42,7 @@ const emptyPassword: TenantPasswordValues = {
 export function TenantProfileView() {
   const t = useTranslations("tenant.common");
   const tp = useTranslations("tenant.pages.profile");
+  const locale = useLocale();
   const router = useRouter();
   const { data: profile, isLoading, error } = useTenantProfile();
   const mutations = useTenantProfileMutations();
@@ -153,7 +154,7 @@ export function TenantProfileView() {
                     : tp("emailNotVerified")}
                 </span>
                 <p className="mt-2 text-xs text-[#83746b]">
-                  {tp("memberSince")}: {formatDate(profile.createdAt)}
+                  {tp("memberSince")}: {formatDate(profile.createdAt, locale)}
                 </p>
               </div>
             </div>

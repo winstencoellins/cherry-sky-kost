@@ -4,6 +4,7 @@ import type {
   ApiListResponse,
   ResetTenantPasswordResult,
   TenantUser,
+  TenantUserDetail,
 } from "@/lib/types/admin";
 
 export async function listTenantUsers(search?: string): Promise<TenantUser[]> {
@@ -16,10 +17,21 @@ export async function listTenantUsers(search?: string): Promise<TenantUser[]> {
   return res.data;
 }
 
-export async function getTenantUser(id: string): Promise<TenantUser> {
-  const res = await apiFetch<ApiDataResponse<TenantUser>>(
+export async function getTenantUser(id: string): Promise<TenantUserDetail> {
+  const res = await apiFetch<ApiDataResponse<TenantUserDetail>>(
     `/admin/users/${id}`,
   );
+  return res.data;
+}
+
+export async function updateTenantUser(
+  id: string,
+  input: { name: string; email: string },
+): Promise<TenantUser> {
+  const res = await apiFetch<ApiDataResponse<TenantUser>>(`/admin/users/${id}`, {
+    method: "PATCH",
+    body: input,
+  });
   return res.data;
 }
 
@@ -32,6 +44,20 @@ export async function createTenantUser(input: {
     method: "POST",
     body: input,
   });
+  return res.data;
+}
+
+export async function setTenantUserActive(
+  id: string,
+  isActive: boolean,
+): Promise<TenantUser> {
+  const res = await apiFetch<ApiDataResponse<TenantUser>>(
+    `/admin/users/${id}/active`,
+    {
+      method: "PATCH",
+      body: { isActive },
+    },
+  );
   return res.data;
 }
 

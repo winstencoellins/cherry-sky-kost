@@ -47,9 +47,9 @@ export function TenantUserForm() {
     }
 
     try {
-      await mutations.create.mutateAsync(parsed.data);
+      const created = await mutations.create.mutateAsync(parsed.data);
       showApiSuccess(t("created"));
-      router.push(BASE);
+      router.push(`${BASE}/${created.id}`);
       router.refresh();
     } catch (err) {
       const msg =

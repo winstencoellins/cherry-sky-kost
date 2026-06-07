@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import {
   AdminField,
+  AdminSelect,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminFormPage } from "@/features/admin/crud/admin-form-page";
@@ -119,10 +120,9 @@ export function PricingForm({ id }: { id?: string }) {
     >
       {!isEdit && (
         <AdminField label={t("property")} htmlFor="price-property">
-          <select
+          <AdminSelect
             id="price-property"
             required
-            className={adminInputClassName}
             value={form.propertyId}
             onChange={(e) =>
               setForm((f) => ({
@@ -138,16 +138,15 @@ export function PricingForm({ id }: { id?: string }) {
                 {p.name}
               </option>
             ))}
-          </select>
+          </AdminSelect>
         </AdminField>
       )}
 
       <AdminField label={t("unitType")} htmlFor="price-unit-type">
-        <select
+        <AdminSelect
           id="price-unit-type"
           required
           disabled={isEdit}
-          className={adminInputClassName}
           value={form.unitTypeId}
           onChange={(e) =>
             setForm((f) => ({ ...f, unitTypeId: e.target.value }))
@@ -159,7 +158,7 @@ export function PricingForm({ id }: { id?: string }) {
               {ut.name}
             </option>
           ))}
-        </select>
+        </AdminSelect>
       </AdminField>
 
       <AdminField label={t("duration")} htmlFor="price-duration">

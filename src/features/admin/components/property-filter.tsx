@@ -1,22 +1,25 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { adminInputClassName } from "@/features/admin/components/admin-field";
+import { AdminSelect } from "@/features/admin/components/admin-field";
 import { useProperties } from "@/features/admin/hooks/use-admin-queries";
+import { cn } from "@/lib/utils";
 
 export function PropertyFilter({
   value,
   onChange,
+  className,
 }: {
   value: string;
   onChange: (propertyId: string) => void;
+  className?: string;
 }) {
   const t = useTranslations("admin.crud");
   const { data: properties = [] } = useProperties();
 
   return (
-    <select
-      className={`${adminInputClassName} max-w-xs`}
+    <AdminSelect
+      className={cn("w-full shrink-0 sm:w-[14rem] sm:max-w-xs", className)}
       value={value}
       onChange={(e) => onChange(e.target.value)}
     >
@@ -26,6 +29,6 @@ export function PropertyFilter({
           {p.name}
         </option>
       ))}
-    </select>
+    </AdminSelect>
   );
 }

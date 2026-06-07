@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Icon } from "@/components/shared/Icon";
 import { AdminAlert } from "@/features/admin/components/admin-alert";
@@ -14,7 +14,8 @@ import {
   AdminCrudTableRow,
 } from "@/features/admin/crud/admin-crud-table";
 import { AdminRowActions } from "@/features/admin/crud/admin-row-actions";
-import { useClientPagination } from "@/features/admin/crud/use-client-pagination";
+import { getPropertySortValue } from "@/features/admin/crud/admin-table-sort";
+import { useClientTable } from "@/features/admin/crud/use-client-table";
 import { useDeleteDialog } from "@/features/admin/crud/use-delete-dialog";
 import {
   useProperties,
@@ -47,8 +48,13 @@ export function PropertiesList() {
     );
   }, [data, search]);
 
-  const { page, setPage, pageData, total, pageSize } =
-    useClientPagination(filtered);
+  const getSortValue = useCallback(
+    (item: Property, key: string) => getPropertySortValue(item, key),
+    [],
+  );
+
+  const { page, setPage, pageData, total, pageSize, sortKey, sortDir, onSort } =
+    useClientTable(filtered, getSortValue, { defaultSortKey: "name" });
 
   async function confirmDelete() {
     if (!deleteDialog.item) return;
@@ -121,6 +127,9 @@ export function PropertiesList() {
               { key: "attachments", label: ta("column") },
               { key: "actions", label: t("actions"), align: "right" },
             ]}
+            sortKey={sortKey}
+            sortDirection={sortDir}
+            onSort={onSort}
           >
             {pageData.map((property) => (
               <AdminCrudTableRow key={property.id}>

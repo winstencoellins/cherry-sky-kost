@@ -17,7 +17,7 @@ import {
 import { searchFiltersToApiParams } from '@/lib/api/public/search-contract';
 import {
     searchPublicUnits,
-    type PublicSearchUnit,
+    type PublicSearchUnitTypeResult,
 } from '@/lib/api/public/search';
 import { publicKeys } from '@/lib/query/keys';
 
@@ -71,20 +71,28 @@ function mapPublicPropertyToKost(property: PublicProperty, index: number): Kost 
 
         const roomPricings = mapRoomTypePricings(ut.pricings);
 
+        const occupancies = (ut.units ?? [])
+            .map((u) => u.maxOccupancy)
+            .filter((n): n is number => n != null && n > 0);
+        const minOcc = occupancies.length > 0 ? Math.min(...occupancies) : 1;
+        const maxOcc = occupancies.length > 0 ? Math.max(...occupancies) : 1;
+        const capacity =
+            minOcc === maxOcc ? `${minOcc} orang` : `${minOcc}–${maxOcc} orang`;
+
         return {
             id: ut.id,
             name: ut.name,
             price,
             pricings: roomPricings.length > 0 ? roomPricings : undefined,
             bathroomType: 'bersama' as const,
-            capacity: '1 orang',
+            capacity,
             size: ut.size ?? undefined,
             availableCount,
             totalCount,
             status: availableCount > 0 ? ('available' as const) : ('full' as const),
             waitlistEnabled: false,
-            images: unitTypeImages,
-            description: ut.description ?? undefined,
+            images: unitTypeImages.length > 0 ? unitTypeImages : propertyImageUrls,
+            description: ut.description?.trim() || undefined,
         };
     });
 
@@ -170,336 +178,66 @@ export function useKost(id: string) {
     return { data, isLoading: query.isLoading, error: query.error as Error | null };
 }
 
-function mapSearchResultsToKosts(units: PublicSearchUnit[]): Kost[] {
-    const propertyMap = new Map<
-        string,
-        {
-            property: PublicSearchUnit['property'];
-            unitTypes: Map<
-                string,
-                { unitType: PublicSearchUnit['unitType']; units: PublicSearchUnit[] }
-            >;
-        }
-    >();
-
-    for (const item of units) {
-        let entry = propertyMap.get(item.property.id);
-        if (!entry) {
-            entry = { property: item.property, unitTypes: new Map() };
-            propertyMap.set(item.property.id, entry);
-        }
-        let unitTypeEntry = entry.unitTypes.get(item.unitType.id);
-        if (!unitTypeEntry) {
-            unitTypeEntry = { unitType: item.unitType, units: [] };
-            entry.unitTypes.set(item.unitType.id, unitTypeEntry);
-        }
-        unitTypeEntry.units.push(item);
-    }
-
-    return Array.from(propertyMap.values()).map((entry, index) => {
-        const propertyImageUrls =
-            entry.property.propertyAttachments?.map((a) => a.url).filter(Boolean) ??
-            [];
-
-        const roomTypes = Array.from(entry.unitTypes.values()).map(({ unitType, units }) => {
-            const utPrices = (unitType.pricings ?? [])
-                .map((p) => p.price)
-                .filter((p) => Number.isFinite(p));
-            const price = utPrices.length > 0 ? Math.min(...utPrices) : 0;
-            const totalCount = units.length;
-            const availableCount = units.filter((u) => u.status === 'vacant').length;
-            const unitTypeImages =
-                unitType.unitTypeAttachments?.map((a) => a.url).filter(Boolean) ?? [];
-
-            const roomPricings = mapRoomTypePricings(unitType.pricings);
-
-            return {
-                id: unitType.id,
-                name: unitType.name,
-                price,
-                pricings: roomPricings.length > 0 ? roomPricings : undefined,
-                bathroomType: 'bersama' as const,
-                capacity: '1 orang',
-                size: unitType.size ?? undefined,
-                availableCount,
-                totalCount,
-                status: availableCount > 0 ? ('available' as const) : ('full' as const),
-                waitlistEnabled: false,
-                images: unitTypeImages,
-                description: unitType.description ?? undefined,
-            };
-        });
-
-        const allPricings = Array.from(entry.unitTypes.values()).flatMap(({ unitType }) =>
-            (unitType.pricings ?? []).map((p) => p.price),
-        );
-        const prices = allPricings.filter((p) => Number.isFinite(p));
-        const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
-        const maxPrice = prices.length > 0 ? Math.max(...prices) : 0;
-        const totalRooms = Array.from(entry.unitTypes.values()).reduce(
-            (sum, { units }) => sum + units.length,
-            0,
-        );
-        const availableRooms = Array.from(entry.unitTypes.values()).reduce(
-            (sum, { units }) => sum + units.filter((u) => u.status === 'vacant').length,
-            0,
-        );
-
-        const fallbackThumbnail = FALLBACK_THUMBNAILS[index % FALLBACK_THUMBNAILS.length];
-        const thumbnail = propertyImageUrls[0] ?? fallbackThumbnail;
-        const images =
-            propertyImageUrls.length > 0 ? propertyImageUrls : [fallbackThumbnail];
-
-        return {
-            id: entry.property.id,
-            name: entry.property.name,
-            slug: toSlug(entry.property.name),
-            type: 'campur' as const,
-            description: '',
-            location: {
-                address: entry.property.address,
-                city: entry.property.city,
-            },
-            priceRange: { min: minPrice, max: maxPrice },
-            images,
-            thumbnail,
-            roomTypes,
-            facilities: [],
-            highlights: [],
-            totalRooms,
-            availableRooms,
-            isFeatured: false,
-            whatsappNumber: '081234567890',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        };
-    });
+function mapSearchUnitTypeResults(rows: PublicSearchUnitTypeResult[]): SearchUnitTypeResult[] {
+    return rows.map((row) => ({
+        id: row.id,
+        propertyId: row.propertyId,
+        name: row.name,
+        propertyName: row.propertyName,
+        address: row.address,
+        city: row.city,
+        images: row.images,
+        thumbnail: row.thumbnail,
+        availableCount: row.availableCount,
+        totalCount: row.totalCount,
+        pricings: mapRoomTypePricings(row.pricings),
+        minPrice: row.minPrice,
+        whatsappNumber: '081234567890',
+        size: row.size ?? undefined,
+        description: row.description ?? undefined,
+    }));
 }
 
-function buildUnitTypeImageLookup(properties: PublicProperty[]): Map<string, string[]> {
-    const lookup = new Map<string, string[]>();
-
-    for (const property of properties) {
-        for (const unitType of property.unitTypes ?? []) {
-            const urls =
-                unitType.unitTypeAttachments?.map((a) => a.url).filter(Boolean) ?? [];
-            if (urls.length > 0) {
-                lookup.set(`${property.id}:${unitType.id}`, urls);
-            }
-        }
-    }
-
-    return lookup;
-}
-
-function applyUnitTypeImages(
-    results: SearchUnitTypeResult[],
-    catalogProperties: PublicProperty[],
-): SearchUnitTypeResult[] {
-    const lookup = buildUnitTypeImageLookup(catalogProperties);
+function withSearchFallbackImages(rows: SearchUnitTypeResult[]): SearchUnitTypeResult[] {
     let fallbackIndex = 0;
 
-    return results.map((unitType) => {
-        const lookupKey = `${unitType.propertyId}:${unitType.id}`;
-        const urls =
-            unitType.images.length > 0
-                ? unitType.images
-                : (lookup.get(lookupKey) ?? []);
-
-        if (urls.length > 0) {
-            return {
-                ...unitType,
-                images: urls,
-                thumbnail: urls[0],
-            };
-        }
+    return rows.map((row) => {
+        if (row.thumbnail) return row;
 
         const fallback =
             FALLBACK_THUMBNAILS[fallbackIndex % FALLBACK_THUMBNAILS.length];
         fallbackIndex += 1;
 
         return {
-            ...unitType,
+            ...row,
             images: [fallback],
             thumbnail: fallback,
         };
     });
 }
 
-function buildUnitTypesFromCatalog(properties: PublicProperty[]): SearchUnitTypeResult[] {
-    const results: SearchUnitTypeResult[] = [];
-
-    for (const property of properties) {
-        for (const unitType of property.unitTypes ?? []) {
-            const pricings = mapRoomTypePricings(unitType.pricings);
-            const prices = pricings.map((p) => p.price);
-            const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
-            const allUnits = unitType.units ?? [];
-            const unitTypeImages =
-                unitType.unitTypeAttachments?.map((a) => a.url).filter(Boolean) ?? [];
-
-            results.push({
-                id: unitType.id,
-                propertyId: property.id,
-                name: unitType.name,
-                propertyName: property.name,
-                address: property.address,
-                city: property.city,
-                images: unitTypeImages,
-                thumbnail: unitTypeImages[0] ?? '',
-                availableCount: allUnits.filter((u) => u.status === 'vacant').length,
-                totalCount: allUnits.length,
-                pricings,
-                minPrice,
-                whatsappNumber: '081234567890',
-                size: unitType.size ?? undefined,
-                description: unitType.description ?? undefined,
-            });
-        }
-    }
-
-    return results;
-}
-
-function mapSearchResultsToUnitTypes(units: PublicSearchUnit[]): SearchUnitTypeResult[] {
-    const propertyMap = new Map<
-        string,
-        {
-            property: PublicSearchUnit['property'];
-            unitTypes: Map<
-                string,
-                { unitType: PublicSearchUnit['unitType']; units: PublicSearchUnit[] }
-            >;
-        }
-    >();
-
-    for (const item of units) {
-        let entry = propertyMap.get(item.property.id);
-        if (!entry) {
-            entry = { property: item.property, unitTypes: new Map() };
-            propertyMap.set(item.property.id, entry);
-        }
-        let unitTypeEntry = entry.unitTypes.get(item.unitType.id);
-        if (!unitTypeEntry) {
-            unitTypeEntry = { unitType: item.unitType, units: [] };
-            entry.unitTypes.set(item.unitType.id, unitTypeEntry);
-        }
-        unitTypeEntry.units.push(item);
-    }
-
-    const results: SearchUnitTypeResult[] = [];
-
-    for (const entry of propertyMap.values()) {
-        for (const { unitType, units } of entry.unitTypes.values()) {
-            const unitTypeImages =
-                unitType.unitTypeAttachments?.map((a) => a.url).filter(Boolean) ?? [];
-            const pricings = mapRoomTypePricings(unitType.pricings);
-            const prices = pricings.map((p) => p.price);
-            const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
-
-            results.push({
-                id: unitType.id,
-                propertyId: entry.property.id,
-                name: unitType.name,
-                propertyName: entry.property.name,
-                address: entry.property.address,
-                city: entry.property.city,
-                images: unitTypeImages,
-                thumbnail: unitTypeImages[0] ?? '',
-                availableCount: units.filter((u) => u.status === 'vacant').length,
-                totalCount: units.length,
-                pricings,
-                minPrice,
-                whatsappNumber: '081234567890',
-                size: unitType.size ?? undefined,
-                description: unitType.description ?? undefined,
-            });
-        }
-    }
-
-    return results;
-}
-
-function sortUnitTypes(
-    unitTypes: SearchUnitTypeResult[],
-    sortBy?: SearchFilters['sortBy'],
-): SearchUnitTypeResult[] {
-    const sorted = [...unitTypes];
-    if (sortBy === 'price-asc') sorted.sort((a, b) => a.minPrice - b.minPrice);
-    else if (sortBy === 'price-desc') sorted.sort((a, b) => b.minPrice - a.minPrice);
-    return sorted;
-}
-
-function sortKosts(kosts: Kost[], sortBy?: SearchFilters['sortBy']): Kost[] {
-    const sorted = [...kosts];
-    if (sortBy === 'price-asc') sorted.sort((a, b) => a.priceRange.min - b.priceRange.min);
-    else if (sortBy === 'price-desc') sorted.sort((a, b) => b.priceRange.max - a.priceRange.max);
-    else if (sortBy === 'newest') sorted.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-    else if (sortBy === 'popular') sorted.sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0));
-    return sorted;
-}
-
-function applyClientFilters(kosts: Kost[], filters: SearchFilters): Kost[] {
-    const bathroomTypes = filters.bathroomType ?? [];
-    if (bathroomTypes.length === 0) return kosts;
-
-    return kosts.filter((kost) =>
-        kost.roomTypes.some((room) => bathroomTypes.includes(room.bathroomType)),
-    );
-}
-
 /**
- * Hook to search unit types via GET /public/search
+ * Hook to search unit types via GET /public/search (server filters, sort, pagination).
  */
 export function useSearchUnitTypes(filters: SearchFilters) {
-    const propertiesQuery = useQuery({
-        queryKey: publicKeys.properties.all(),
-        queryFn: listPublicProperties,
-        staleTime: 5 * 60 * 1000,
-    });
-
-    const data = useMemo(() => {
-        const catalog = propertiesQuery.data?.data ?? [];
-        const results = buildUnitTypesFromCatalog(catalog);
-        const withImages = applyUnitTypeImages(results, catalog);
-        return sortUnitTypes(withImages, filters.sortBy);
-    }, [propertiesQuery.data, filters.sortBy]);
-
-    const total = useMemo(
-        () => data.reduce((sum, unitType) => sum + unitType.totalCount, 0),
-        [data],
-    );
-
-    return {
-        data,
-        total,
-        isLoading: propertiesQuery.isLoading,
-        isFetching: propertiesQuery.isFetching,
-        error: propertiesQuery.error as Error | null,
-    };
-}
-
-/**
- * Hook to search kosts via GET /public/search
- */
-export function useSearchKosts(filters: SearchFilters) {
     const apiParams = useMemo(() => searchFiltersToApiParams(filters), [filters]);
 
     const query = useQuery({
         queryKey: publicKeys.search.list(apiParams as Record<string, unknown>),
         queryFn: () => searchPublicUnits(apiParams),
+        staleTime: 30_000,
     });
 
     const data = useMemo(() => {
-        const units = query.data?.data ?? [];
-        const mapped = mapSearchResultsToKosts(units);
-        const clientFiltered = applyClientFilters(mapped, filters);
-        return sortKosts(clientFiltered, filters.sortBy);
-    }, [query.data, filters]);
+        const rows = query.data?.data ?? [];
+        return withSearchFallbackImages(mapSearchUnitTypeResults(rows));
+    }, [query.data]);
 
     return {
         data,
-        total: query.data?.meta?.total ?? query.data?.data?.length ?? 0,
+        total: query.data?.meta?.total ?? 0,
+        unitTotal: query.data?.meta?.unitTotal ?? 0,
+        pagination: query.data?.meta?.pagination,
         isLoading: query.isLoading,
         isFetching: query.isFetching,
         error: query.error as Error | null,

@@ -124,15 +124,17 @@ export interface SearchUnitTypeResult {
 export interface SearchFilters {
   location?: string;
   city?: string;
+  propertyId?: string;
+  unitTypeId?: string;
   priceMin?: number;
   priceMax?: number;
-  bathroomType?: BathroomType[];
-  facilities?: string[]; // Facility IDs
   availability?: 'available' | 'all';
   startDate?: string;
   endDate?: string;
   durationDays?: number;
-  sortBy?: 'price-asc' | 'price-desc' | 'newest' | 'popular';
+  sortBy?: 'property-asc' | 'price-asc' | 'price-desc' | 'newest';
+  page?: number;
+  pageSize?: number;
 }
 
 /**

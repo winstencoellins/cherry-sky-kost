@@ -15,6 +15,7 @@ import { AdminLoginShell } from "@/features/admin/login/admin-login-shell";
 import { authClient } from "@/lib/auth/client";
 import { getRoleFromAuthUser, getRoleFromSignInData } from "@/lib/auth/post-login";
 import { getHomePathForRole } from "@/lib/auth/redirects";
+import { isDeactivatedAuthError } from "@/lib/auth/errors";
 import { assertCanAccessAdminPortal } from "@/lib/auth/role";
 import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
@@ -43,6 +44,7 @@ export function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const forbiddenFromUrl = searchParams.get("error") === "forbidden";
+  const deactivatedFromUrl = searchParams.get("error") === "deactivated";
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -50,6 +52,12 @@ export function AdminLoginForm() {
       toast.error(t("errors.forbidden"));
     }
   }, [forbiddenFromUrl, t]);
+
+  useEffect(() => {
+    if (deactivatedFromUrl) {
+      toast.error(t("errors.deactivated"));
+    }
+  }, [deactivatedFromUrl, t]);
 
   const form = useForm({
     defaultValues: {
@@ -69,7 +77,11 @@ export function AdminLoginForm() {
       });
 
       if (result.error) {
-        toast.error(t("errors.invalid"));
+        toast.error(
+          isDeactivatedAuthError(result.error)
+            ? t("errors.deactivated")
+            : t("errors.invalid"),
+        );
         return;
       }
 
@@ -163,21 +175,12 @@ export function AdminLoginForm() {
               initial="hidden"
               animate="visible"
             >
-              <div className="mb-2 flex items-center justify-between">
-                <label
-                  htmlFor="admin-password"
-                  className="block text-sm font-semibold tracking-wide text-[#1a1c1a]"
-                >
-                  {t("passwordLabel")}
-                </label>
-                <button
-                  type="button"
-                  className="text-sm font-semibold text-[#6f4627] transition-colors hover:text-[#805533]"
-                  onClick={() => toast.info(t("forgotPasswordHint"))}
-                >
-                  {t("forgotPassword")}
-                </button>
-              </div>
+              <label
+                htmlFor="admin-password"
+                className="mb-2 block text-sm font-semibold tracking-wide text-[#1a1c1a]"
+              >
+                {t("passwordLabel")}
+              </label>
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <Icon name="lock" size={20} className="text-[#5f5e5e]" />

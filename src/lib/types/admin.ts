@@ -81,6 +81,20 @@ export interface UnitUserRef {
 
 export interface TenantUser extends UnitUserRef {
   role: "tenant";
+  isActive: boolean;
+  emailVerified: boolean;
+  image: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TenantUserDetail extends TenantUser {
+  leases?: Lease[];
+}
+
+export interface StaffUser extends UnitUserRef {
+  role: "admin" | "superadmin";
+  isActive: boolean;
   emailVerified: boolean;
   image: string | null;
   createdAt: string;
@@ -89,6 +103,11 @@ export interface TenantUser extends UnitUserRef {
 
 export interface ResetTenantPasswordResult {
   user: TenantUser;
+  temporaryPassword: string;
+}
+
+export interface ResetStaffPasswordResult {
+  user: StaffUser;
   temporaryPassword: string;
 }
 
@@ -162,7 +181,7 @@ export interface LedgerEntry {
   createdBy?: UnitUserRef;
   updatedBy?: UnitUserRef;
   createdById: string;
-  updatedById?: string;
+  updatedById: string;
   createdAt: string;
   updatedAt: string;
 }

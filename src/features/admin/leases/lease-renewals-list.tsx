@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Icon } from "@/components/shared/Icon";
 import { Link } from "@/i18n/routing";
 import { AdminAlert } from "@/features/admin/components/admin-alert";
+import { AdminSearchInput } from "@/features/admin/components/admin-field";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
 import { AdminPagination } from "@/features/admin/components/admin-pagination";
 import { AdminStatCard } from "@/features/admin/components/admin-stat-card";
@@ -19,7 +20,8 @@ import {
   AdminCrudTableCell,
   AdminCrudTableRow,
 } from "@/features/admin/crud/admin-crud-table";
-import { useClientPagination } from "@/features/admin/crud/use-client-pagination";
+import { getLeaseRenewalSortValue } from "@/features/admin/crud/admin-table-sort";
+import { useClientTable } from "@/features/admin/crud/use-client-table";
 import { AdminLeaseRenewalActions } from "@/features/admin/leases/lease-renewal-actions";
 import { useLeases } from "@/features/admin/hooks/use-admin-queries";
 import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
@@ -110,8 +112,13 @@ export function LeaseRenewalsList() {
     });
   }, [data, search, statusFilter, lookups]);
 
-  const { page, setPage, pageData, total, pageSize } =
-    useClientPagination(filtered);
+  const getSortValue = useCallback(
+    (item: Lease, key: string) => getLeaseRenewalSortValue(item, key, lookups),
+    [lookups],
+  );
+
+  const { page, setPage, pageData, total, pageSize, sortKey, sortDir, onSort } =
+    useClientTable(filtered, getSortValue, { defaultSortKey: "leaseEnd" });
 
   const statusFilters: { key: StatusFilter; label: string }[] = [
     { key: "requested", label: tp("filters.requested") },
@@ -175,22 +182,14 @@ export function LeaseRenewalsList() {
           ))}
         </div>
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+        <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
           <PropertyFilter value={propertyFilter} onChange={setPropertyFilter} />
-          <div className="relative flex-1 max-w-md">
-            <Icon
-              name="search"
-              size={20}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#83746b]"
-            />
-            <input
-              type="search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t("searchPlaceholder")}
-              className="h-10 w-full rounded-xl border border-[#e3e2e0] bg-white/80 pl-10 pr-4 text-sm outline-none focus:border-[#8b5e3c]/50 focus:ring-2 focus:ring-[#8b5e3c]/15"
-            />
-          </div>
+          <AdminSearchInput
+            value={search}
+            onChange={setSearch}
+            placeholder={t("searchPlaceholder")}
+            className="sm:max-w-md sm:flex-1"
+          />
         </div>
       </div>
 
@@ -226,6 +225,9 @@ export function LeaseRenewalsList() {
               { key: "status", label: t("status") },
               { key: "actions", label: t("actions"), align: "right" },
             ]}
+            sortKey={sortKey}
+            sortDirection={sortDir}
+            onSort={onSort}
           >
             {pageData.map((lease) => {
               const renewal = lease.leaseRenewal;

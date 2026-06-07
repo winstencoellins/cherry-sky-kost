@@ -42,6 +42,12 @@ export const adminKeys = {
       [...adminKeys.users.all(), { search: search ?? "" }] as const,
     detail: (id: string) => [...adminKeys.users.all(), id] as const,
   },
+  staff: {
+    all: () => [...adminKeys.all, "staff"] as const,
+    list: (search?: string) =>
+      [...adminKeys.staff.all(), { search: search ?? "" }] as const,
+    detail: (id: string) => [...adminKeys.staff.all(), id] as const,
+  },
   ledgerEntries: {
     all: () => [...adminKeys.all, "ledger-entries"] as const,
     list: (filters?: {
@@ -51,6 +57,9 @@ export const adminKeys = {
       to?: string;
     }) => [...adminKeys.ledgerEntries.all(), filters ?? {}] as const,
     detail: (id: string) => [...adminKeys.ledgerEntries.all(), id] as const,
+  },
+  profile: {
+    all: () => [...adminKeys.all, "profile"] as const,
   },
 } as const;
 

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Icon } from "@/components/shared/Icon";
+import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { Link, usePathname } from "@/i18n/routing";
 import { ADMIN_PROFILE_IMAGE } from "@/features/admin/constants/assets";
 import { tenantNavItems } from "@/features/tenant/constants/nav-items";
@@ -42,28 +43,34 @@ export function TenantHeader() {
           </h1>
         </div>
 
-        <Link
-          href="/tenant/profile"
-          className={cn(
-            "flex shrink-0 items-center gap-2.5 rounded-xl py-1.5 pl-1.5 pr-3 transition-colors hover:bg-[#f4f3f1]",
-          )}
-        >
-          <div className="relative size-9 overflow-hidden rounded-full ring-2 ring-[#e3e2e0]">
-            <Image
-              src={user.avatar ?? ADMIN_PROFILE_IMAGE}
-              alt={user.name}
-              fill
-              className="object-cover"
-              sizes="36px"
-            />
-          </div>
-          <span className="hidden text-left md:block">
-            <span className="block max-w-[120px] truncate text-sm font-semibold text-[#1a1c1a]">
-              {user.name}
+        <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
+          <LanguageSwitcher variant="navbar" isSolid />
+
+          <div className="hidden h-8 w-px bg-[#e3e2e0] sm:block" />
+
+          <Link
+            href="/tenant/profile"
+            className={cn(
+              "flex items-center gap-2.5 rounded-xl py-1.5 pl-1.5 pr-3 transition-colors hover:bg-[#f4f3f1]",
+            )}
+          >
+            <div className="relative size-9 overflow-hidden rounded-full ring-2 ring-[#e3e2e0]">
+              <Image
+                src={user.avatar ?? ADMIN_PROFILE_IMAGE}
+                alt={user.name}
+                fill
+                className="object-cover"
+                sizes="36px"
+              />
+            </div>
+            <span className="hidden text-left md:block">
+              <span className="block max-w-[120px] truncate text-sm font-semibold text-[#1a1c1a]">
+                {user.name}
+              </span>
+              <span className="block text-xs text-[#83746b]">{th("roleTenant")}</span>
             </span>
-            <span className="block text-xs text-[#83746b]">{th("roleTenant")}</span>
-          </span>
-        </Link>
+          </Link>
+        </div>
       </div>
     </header>
   );

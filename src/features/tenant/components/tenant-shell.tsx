@@ -1,6 +1,7 @@
 import { TenantHeader } from "@/features/tenant/components/tenant-header";
 import { TenantShellProvider } from "@/features/tenant/components/tenant-shell-context";
 import { TenantSidebar } from "@/features/tenant/components/tenant-sidebar";
+import { SessionGuard } from "@/lib/auth/session-guard";
 import type { User } from "@/lib/types/auth";
 
 interface TenantShellProps {
@@ -10,6 +11,7 @@ interface TenantShellProps {
 
 export function TenantShell({ children, user }: TenantShellProps) {
   return (
+    <SessionGuard portal="tenant">
     <TenantShellProvider user={user}>
       <div className="relative min-h-screen bg-[#f5f4f1] text-[#1a1c1a] antialiased">
         <div
@@ -31,5 +33,6 @@ export function TenantShell({ children, user }: TenantShellProps) {
         </div>
       </div>
     </TenantShellProvider>
+    </SessionGuard>
   );
 }

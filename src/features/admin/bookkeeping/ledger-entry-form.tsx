@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import {
+  AdminDatePicker,
   AdminField,
+  AdminSelect,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminFormPage } from "@/features/admin/crud/admin-form-page";
@@ -118,10 +120,9 @@ export function LedgerEntryForm({ id }: { id?: string }) {
       cancelLabel={t("cancel")}
     >
       <AdminField label={tp("entryType")} htmlFor="ledger-type">
-        <select
+        <AdminSelect
           id="ledger-type"
           required
-          className={adminInputClassName}
           value={form.type}
           onChange={(e) =>
             setForm((f) => ({ ...f, type: e.target.value as LedgerEntryType }))
@@ -129,7 +130,7 @@ export function LedgerEntryForm({ id }: { id?: string }) {
         >
           <option value="income">{tp("typeIncome")}</option>
           <option value="expense">{tp("typeExpense")}</option>
-        </select>
+        </AdminSelect>
       </AdminField>
 
       <AdminField label={tp("amount")} htmlFor="ledger-amount">
@@ -158,20 +159,17 @@ export function LedgerEntryForm({ id }: { id?: string }) {
       </AdminField>
 
       <AdminField label={tp("date")} htmlFor="ledger-date">
-        <input
+        <AdminDatePicker
           id="ledger-date"
-          type="date"
-          required
-          className={adminInputClassName}
           value={form.date}
-          onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
+          onChange={(date) => setForm((f) => ({ ...f, date }))}
+          placeholder={t("pickDate")}
         />
       </AdminField>
 
       <AdminField label={t("property")} htmlFor="ledger-property">
-        <select
+        <AdminSelect
           id="ledger-property"
-          className={adminInputClassName}
           value={form.propertyId}
           onChange={(e) =>
             setForm((f) => ({ ...f, propertyId: e.target.value }))
@@ -183,7 +181,7 @@ export function LedgerEntryForm({ id }: { id?: string }) {
               {property.name}
             </option>
           ))}
-        </select>
+        </AdminSelect>
       </AdminField>
     </AdminFormPage>
   );

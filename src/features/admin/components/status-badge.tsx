@@ -16,7 +16,7 @@ const renewalStyles: Record<LeaseRenewalStatus, string> = {
 
 const unitStyles: Record<UnitStatus, string> = {
   vacant: "bg-emerald-50 text-emerald-700",
-  occupied: "bg-blue-50 text-blue-700",
+  occupied: "bg-transparent font-bold text-[#ba1a1a]",
 };
 
 const leaseStyles: Record<LeaseStatus, string> = {

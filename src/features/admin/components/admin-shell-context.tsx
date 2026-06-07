@@ -7,6 +7,11 @@ import {
   useMemo,
   useState,
 } from "react";
+import {
+  useProperties,
+  useUnitTypes,
+} from "@/features/admin/hooks/use-admin-queries";
+import type { AdminLookups } from "@/features/admin/hooks/use-admin-lookups";
 import type { User } from "@/lib/types/auth";
 
 interface AdminShellContextValue {
@@ -14,6 +19,7 @@ interface AdminShellContextValue {
   mobileOpen: boolean;
   setMobileOpen: (open: boolean) => void;
   toggleMobile: () => void;
+  lookups: AdminLookups;
 }
 
 const AdminShellContext = createContext<AdminShellContextValue | null>(null);
@@ -28,9 +34,20 @@ export function AdminShellProvider({
   const [mobileOpen, setMobileOpen] = useState(false);
   const toggleMobile = useCallback(() => setMobileOpen((v) => !v), []);
 
+  const { data: properties = [] } = useProperties();
+  const { data: unitTypes = [] } = useUnitTypes();
+
+  const lookups = useMemo<AdminLookups>(
+    () => ({
+      propertyById: new Map(properties.map((p) => [p.id, p])),
+      unitTypeById: new Map(unitTypes.map((ut) => [ut.id, ut])),
+    }),
+    [properties, unitTypes],
+  );
+
   const value = useMemo(
-    () => ({ user, mobileOpen, setMobileOpen, toggleMobile }),
-    [user, mobileOpen, toggleMobile],
+    () => ({ user, mobileOpen, setMobileOpen, toggleMobile, lookups }),
+    [user, mobileOpen, toggleMobile, lookups],
   );
 
   return (

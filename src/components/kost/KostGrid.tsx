@@ -5,8 +5,8 @@
 
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
@@ -22,7 +22,6 @@ interface KostGridProps {
 
 export function KostGrid({ kosts, isLoading }: KostGridProps) {
     const t = useTranslations();
-    const locale = useLocale();
 
     const filteredKosts = kosts;
 
@@ -91,7 +90,7 @@ export function KostGrid({ kosts, isLoading }: KostGridProps) {
                     variants={item}
                     className="group"
                 >
-                    <Link href={`/${locale}/kosts/${kost.id}`} className="block h-full">
+                    <Link href={`/kosts/${kost.id}`} className="block h-full">
                         <div className="relative h-full bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                             <div className="relative h-64 w-full overflow-hidden bg-slate-200 dark:bg-slate-800">
                                 {kost.thumbnail ? (

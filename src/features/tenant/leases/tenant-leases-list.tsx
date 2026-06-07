@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useCallback, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Icon } from "@/components/shared/Icon";
 import { Link } from "@/i18n/routing";
 import { AdminAlert } from "@/features/admin/components/admin-alert";
@@ -14,7 +14,8 @@ import {
   AdminCrudTableCell,
   AdminCrudTableRow,
 } from "@/features/admin/crud/admin-crud-table";
-import { useClientPagination } from "@/features/admin/crud/use-client-pagination";
+import { getTenantLeaseSortValue } from "@/features/admin/crud/admin-table-sort";
+import { useClientTable } from "@/features/admin/crud/use-client-table";
 import {
   formatDate,
   formatIdrTable,
@@ -29,6 +30,7 @@ const BASE = "/tenant/leases";
 export function TenantLeasesList() {
   const t = useTranslations("tenant.common");
   const tp = useTranslations("tenant.pages.leases");
+  const locale = useLocale();
   const [search, setSearch] = useState("");
   const { data = [], isLoading, error } = useTenantLeases();
 
@@ -46,8 +48,14 @@ export function TenantLeasesList() {
     });
   }, [data, search]);
 
-  const { page, setPage, pageData, total, pageSize } =
-    useClientPagination(filtered);
+  const getSortValue = useCallback(
+    (item: (typeof data)[number], key: string) =>
+      getTenantLeaseSortValue(item, key),
+    [],
+  );
+
+  const { page, setPage, pageData, total, pageSize, sortKey, sortDir, onSort } =
+    useClientTable(filtered, getSortValue, { defaultSortKey: "period" });
 
   const renewalNotices = useMemo(
     () => data.filter((lease) => getTenantRenewalView(lease) !== "none"),
@@ -117,12 +125,15 @@ export function TenantLeasesList() {
               { key: "rent", label: t("rent") },
               { key: "actions", label: t("actions"), align: "right" },
             ]}
+            sortKey={sortKey}
+            sortDirection={sortDir}
+            onSort={onSort}
           >
             {pageData.map((lease) => {
               const rent = lease.unitPricing?.price ?? 0;
 
               return (
-                <AdminCrudTableRow key={lease.id}>
+                <AdminCrudTableRow key={lease.id} className="group">
                   <AdminCrudTableCell className="font-semibold">
                     <div>
                       <p>{lease.unit?.name ?? "—"}</p>
@@ -136,10 +147,10 @@ export function TenantLeasesList() {
                   </AdminCrudTableCell>
                   <AdminCrudTableCell>
                     <div>
-                      <p>{formatDate(lease.startDate)}</p>
+                      <p>{formatDate(lease.startDate, locale)}</p>
                       <p className="text-xs text-[#83746b]">
                         {tp("to")}{" "}
-                        {lease.endDate ? formatDate(lease.endDate) : "—"}
+                        {lease.endDate ? formatDate(lease.endDate, locale) : "—"}
                       </p>
                     </div>
                   </AdminCrudTableCell>
@@ -150,10 +161,10 @@ export function TenantLeasesList() {
                   <AdminCrudTableCell align="right">
                     <Link
                       href={`${BASE}/${lease.id}`}
-                      className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-semibold text-[#6f4627] transition-colors hover:bg-[#efeeeb]"
+                      className="inline-flex size-8 items-center justify-center rounded-lg text-[#51443c] transition-colors hover:bg-[#efeeeb] hover:text-[#6f4627] sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100"
+                      aria-label={t("view")}
                     >
                       <Icon name="visibility" size={18} />
-                      {t("view")}
                     </Link>
                   </AdminCrudTableCell>
                 </AdminCrudTableRow>

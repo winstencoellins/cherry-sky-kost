@@ -1,6 +1,6 @@
 /**
  * Property Detail View
- * Shows property overview and a list of unit types for a kost property
+ * Shows property overview and recommended room types for a kost property
  */
 
 'use client';
@@ -13,8 +13,10 @@ import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/shared/Icon';
 import { ImageGallery } from '@/components/kost/ImageGallery';
 import { RoomTypeCard } from '@/components/kost/RoomTypeCard';
+import { KostBreadcrumb, useKostBreadcrumbs } from '@/components/kost/KostBreadcrumb';
 import type { Kost } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils/format';
+import { sortRoomTypesForDisplay } from '@/lib/utils/kost-display';
 
 interface PropertyDetailViewProps {
     kost: Kost;
@@ -22,7 +24,15 @@ interface PropertyDetailViewProps {
 
 export function PropertyDetailView({ kost }: PropertyDetailViewProps) {
     const t = useTranslations();
+    const crumbs = useKostBreadcrumbs();
     const isAlmostFull = kost.availableRooms > 0 && kost.availableRooms <= 3;
+    const sortedRoomTypes = sortRoomTypesForDisplay(kost.roomTypes);
+
+    const breadcrumbItems = [
+        crumbs.home,
+        crumbs.search,
+        crumbs.property(kost.name, kost.id),
+    ];
 
     return (
         <AppLayout>
@@ -33,8 +43,7 @@ export function PropertyDetailView({ kost }: PropertyDetailViewProps) {
                             images={kost.images}
                             alt={kost.name}
                             variant="compact"
-                            backHref="/"
-                            backLabel={t('roomDetail.backToHome')}
+                            header={<KostBreadcrumb items={breadcrumbItems} className="mb-1" />}
                         />
 
                         <motion.div
@@ -43,15 +52,15 @@ export function PropertyDetailView({ kost }: PropertyDetailViewProps) {
                             transition={{ duration: 0.5 }}
                             className="space-y-4"
                         >
-                            <div className="flex flex-wrap gap-3">
+                            <div className="flex flex-wrap gap-2">
                                 {kost.isFeatured && (
-                                    <Badge className="px-3 py-1 bg-[#e7edf3] dark:bg-slate-700 text-slate-900 dark:text-slate-200">
+                                    <Badge className="border border-[#e8dfd6] bg-[#f5e4d4] px-3 py-1 text-[#6f4627]">
                                         <Icon name="star" size={16} className="mr-1.5" filled />
                                         {t('property.flagship')}
                                     </Badge>
                                 )}
                                 {kost.availableRooms > 0 && (
-                                    <Badge className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+                                    <Badge className="border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">
                                         <Icon name="key" size={16} className="mr-1.5" />
                                         {t('propertyDetail.availableRooms', {
                                             available: kost.availableRooms,
@@ -60,7 +69,7 @@ export function PropertyDetailView({ kost }: PropertyDetailViewProps) {
                                     </Badge>
                                 )}
                                 {isAlmostFull && (
-                                    <Badge className="px-3 py-1 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                                    <Badge className="border border-amber-200 bg-amber-50 px-3 py-1 text-amber-700">
                                         <Icon name="schedule" size={14} className="mr-1.5" />
                                         {t('status.almostFull')}
                                     </Badge>
@@ -68,11 +77,11 @@ export function PropertyDetailView({ kost }: PropertyDetailViewProps) {
                             </div>
 
                             <div>
-                                <h1 className="mb-2 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+                                <h1 className="mb-2 text-3xl font-bold tracking-tight text-[#1a1c1a] sm:text-4xl">
                                     {kost.name}
                                 </h1>
-                                <div className="flex items-start gap-2 text-slate-600 dark:text-slate-400">
-                                    <Icon name="location_on" size={20} className="mt-0.5 shrink-0 text-primary" />
+                                <div className="flex items-start gap-2 text-[#83746b]">
+                                    <Icon name="location_on" size={20} className="mt-0.5 shrink-0 text-[#6f4627]" />
                                     <p className="text-base font-medium">
                                         {kost.location.address}
                                         {kost.location.city ? `, ${kost.location.city}` : ''}
@@ -81,33 +90,46 @@ export function PropertyDetailView({ kost }: PropertyDetailViewProps) {
                             </div>
 
                             {kost.priceRange.min > 0 && (
-                                <p className="text-lg text-slate-700 dark:text-slate-300">
-                                    <span className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                                <p className="text-lg text-[#51443c]">
+                                    <span className="text-sm font-semibold uppercase tracking-wide text-[#83746b]">
                                         {t('pricing.startingFrom')}{' '}
                                     </span>
-                                    <span className="font-bold text-slate-900 dark:text-white">
+                                    <span className="font-bold text-[#1a1c1a]">
                                         {formatCurrency(kost.priceRange.min)}
                                     </span>
-                                    <span className="text-sm text-slate-500">{t('pricing.perMonth')}</span>
                                 </p>
                             )}
                         </motion.div>
 
-                        <hr className="border-slate-200 dark:border-slate-800" />
+                        {kost.description && (
+                            <>
+                                <hr className="border-[#e8dfd6]" />
+                                <section>
+                                    <h2 className="mb-3 text-xl font-bold text-[#1a1c1a]">
+                                        {t('propertyDetail.aboutProperty')}
+                                    </h2>
+                                    <p className="text-base leading-relaxed text-[#51443c]">
+                                        {kost.description}
+                                    </p>
+                                </section>
+                            </>
+                        )}
+
+                        <hr className="border-[#e8dfd6]" />
 
                         <section className="flex flex-col gap-6">
                             <div>
-                                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                                <h2 className="text-2xl font-bold text-[#1a1c1a]">
                                     {t('propertyDetail.unitTypes')}
                                 </h2>
-                                <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                                <p className="mt-1 text-sm text-[#83746b]">
                                     {t('propertyDetail.unitTypesDescription')}
                                 </p>
                             </div>
 
-                            {kost.roomTypes.length > 0 ? (
+                            {sortedRoomTypes.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                    {kost.roomTypes.map((roomType, index) => (
+                                    {sortedRoomTypes.map((roomType, index) => (
                                         <RoomTypeCard
                                             key={roomType.id}
                                             roomType={roomType}
@@ -119,13 +141,13 @@ export function PropertyDetailView({ kost }: PropertyDetailViewProps) {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center dark:border-slate-800 dark:bg-slate-900">
+                                <div className="rounded-2xl border border-[#e8dfd6] bg-white px-6 py-12 text-center">
                                     <Icon
                                         name="meeting_room"
                                         size={48}
-                                        className="mx-auto mb-4 text-slate-300 dark:text-slate-700"
+                                        className="mx-auto mb-4 text-[#d4c4b4]"
                                     />
-                                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                                    <p className="text-sm text-[#83746b]">
                                         {t('propertyDetail.noUnitTypes')}
                                     </p>
                                 </div>

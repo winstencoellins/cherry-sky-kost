@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import {
   AdminField,
+  AdminSelect,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminFormPage } from "@/features/admin/crud/admin-form-page";
@@ -132,10 +133,9 @@ export function UnitForm({ id }: { id?: string }) {
     >
       {!isEdit && (
         <AdminField label={t("property")} htmlFor="unit-property">
-          <select
+          <AdminSelect
             id="unit-property"
             required
-            className={adminInputClassName}
             value={form.propertyId}
             onChange={(e) =>
               setForm((f) => ({
@@ -151,16 +151,15 @@ export function UnitForm({ id }: { id?: string }) {
                 {p.name}
               </option>
             ))}
-          </select>
+          </AdminSelect>
         </AdminField>
       )}
 
       <AdminField label={t("unitType")} htmlFor="unit-type">
-        <select
+        <AdminSelect
           id="unit-type"
           required
           disabled={isEdit}
-          className={adminInputClassName}
           value={form.unitTypeId}
           onChange={(e) =>
             setForm((f) => ({ ...f, unitTypeId: e.target.value }))
@@ -175,7 +174,7 @@ export function UnitForm({ id }: { id?: string }) {
                 : ""}
             </option>
           ))}
-        </select>
+        </AdminSelect>
       </AdminField>
 
       <AdminField label={t("name")} htmlFor="unit-name">
@@ -203,15 +202,14 @@ export function UnitForm({ id }: { id?: string }) {
 
       {isEdit && (
         <AdminField label={t("status")} htmlFor="unit-status">
-          <select
+          <AdminSelect
             id="unit-status"
-            className={adminInputClassName}
             value={status}
             onChange={(e) => setStatus(e.target.value as UnitStatus)}
           >
             <option value="vacant">vacant</option>
             <option value="occupied">occupied</option>
-          </select>
+          </AdminSelect>
         </AdminField>
       )}
     </AdminFormPage>

@@ -2,7 +2,6 @@
     "nav": {
         "home": "Beranda",
         "search": "Cari Kost",
-        "favorites": "Favorit",
         "contact": "Hubungi",
         "account": "Akun",
         "login": "Masuk",
@@ -71,6 +70,7 @@
     },
     "pricing": {
         "perMonth": "/bulan",
+        "packages": "Paket harga",
         "startingFrom": "Mulai dari",
         "priceIncludes": "Harga sudah termasuk",
         "capacity": "Kapasitas 1-2 orang",
@@ -100,7 +100,6 @@
             "password": "Kata Sandi",
             "passwordPlaceholder": "Masukkan kata sandi Anda",
             "rememberMe": "Ingat saya",
-            "forgotPassword": "Lupa kata sandi?",
             "loginButton": "Masuk",
             "loggingIn": "Masuk...",
             "noAccount": "Belum punya akun?",
@@ -145,23 +144,6 @@
                 "unknownError": "Terjadi kesalahan. Silakan coba lagi."
             }
         },
-        "forgotPassword": {
-            "title": "Lupa Kata Sandi?",
-            "subtitle": "Masukkan email Anda dan kami akan mengirim tautan untuk reset kata sandi.",
-            "email": "Email",
-            "emailPlaceholder": "nama@email.com",
-            "sendButton": "Kirim Tautan Reset",
-            "sending": "Mengirim...",
-            "backToLogin": "Kembali ke halaman masuk",
-            "emailSent": "Email terkirim!",
-            "checkInbox": "Silakan cek inbox Anda untuk tautan reset kata sandi.",
-            "errors": {
-                "invalidEmail": "Email tidak valid",
-                "emailNotFound": "Email tidak ditemukan",
-                "networkError": "Kesalahan jaringan. Silakan coba lagi.",
-                "unknownError": "Terjadi kesalahan. Silakan coba lagi."
-            }
-        },
         "dashboard": {
             "title": "Dashboard Penyewa",
             "welcome": "Selamat datang, {name}",
@@ -184,9 +166,24 @@
         "noResults": "Tidak ada kost yang ditemukan",
         "tryDifferentFilters": "Coba gunakan filter yang berbeda",
         "resultsCount": "Menampilkan {count} properti ({total} kamar cocok)",
-        "unitTypeResultsCount": "Menampilkan {count} tipe unit ({total} kamar cocok)",
+        "unitTypeResultsCount": "Menampilkan {count} dari {total} tipe kamar ({units} kamar cocok)",
         "updating": "Memperbarui…",
         "loadError": "Gagal memuat hasil pencarian. Pastikan API berjalan lalu coba lagi.",
+        "filtersTitle": "Filter Pencarian",
+        "propertyLabel": "Properti",
+        "propertyAny": "Semua properti",
+        "availabilityVacant": "Hanya kosong",
+        "availabilityAll": "Semua kamar",
+        "sortLabel": "Urutkan",
+        "sortProperty": "Nama properti",
+        "sortPriceAsc": "Harga: Terendah",
+        "sortPriceDesc": "Harga: Tertinggi",
+        "sortNewest": "Terbaru",
+        "reset": "Reset",
+        "apply": "Cari",
+        "paginationShowing": "Menampilkan {start}–{end} dari {total}",
+        "paginationPrevious": "Halaman sebelumnya",
+        "paginationNext": "Halaman berikutnya",
         "durationLabel": "Durasi sewa (hari)",
         "durationAny": "Semua durasi",
         "duration7": "7 hari",
@@ -209,8 +206,13 @@
     "propertyDetail": {
         "notFound": "Properti tidak ditemukan",
         "notFoundDescription": "Properti yang Anda cari tidak tersedia",
+        "breadcrumbHome": "Beranda",
+        "breadcrumbSearch": "Cari Kost",
+        "aboutProperty": "Tentang properti ini",
         "unitTypes": "Tipe Kamar",
         "unitTypesDescription": "Pilih tipe kamar untuk melihat detail dan ketersediaan",
+        "otherRoomTypes": "Tipe kamar lain di properti ini",
+        "otherRoomTypesDescription": "Lihat pilihan lain sebelum memesan",
         "noUnitTypes": "Belum ada tipe kamar untuk properti ini",
         "availableRooms": "{available} dari {total} kamar tersedia",
         "backToProperty": "Kembali ke Properti",
@@ -228,7 +230,11 @@
         "newsletterDesc": "Berlangganan untuk update kamar baru",
         "emailPlaceholder": "Alamat email",
         "subscribe": "Berlangganan",
-        "copyright": "© {year} Cherry Sky Kost. Hak cipta dilindungi."
+        "copyright": "© {year} Cherry Sky Kost. Hak cipta dilindungi.",
+        "termsConditions": "Syarat & Ketentuan",
+        "location": "Medan, Indonesia",
+        "website": "Situs web",
+        "email": "Email"
     },
     "whatsapp": {
         "inquiry": "Halo, saya tertarik dengan {propertyName}",
@@ -256,6 +262,14 @@
         "verified": "Terverifikasi"
     },
     "common": {
+        "brand": {
+            "name": "Cherry Sky",
+            "fullName": "Cherry Sky Kost"
+        },
+        "accountSection": "Akun",
+        "language": "Bahasa",
+        "closeMenu": "Tutup menu",
+        "openMenu": "Menu",
         "or": "atau",
         "and": "dan",
         "close": "Tutup",
@@ -328,7 +342,15 @@
             "hours": "Jam Operasional",
             "weekdaysHours": "Senin - Jumat: 08:00 - 17:00",
             "saturdayHours": "Sabtu: 09:00 - 14:00",
-            "weekendClosed": "Minggu: Tutup"
+            "weekendClosed": "Minggu: Tutup",
+            "addressSkykost": "SKYKOST: Jl. Gaharu Gg. Amat Lama No. 12, Medan",
+            "addressCherry": "CHERRY KOST: Jl. Setia Budi No. 45, Medan",
+            "phonePrimary": "+62 812-3456-7890",
+            "phoneSecondary": "+62 812-3456-7891",
+            "emailPrimary": "info@cherryskykost.com",
+            "emailSecondary": "support@cherryskykost.com",
+            "viewMap": "Lihat Peta",
+            "contactCta": "Hubungi"
         },
         "form": {
             "title": "Kirim Pesan",
@@ -518,6 +540,13 @@
         "acknowledge": "Saya Memahami Kebijakan Privasi"
     },
     "admin": {
+        "brand": {
+            "name": "Sky Kost",
+            "suite": "Admin Suite"
+        },
+        "common": {
+            "closeMenu": "Tutup menu"
+        },
         "nav": {
             "overview": "Dashboard",
             "properties": "Properti",
@@ -527,9 +556,9 @@
             "leases": "Sewa",
             "leaseRenewals": "Perpanjangan sewa",
             "users": "Penyewa",
+            "staff": "Staf",
             "pricing": "Harga",
             "bookkeeping": "Buku kas",
-            "settings": "Pengaturan",
             "signOut": "Keluar",
             "groups": {
                 "main": "Utama",
@@ -539,11 +568,15 @@
             }
         },
         "header": {
-            "searchPlaceholder": "Cari sewa, penyewa, atau unit...",
             "notifications": "Notifikasi",
-            "roleManager": "Manajer",
             "breadcrumb": "Admin",
             "openMenu": "Buka menu navigasi"
+        },
+        "signOutDialog": {
+            "title": "Keluar?",
+            "description": "Anda perlu masuk lagi untuk mengakses panel admin.",
+            "confirm": "Keluar",
+            "confirming": "Sedang keluar…"
         },
         "table": {
             "unitProperty": "Unit / Properti",
@@ -560,15 +593,14 @@
             "passwordLabel": "Kata Sandi",
             "showPassword": "Tampilkan kata sandi",
             "hidePassword": "Sembunyikan kata sandi",
-            "forgotPassword": "Lupa kata sandi?",
-            "forgotPasswordHint": "Reset kata sandi belum tersedia. Hubungi administrator.",
             "securityNote": "Akses aman hanya untuk personel yang berwenang.",
             "submit": "Masuk",
             "submitting": "Memproses…",
             "success": "Selamat datang kembali!",
             "errors": {
                 "invalid": "Email atau kata sandi salah.",
-                "forbidden": "Anda tidak dapat masuk di sini. Akun penyewa harus menggunakan portal penyewa."
+                "forbidden": "Anda tidak dapat masuk di sini. Akun penyewa harus menggunakan portal penyewa.",
+                "deactivated": "Akun ini telah dinonaktifkan. Hubungi administrator."
             }
         },
         "crud": {
@@ -620,11 +652,16 @@
             "selectPricing": "Pilih paket harga",
             "propertyRequired": "Properti wajib dipilih.",
             "startDate": "Tanggal mulai",
+            "pickDate": "Pilih tanggal",
             "pricing": "Paket harga",
             "tenantUserId": "ID pengguna penyewa",
             "tenantUserIdHint": "ID user dari database auth",
             "selectTenant": "Pilih penyewa",
-            "noTenantsAvailable": "Belum ada akun penyewa. Daftarkan pengguna dengan peran tenant terlebih dahulu."
+            "noTenantsAvailable": "Belum ada akun penyewa. Daftarkan pengguna dengan peran tenant terlebih dahulu.",
+            "sortBy": "Diurutkan berdasarkan {column}, {direction}",
+            "sortAscending": "naik",
+            "sortDescending": "turun",
+            "sortByColumn": "Urutkan berdasarkan {column}"
         },
         "attachments": {
             "column": "Gambar",
@@ -703,29 +740,67 @@
             },
             "units": {
                 "title": "Unit",
-                "description": "Kamar fisik di dalam properti Anda.",
+                "description": "Lihat semua kamar di peta atau tabel, dan cek ketersediaan untuk rentang tanggal.",
                 "formDescription": "Tambah atau perbarui unit sewa.",
-                "sizeRequired": "Masukkan ukuran yang valid dalam meter persegi."
-            },
-            "vacantUnits": {
-                "title": "Cari kamar kosong",
-                "description": "Temukan unit tanpa sewa yang tumpang tindih dengan rentang tanggal yang dipilih.",
-                "filters": "Kriteria pencarian",
-                "endDate": "Tanggal selesai",
-                "search": "Cari",
-                "hint": "Pilih tanggal mulai dan selesai, lalu cari untuk melihat kamar yang tersedia.",
-                "empty": "Tidak ada kamar kosong untuk periode ini.",
-                "resultsCount": "{count, plural, one {# kamar kosong} other {# kamar kosong}}",
-                "datesRequired": "Tanggal mulai dan selesai wajib diisi.",
-                "invalidDateRange": "Tanggal mulai harus sebelum tanggal selesai."
+                "sizeRequired": "Masukkan ukuran yang valid dalam meter persegi.",
+                "viewMode": "Mode tampilan",
+                "mapView": "Peta",
+                "tableView": "Tabel",
+                "legend": "Status",
+                "occupancy": "Okupansi",
+                "floorLabel": "Lantai {floor}",
+                "floorOther": "Kamar lainnya",
+                "mapEmpty": "Tidak ada kamar yang cocok dengan filter.",
+                "hoverHint": "Arahkan kursor ke kamar untuk pratinjau cepat",
+                "clickForDetails": "Klik untuk detail lengkap",
+                "roomAria": "{name}, {status}",
+                "activeLease": "Sewa aktif",
+                "noActiveLease": "Tidak ada sewa aktif di kamar ini.",
+                "createLease": "Buat sewa",
+                "viewLease": "Lihat sewa",
+                "leaseStart": "Mulai sewa",
+                "leaseEnd": "Akhir sewa",
+                "tenant": "Penghuni",
+                "status": {
+                    "vacant": "Kosong",
+                    "occupied": "Terisi"
+                },
+                "availability": {
+                    "toggle": "Cek ketersediaan",
+                    "filters": "Periode ketersediaan",
+                    "dateRange": "Rentang tanggal",
+                    "dateRangePlaceholder": "Pilih tanggal mulai dan selesai",
+                    "endDate": "Tanggal selesai",
+                    "search": "Cari",
+                    "clear": "Hapus",
+                    "active": "Kosong antara {start} dan {end}",
+                    "hint": "Temukan kamar tanpa sewa yang tumpang tindih pada periode yang dipilih.",
+                    "empty": "Tidak ada kamar kosong untuk periode ini.",
+                    "resultsCount": "{count, plural, one {# kamar kosong} other {# kamar kosong}}",
+                    "datesRequired": "Tanggal mulai dan selesai wajib diisi.",
+                    "invalidDateRange": "Tanggal mulai harus sebelum tanggal selesai."
+                }
             },
             "users": {
                 "title": "Penyewa",
                 "description": "Lihat akun penyewa untuk penugasan sewa dan akses portal.",
                 "createTitle": "Tambah penyewa",
                 "formDescription": "Buat akun penyewa untuk penugasan sewa dan masuk ke portal.",
+                "accountSection": "Detail akun",
+                "forbiddenAction": "Anda tidak memiliki izin untuk melakukan tindakan ini.",
                 "searchPlaceholder": "Cari berdasarkan nama atau email…",
                 "empty": "Tidak ada penyewa ditemukan.",
+                "status": "Status",
+                "statusActive": "Aktif",
+                "statusInactive": "Nonaktif",
+                "activate": "Aktifkan",
+                "deactivate": "Nonaktifkan",
+                "activateTitle": "Aktifkan penyewa?",
+                "deactivateTitle": "Nonaktifkan penyewa?",
+                "activateDescription": "\"{name}\" dapat masuk ke portal penyewa lagi.",
+                "deactivateDescription": "\"{name}\" akan dikeluarkan dan tidak dapat masuk hingga diaktifkan kembali.",
+                "activateSuccess": "Penyewa diaktifkan.",
+                "deactivateSuccess": "Penyewa dinonaktifkan.",
                 "joined": "Bergabung",
                 "password": "Kata sandi",
                 "passwordHint": "Minimal 8 karakter. Penyewa akan memakai ini untuk masuk.",
@@ -744,6 +819,61 @@
                 "temporaryPassword": "Kata sandi sementara",
                 "copyPassword": "Salin kata sandi",
                 "copied": "Tersalin!",
+                "done": "Selesai",
+                "viewDetails": "Lihat detail penyewa",
+                "detailTitle": "Detail penyewa",
+                "detailDescription": "Informasi akun dan riwayat sewa.",
+                "detailNotFound": "Penyewa tidak ditemukan.",
+                "leaseCount": "Sewa",
+                "leasesSection": "Riwayat sewa",
+                "leasesEmpty": "Penyewa ini belum memiliki sewa."
+            },
+            "staff": {
+                "title": "Staf",
+                "description": "Kelola akun portal admin untuk tim Anda.",
+                "createTitle": "Tambah staf",
+                "editTitle": "Ubah staf",
+                "formDescription": "Buat atau perbarui akun portal admin.",
+                "searchPlaceholder": "Cari berdasarkan nama atau email…",
+                "empty": "Tidak ada akun staf ditemukan.",
+                "joined": "Bergabung",
+                "role": "Peran",
+                "you": "Anda",
+                "roles": {
+                    "admin": "Admin",
+                    "superadmin": "Superadmin"
+                },
+                "roleHint": "Hanya akun superadmin yang dapat menetapkan peran superadmin.",
+                "password": "Kata sandi",
+                "passwordHint": "Minimal 8 karakter. Staf akan memakai ini untuk masuk.",
+                "showPassword": "Tampilkan kata sandi",
+                "hidePassword": "Sembunyikan kata sandi",
+                "emailExists": "Email ini sudah terdaftar.",
+                "forbiddenAction": "Anda tidak memiliki izin untuk melakukan tindakan ini.",
+                "status": "Status",
+                "statusActive": "Aktif",
+                "statusInactive": "Nonaktif",
+                "activate": "Aktifkan",
+                "deactivate": "Nonaktifkan",
+                "activateTitle": "Aktifkan akun staf?",
+                "deactivateTitle": "Nonaktifkan akun staf?",
+                "activateDescription": "\"{name}\" dapat masuk ke portal admin lagi.",
+                "deactivateDescription": "\"{name}\" akan dikeluarkan dan tidak dapat masuk hingga diaktifkan kembali.",
+                "activateSuccess": "Akun staf diaktifkan.",
+                "deactivateSuccess": "Akun staf dinonaktifkan.",
+                "deactivateBlocked": "Tidak dapat menonaktifkan akun superadmin terakhir.",
+                "resetPassword": "Reset kata sandi",
+                "resetTitle": "Reset kata sandi staf?",
+                "resetDescription": "Ini akan membuat kata sandi sementara baru untuk \"{name}\" dan mengeluarkan mereka dari semua sesi aktif.",
+                "resetConfirm": "Reset kata sandi",
+                "resetting": "Mereset…",
+                "resetSuccess": "Kata sandi berhasil direset.",
+                "resetFailed": "Gagal mereset kata sandi.",
+                "resetResultTitle": "Kata sandi sementara",
+                "resetResultDescription": "Salin kata sandi ini dan bagikan kepada staf dengan aman.",
+                "temporaryPassword": "Kata sandi sementara",
+                "copyPassword": "Salin kata sandi",
+                "copied": "Tersalin!",
                 "done": "Selesai"
             },
             "leases": {
@@ -755,6 +885,10 @@
                 "to": "s/d",
                 "expiring": "Akan berakhir",
                 "formDescription": "Buat atau perbarui perjanjian sewa penyewa.",
+                "unitPrefillHint": "Membuat sewa untuk {unit} di {property}. Pilih penyewa dan paket harga di bawah.",
+                "addNewTenant": "Tambah penyewa baru",
+                "noTenantsMatch": "Tidak ada penyewa yang cocok dengan pencarian.",
+                "noPricingForUnit": "Belum ada paket harga untuk tipe unit ini. Tambahkan di menu Harga terlebih dahulu.",
                 "stats": {
                     "totalBadge": "Total",
                     "attentionBadge": "Perhatian",
@@ -807,6 +941,27 @@
                 "title": "Harga",
                 "description": "Paket harga per tipe unit dan durasi.",
                 "formDescription": "Atur harga sewa untuk paket durasi."
+            },
+            "profile": {
+                "title": "Profil saya",
+                "description": "Perbarui nama akun dan kata sandi Anda.",
+                "emailReadOnly": "Email tidak dapat diubah di sini. Minta superadmin memperbaruinya di menu Staf.",
+                "memberSince": "Bergabung sejak",
+                "accountSection": "Detail akun",
+                "passwordSection": "Ubah kata sandi",
+                "passwordDescription": "Masukkan kata sandi saat ini untuk menetapkan yang baru.",
+                "currentPassword": "Kata sandi saat ini",
+                "newPassword": "Kata sandi baru",
+                "confirmPassword": "Konfirmasi kata sandi baru",
+                "updatePassword": "Perbarui kata sandi",
+                "updatingPassword": "Memperbarui…",
+                "showPassword": "Tampilkan",
+                "hidePassword": "Sembunyikan",
+                "profileUpdated": "Profil berhasil diperbarui.",
+                "passwordUpdated": "Kata sandi berhasil diperbarui.",
+                "saveFailed": "Gagal memperbarui profil.",
+                "passwordFailed": "Gagal memperbarui kata sandi.",
+                "incorrectCurrentPassword": "Kata sandi saat ini salah."
             },
             "bookkeeping": {
                 "title": "Buku kas",
@@ -865,6 +1020,12 @@
             "openMenu": "Buka menu navigasi",
             "roleTenant": "Penyewa"
         },
+        "signOutDialog": {
+            "title": "Keluar?",
+            "description": "Anda perlu masuk lagi untuk mengakses portal penyewa.",
+            "confirm": "Keluar",
+            "confirming": "Sedang keluar…"
+        },
         "login": {
             "title": "Portal Penyewa Sky Kost",
             "subtitle": "Masuk untuk melihat sewa dan profil Anda",
@@ -879,7 +1040,8 @@
             "success": "Selamat datang kembali!",
             "errors": {
                 "invalid": "Email atau kata sandi tidak valid.",
-                "forbidden": "Anda tidak dapat masuk di sini. Akun admin harus menggunakan login admin."
+                "forbidden": "Anda tidak dapat masuk di sini. Akun admin harus menggunakan login admin.",
+                "deactivated": "Akun ini telah dinonaktifkan. Hubungi administrator."
             }
         },
         "common": {

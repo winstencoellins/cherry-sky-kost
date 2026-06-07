@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Icon } from "@/components/shared/Icon";
 import { AdminAlert } from "@/features/admin/components/admin-alert";
+import { AdminSearchInput } from "@/features/admin/components/admin-field";
+import { AdminFilterRow } from "@/features/admin/components/admin-filter-row";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
 import { AdminPagination } from "@/features/admin/components/admin-pagination";
 import { AdminTableShell } from "@/features/admin/components/admin-table-shell";
@@ -15,7 +16,8 @@ import {
   AdminCrudTableRow,
 } from "@/features/admin/crud/admin-crud-table";
 import { AdminRowActions } from "@/features/admin/crud/admin-row-actions";
-import { useClientPagination } from "@/features/admin/crud/use-client-pagination";
+import { getPricingSortValue } from "@/features/admin/crud/admin-table-sort";
+import { useClientTable } from "@/features/admin/crud/use-client-table";
 import { useDeleteDialog } from "@/features/admin/crud/use-delete-dialog";
 import {
   useUnitPricingMutations,
@@ -62,8 +64,13 @@ export function PricingList() {
     );
   }, [data, search]);
 
-  const { page, setPage, pageData, total, pageSize } =
-    useClientPagination(filtered);
+  const getSortValue = useCallback(
+    (item: UnitPricing, key: string) => getPricingSortValue(item, key, lookups),
+    [lookups],
+  );
+
+  const { page, setPage, pageData, total, pageSize, sortKey, sortDir, onSort } =
+    useClientTable(filtered, getSortValue, { defaultSortKey: "unitType" });
 
   async function confirmDelete() {
     if (!deleteDialog.item) return;
@@ -90,23 +97,15 @@ export function PricingList() {
         }}
       />
 
-      <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end">
+      <AdminFilterRow>
         <PropertyFilter value={propertyFilter} onChange={setPropertyFilter} />
-        <div className="relative flex-1 max-w-md">
-          <Icon
-            name="search"
-            size={20}
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#83746b]"
-          />
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={t("searchPlaceholder")}
-            className="h-10 w-full rounded-xl border border-[#e3e2e0] bg-white/80 pl-10 pr-4 text-sm outline-none focus:border-[#8b5e3c]/50 focus:ring-2 focus:ring-[#8b5e3c]/15"
-          />
-        </div>
-      </div>
+        <AdminSearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder={t("searchPlaceholder")}
+          className="sm:max-w-md sm:flex-1"
+        />
+      </AdminFilterRow>
 
       {error && (
         <div className="mb-4">
@@ -139,6 +138,9 @@ export function PricingList() {
               { key: "price", label: t("price") },
               { key: "actions", label: t("actions"), align: "right" },
             ]}
+            sortKey={sortKey}
+            sortDirection={sortDir}
+            onSort={onSort}
           >
             {pageData.map((row) => (
               <AdminCrudTableRow key={row.id}>

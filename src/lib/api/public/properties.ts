@@ -15,7 +15,7 @@ export interface PublicPricing {
 export interface PublicUnit {
   id: string;
   name: string;
-  floor: number;
+  maxOccupancy: number | null;
   status: "vacant" | "occupied";
 }
 

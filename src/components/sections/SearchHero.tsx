@@ -5,23 +5,32 @@
 
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Icon } from '@/components/shared/Icon';
 import { Button } from '@/components/ui/button';
 
 interface SearchHeroProps {
-    onFilterFocus?: () => void;
     searchQuery?: string;
-    onSearchQueryChange?: (value: string) => void;
+    onSearchSubmit?: (value: string) => void;
 }
 
 export function SearchHero({
-    onFilterFocus,
     searchQuery = '',
-    onSearchQueryChange,
+    onSearchSubmit,
 }: SearchHeroProps) {
     const t = useTranslations('search');
+    const [query, setQuery] = useState(searchQuery);
+
+    useEffect(() => {
+        setQuery(searchQuery);
+    }, [searchQuery]);
+
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        onSearchSubmit?.(query.trim());
+    };
 
     return (
         <section className="relative flex h-[400px] w-full items-center justify-center overflow-hidden bg-[#faf9f6] md:h-[500px]">
@@ -48,7 +57,6 @@ export function SearchHero({
 
             {/* Content */}
             <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-8 px-6 text-center lg:px-10">
-                {/* Accent Line */}
                 <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: 80 }}
@@ -56,7 +64,6 @@ export function SearchHero({
                     className="h-1 rounded-full bg-[#6f4627] shadow-[0_0_16px_rgba(111,70,39,0.45)]"
                 />
 
-                {/* Title */}
                 <div className="overflow-visible">
                     <motion.h1
                         initial={{ y: 50, opacity: 0 }}
@@ -68,14 +75,14 @@ export function SearchHero({
                     </motion.h1>
                 </div>
 
-                {/* Search input */}
-                <motion.div
+                <motion.form
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
-                    className="w-full max-w-xl"
+                    onSubmit={handleSubmit}
+                    className="flex w-full max-w-xl flex-col gap-3 sm:flex-row"
                 >
-                    <div className="relative">
+                    <div className="relative flex-1">
                         <Icon
                             name="search"
                             size={20}
@@ -83,30 +90,24 @@ export function SearchHero({
                         />
                         <input
                             type="search"
-                            value={searchQuery}
-                            onChange={(e) => onSearchQueryChange?.(e.target.value)}
+                            name="q"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
                             placeholder={t('placeholder')}
+                            enterKeyHint="search"
+                            autoComplete="off"
                             className="w-full rounded-xl border border-white/20 bg-white/95 py-3 pl-12 pr-4 text-base text-[#1a1c1a] shadow-lg placeholder:text-[#83746b]/70 focus:border-[#6f4627] focus:outline-none focus:ring-2 focus:ring-[#6f4627]/25"
                         />
                     </div>
-                </motion.div>
-
-                {/* CTA Button */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6, duration: 0.8 }}
-                    className="pt-4"
-                >
                     <Button
-                        onClick={onFilterFocus}
+                        type="submit"
                         size="lg"
-                        className="h-12 rounded-xl bg-[#6f4627] px-8 text-sm font-semibold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#805533] focus-visible:ring-[#8b5e3c]/40"
+                        className="h-12 shrink-0 rounded-xl bg-[#6f4627] px-8 text-sm font-semibold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#805533] focus-visible:ring-[#8b5e3c]/40"
                     >
                         <Icon name="search" size={20} className="mr-2" />
-                        {t('title')}
+                        {t('apply')}
                     </Button>
-                </motion.div>
+                </motion.form>
             </div>
         </section>
     );

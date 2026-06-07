@@ -1,13 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Icon } from "@/components/shared/Icon";
 import { AdminAlert } from "@/features/admin/components/admin-alert";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
 import { AdminPagination } from "@/features/admin/components/admin-pagination";
 import { AdminStatCard } from "@/features/admin/components/admin-stat-card";
 import { AdminTableShell } from "@/features/admin/components/admin-table-shell";
+import {
+  AdminField,
+  AdminSearchInput,
+  AdminSelect,
+} from "@/features/admin/components/admin-field";
 import { PropertyFilter } from "@/features/admin/components/property-filter";
 import {
   isLeaseIncomeEntry,
@@ -23,7 +27,8 @@ import {
   AdminCrudTableRow,
 } from "@/features/admin/crud/admin-crud-table";
 import { AdminRowActions } from "@/features/admin/crud/admin-row-actions";
-import { useClientPagination } from "@/features/admin/crud/use-client-pagination";
+import { getLedgerEntrySortValue } from "@/features/admin/crud/admin-table-sort";
+import { useClientTable } from "@/features/admin/crud/use-client-table";
 import { useDeleteDialog } from "@/features/admin/crud/use-delete-dialog";
 import {
   useLeases,
@@ -119,8 +124,16 @@ export function BookkeepingList() {
     });
   }, [allEntries, search]);
 
-  const { page, setPage, pageData, total, pageSize } =
-    useClientPagination(filtered);
+  const getSortValue = useCallback(
+    (item: LedgerEntry, key: string) => getLedgerEntrySortValue(item, key),
+    [],
+  );
+
+  const { page, setPage, pageData, total, pageSize, sortKey, sortDir, onSort } =
+    useClientTable(filtered, getSortValue, {
+      defaultSortKey: "date",
+      defaultSortDirection: "desc",
+    });
 
   async function confirmDelete() {
     if (!deleteDialog.item) return;
@@ -182,40 +195,29 @@ export function BookkeepingList() {
         />
       </section>
 
-      <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end">
+      <div className="mb-4 flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         <PropertyFilter value={propertyFilter} onChange={setPropertyFilter} />
-        <div>
-          <label
-            htmlFor="ledger-type-filter"
-            className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#83746b]"
-          >
-            {tp("typeFilter")}
-          </label>
-          <select
+        <AdminField
+          label={tp("typeFilter")}
+          htmlFor="ledger-type-filter"
+          className="w-full shrink-0 sm:w-[10rem]"
+        >
+          <AdminSelect
             id="ledger-type-filter"
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as TypeFilter)}
-            className="h-10 min-w-[10rem] rounded-xl border border-[#e3e2e0] bg-white/80 px-3 text-sm outline-none focus:border-[#8b5e3c]/50 focus:ring-2 focus:ring-[#8b5e3c]/15"
           >
             <option value="">{tp("allTypes")}</option>
             <option value="income">{tp("typeIncome")}</option>
             <option value="expense">{tp("typeExpense")}</option>
-          </select>
-        </div>
-        <div className="relative min-w-[12rem] flex-1 max-w-md">
-          <Icon
-            name="search"
-            size={20}
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#83746b]"
-          />
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={t("searchPlaceholder")}
-            className="h-10 w-full rounded-xl border border-[#e3e2e0] bg-white/80 pl-10 pr-4 text-sm outline-none focus:border-[#8b5e3c]/50 focus:ring-2 focus:ring-[#8b5e3c]/15"
-          />
-        </div>
+          </AdminSelect>
+        </AdminField>
+        <AdminSearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder={t("searchPlaceholder")}
+          className="sm:max-w-md sm:flex-1"
+        />
       </div>
 
       {(ledgerError || leasesError) && (
@@ -257,6 +259,9 @@ export function BookkeepingList() {
               { key: "amount", label: tp("amount"), align: "right" },
               { key: "actions", label: t("actions"), align: "right" },
             ]}
+            sortKey={sortKey}
+            sortDirection={sortDir}
+            onSort={onSort}
           >
             {pageData.map((entry) => {
               const fromLease = isLeaseIncomeEntry(entry.id);

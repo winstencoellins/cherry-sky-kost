@@ -21,7 +21,7 @@ const badgeVariants = cva(
         vacant:
           "bg-status-vacant/15 text-status-vacant border-status-vacant/20",
         occupied:
-          "bg-status-occupied/15 text-status-occupied border-status-occupied/20",
+          "bg-status-occupied/10 font-bold text-status-occupied border-status-occupied/25",
         paid: "bg-status-paid/15 text-status-paid border-status-paid/20",
         unpaid:
           "bg-status-unpaid/15 text-status-unpaid border-status-unpaid/20",

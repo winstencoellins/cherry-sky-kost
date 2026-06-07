@@ -5,12 +5,11 @@
 
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 
 import { Icon } from '@/components/shared/Icon';
+import { Link, usePathname } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { generateWhatsAppURL } from '@/lib/utils/format';
 
@@ -43,7 +42,6 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
                     )}
                 />
 
-                {/* Active indicator dot */}
                 {isActive && (
                     <motion.div
                         layoutId="activeDot"
@@ -86,14 +84,20 @@ function BottomNavItem({ href, icon, label, isActive, isExternal }: BottomNavIte
     );
 }
 
+function isNavItemActive(pathname: string, href: string): boolean {
+    if (href === '/') {
+        return pathname === '/';
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function BottomNav() {
-    const pathname = usePathname();
+    const pathname = usePathname() ?? '/';
     const t = useTranslations();
 
-    // WhatsApp number (you can make this dynamic from settings)
     const whatsappURL = generateWhatsAppURL(
         '081234567890',
-        'Halo, saya ingin menanyakan informasi tentang kost'
+        t('whatsapp.generalInquiry')
     );
 
     const navItems = [
@@ -103,7 +107,7 @@ export function BottomNav() {
             label: t('nav.home'),
         },
         {
-            href: '/cari',
+            href: '/search-kosts',
             icon: 'search',
             label: t('nav.search'),
         },
@@ -111,10 +115,10 @@ export function BottomNav() {
             href: whatsappURL,
             icon: 'chat',
             label: t('nav.contact'),
-            isExternal: true, // WA links are external
+            isExternal: true,
         },
         {
-            href: '/akun',
+            href: '/tenant/login',
             icon: 'person',
             label: t('nav.account'),
         },
@@ -123,25 +127,16 @@ export function BottomNav() {
     return (
         <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
             <div className="flex h-[68px] items-center justify-around gap-0.5 rounded-2xl border border-[#e3e2e0] bg-[#faf9f6]/90 px-1 shadow-[0_8px_30px_rgb(0,0,0,0.10)] backdrop-blur-xl">
-                {navItems.map((item) => {
-                    // Handle locale-based routing - check if pathname ends with the href or matches exactly
-                    const cleanPathname = pathname?.split('?')[0]; // Remove query params
-                    const isActive =
-                        cleanPathname === item.href ||
-                        cleanPathname?.endsWith(item.href) ||
-                        (item.href !== '/' && cleanPathname?.startsWith(item.href));
-
-                    return (
-                        <BottomNavItem
-                            key={item.href}
-                            href={item.href}
-                            icon={item.icon}
-                            label={item.label}
-                            isActive={isActive}
-                            isExternal={item.isExternal}
-                        />
-                    );
-                })}
+                {navItems.map((item) => (
+                    <BottomNavItem
+                        key={item.href}
+                        href={item.href}
+                        icon={item.icon}
+                        label={item.label}
+                        isActive={!item.isExternal && isNavItemActive(pathname, item.href)}
+                        isExternal={item.isExternal}
+                    />
+                ))}
             </div>
         </div>
     );

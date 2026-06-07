@@ -1,26 +1,28 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
-import { Icon } from "@/components/shared/Icon";
+import { useLocale, useTranslations } from "next-intl";
 import { AdminAlert } from "@/features/admin/components/admin-alert";
+import { AdminSearchInput } from "@/features/admin/components/admin-field";
+import { AdminFilterRow } from "@/features/admin/components/admin-filter-row";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
-import { AdminPagination } from "@/features/admin/components/admin-pagination";
-import { AdminTableShell } from "@/features/admin/components/admin-table-shell";
 import { PropertyFilter } from "@/features/admin/components/property-filter";
-import { UnitStatusBadge } from "@/features/admin/components/status-badge";
 import { AdminDeleteDialog } from "@/features/admin/crud/admin-delete-dialog";
-import {
-  AdminCrudTable,
-  AdminCrudTableCell,
-  AdminCrudTableRow,
-} from "@/features/admin/crud/admin-crud-table";
-import { AdminRowActions } from "@/features/admin/crud/admin-row-actions";
-import { useClientPagination } from "@/features/admin/crud/use-client-pagination";
 import { useDeleteDialog } from "@/features/admin/crud/use-delete-dialog";
+import {
+  UnitsAvailabilityFilter,
+  type AvailabilityRange,
+} from "@/features/admin/units/components/units-availability-filter";
+import { UnitsMapView } from "@/features/admin/units/components/units-map-view";
+import { UnitsTableView } from "@/features/admin/units/components/units-table-view";
+import {
+  UnitsViewToggle,
+  type UnitsViewMode,
+} from "@/features/admin/units/components/units-view-toggle";
 import {
   useUnitMutations,
   useUnits,
+  useVacantUnits,
 } from "@/features/admin/hooks/use-admin-queries";
 import { useAdminLookups } from "@/features/admin/hooks/use-admin-lookups";
 import {
@@ -28,17 +30,50 @@ import {
   resolveUnitTypeNameForUnit,
 } from "@/features/admin/lib/entity-display";
 import { getErrorMessage } from "@/features/admin/lib/errors";
+import { toDateInputValue } from "@/features/admin/lib/format";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
 import type { Unit } from "@/lib/types/admin";
 
 const BASE = "/admin/units";
 
+function defaultEndDate(): string {
+  const date = new Date();
+  date.setDate(date.getDate() + 30);
+  return toDateInputValue(date);
+}
+
 export function UnitsList() {
   const t = useTranslations("admin.crud");
   const tp = useTranslations("admin.pages.units");
+  const tAvail = useTranslations("admin.pages.units.availability");
+  const locale = useLocale();
+
   const [propertyFilter, setPropertyFilter] = useState("");
   const [search, setSearch] = useState("");
-  const { data = [], isLoading, error } = useUnits(propertyFilter || undefined);
+  const [viewMode, setViewMode] = useState<UnitsViewMode>("map");
+  const [availabilityExpanded, setAvailabilityExpanded] = useState(false);
+  const [draftStartDate, setDraftStartDate] = useState(() =>
+    toDateInputValue(new Date()),
+  );
+  const [draftEndDate, setDraftEndDate] = useState(defaultEndDate);
+  const [activeRange, setActiveRange] = useState<AvailabilityRange | null>(null);
+  const [dateError, setDateError] = useState<string | null>(null);
+
+  const allUnitsQuery = useUnits(propertyFilter || undefined);
+  const vacantUnitsQuery = useVacantUnits(
+    {
+      startDate: activeRange?.startDate ?? "",
+      endDate: activeRange?.endDate ?? "",
+      propertyId: propertyFilter || undefined,
+    },
+    !!activeRange,
+  );
+
+  const isAvailabilityMode = !!activeRange;
+  const { data = [], isLoading, error, isFetching } = isAvailabilityMode
+    ? vacantUnitsQuery
+    : allUnitsQuery;
+
   const mutations = useUnitMutations();
   const deleteDialog = useDeleteDialog<Unit>();
   const lookups = useAdminLookups();
@@ -59,8 +94,25 @@ export function UnitsList() {
     });
   }, [data, search, lookups]);
 
-  const { page, setPage, pageData, total, pageSize } =
-    useClientPagination(filtered);
+  function handleApplyAvailability() {
+    if (!draftStartDate || !draftEndDate) {
+      setDateError(tAvail("datesRequired"));
+      return;
+    }
+    if (draftStartDate >= draftEndDate) {
+      setDateError(tAvail("invalidDateRange"));
+      return;
+    }
+    setDateError(null);
+    setActiveRange({ startDate: draftStartDate, endDate: draftEndDate });
+    setAvailabilityExpanded(false);
+  }
+
+  function handleClearAvailability() {
+    setActiveRange(null);
+    setDateError(null);
+    setAvailabilityExpanded(false);
+  }
 
   async function confirmDelete() {
     if (!deleteDialog.item) return;
@@ -74,6 +126,7 @@ export function UnitsList() {
   }
 
   const pending = mutations.remove.isPending;
+  const emptyMessage = isAvailabilityMode ? tAvail("empty") : t("empty");
 
   return (
     <>
@@ -87,23 +140,36 @@ export function UnitsList() {
         }}
       />
 
-      <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end">
+      <UnitsAvailabilityFilter
+        expanded={availabilityExpanded}
+        onToggleExpanded={() => setAvailabilityExpanded((v) => !v)}
+        startDate={draftStartDate}
+        endDate={draftEndDate}
+        onStartDateChange={setDraftStartDate}
+        onEndDateChange={setDraftEndDate}
+        activeRange={activeRange}
+        dateError={dateError}
+        onApply={handleApplyAvailability}
+        onClear={handleClearAvailability}
+        isFetching={isFetching}
+        locale={locale}
+      />
+
+      <AdminFilterRow trailing={<UnitsViewToggle value={viewMode} onChange={setViewMode} />}>
         <PropertyFilter value={propertyFilter} onChange={setPropertyFilter} />
-        <div className="relative flex-1 max-w-md">
-          <Icon
-            name="search"
-            size={20}
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#83746b]"
-          />
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={t("searchPlaceholder")}
-            className="h-10 w-full rounded-xl border border-[#e3e2e0] bg-white/80 pl-10 pr-4 text-sm outline-none focus:border-[#8b5e3c]/50 focus:ring-2 focus:ring-[#8b5e3c]/15"
-          />
-        </div>
-      </div>
+        <AdminSearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder={t("searchPlaceholder")}
+          className="sm:max-w-md sm:flex-1"
+        />
+      </AdminFilterRow>
+
+      {isAvailabilityMode && !isLoading && (
+        <p className="mb-4 text-sm text-[#51443c]">
+          {tAvail("resultsCount", { count: filtered.length })}
+        </p>
+      )}
 
       {error && (
         <div className="mb-4">
@@ -111,62 +177,35 @@ export function UnitsList() {
         </div>
       )}
 
-      <AdminTableShell
-        footer={
-          !isLoading && total > 0 ? (
-            <AdminPagination
-              page={page}
-              pageSize={pageSize}
-              total={total}
-              onPageChange={setPage}
-            />
-          ) : undefined
-        }
-      >
-        {isLoading ? (
-          <p className="p-8 text-center text-sm text-[#83746b]">{t("loading")}</p>
+      {viewMode === "map" ? (
+        isLoading ? (
+          <p className="rounded-2xl border border-[#e3e2e0] bg-white/80 p-10 text-center text-sm text-[#83746b]">
+            {t("loading")}
+          </p>
         ) : filtered.length === 0 ? (
-          <p className="p-8 text-center text-sm text-[#83746b]">{t("empty")}</p>
+          <p className="rounded-2xl border border-dashed border-[#e3e2e0] bg-[#faf9f6]/80 p-10 text-center text-sm text-[#83746b]">
+            {emptyMessage}
+          </p>
         ) : (
-          <AdminCrudTable
-            columns={[
-              { key: "name", label: t("name") },
-              { key: "unitType", label: t("unitType") },
-              { key: "maxOccupancy", label: t("maxOccupancy") },
-              { key: "tenant", label: t("tenant") },
-              { key: "status", label: t("status") },
-              { key: "actions", label: t("actions"), align: "right" },
-            ]}
-          >
-            {pageData.map((unit) => (
-              <AdminCrudTableRow key={unit.id}>
-                <AdminCrudTableCell className="font-semibold">
-                  {unit.name}
-                </AdminCrudTableCell>
-                <AdminCrudTableCell className="text-[#51443c]">
-                  {resolveUnitTypeNameForUnit(unit, lookups)}
-                </AdminCrudTableCell>
-                <AdminCrudTableCell>
-                  {unit.maxOccupancy != null ? unit.maxOccupancy : "—"}
-                </AdminCrudTableCell>
-                <AdminCrudTableCell className="text-[#51443c]">
-                  {resolveUnitTenantLabel(unit)}
-                </AdminCrudTableCell>
-                <AdminCrudTableCell>
-                  <UnitStatusBadge status={unit.status} />
-                </AdminCrudTableCell>
-                <AdminCrudTableCell align="right">
-                  <AdminRowActions
-                    editHref={`${BASE}/${unit.id}/edit`}
-                    onDelete={() => deleteDialog.openDelete(unit)}
-                    disabled={pending}
-                  />
-                </AdminCrudTableCell>
-              </AdminCrudTableRow>
-            ))}
-          </AdminCrudTable>
-        )}
-      </AdminTableShell>
+          <UnitsMapView
+            units={filtered}
+            lookups={lookups}
+            onDelete={(unit) => deleteDialog.openDelete(unit)}
+            deleteDisabled={pending}
+            suggestedLeaseStartDate={activeRange?.startDate}
+          />
+        )
+      ) : (
+        <UnitsTableView
+          units={filtered}
+          lookups={lookups}
+          isLoading={isLoading}
+          onDelete={(unit) => deleteDialog.openDelete(unit)}
+          deleteDisabled={pending}
+          emptyMessage={emptyMessage}
+          suggestedLeaseStartDate={activeRange?.startDate}
+        />
+      )}
 
       <AdminDeleteDialog
         open={deleteDialog.open}

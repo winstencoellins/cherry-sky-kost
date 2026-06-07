@@ -18,6 +18,7 @@ interface ImageGalleryProps {
     variant?: 'default' | 'compact';
     backHref?: string;
     backLabel?: string;
+    header?: React.ReactNode;
 }
 
 export function ImageGallery({
@@ -26,6 +27,7 @@ export function ImageGallery({
     variant = 'default',
     backHref,
     backLabel,
+    header,
 }: ImageGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [showAllPhotos, setShowAllPhotos] = useState(false);
@@ -39,7 +41,8 @@ export function ImageGallery({
     return (
         <>
             <div className={cn('space-y-4', isCompact && 'space-y-3')}>
-                {backHref && backLabel && (
+                {header}
+                {!header && backHref && backLabel && (
                     <Link
                         href={backHref}
                         className="inline-flex items-center gap-2 text-sm font-medium text-[#51443c] transition-colors hover:text-[#6f4627] dark:text-slate-400 dark:hover:text-primary"

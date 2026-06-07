@@ -40,11 +40,15 @@ export async function getSession(): Promise<AuthSession | null> {
   const data = (await response.json()) as GetSessionResponse | null;
   if (!data?.user || !data.session) return null;
 
+  const raw = data.user as User & { image?: string | null; isActive?: boolean };
+
   return {
     user: {
-      ...data.user,
-      createdAt: new Date(data.user.createdAt),
-      updatedAt: new Date(data.user.updatedAt),
+      ...raw,
+      isActive: raw.isActive !== false,
+      avatar: raw.avatar ?? raw.image ?? undefined,
+      createdAt: new Date(raw.createdAt),
+      updatedAt: new Date(raw.updatedAt),
     },
     session: data.session,
   };

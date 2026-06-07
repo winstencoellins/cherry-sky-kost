@@ -2,7 +2,6 @@
     "nav": {
         "home": "Home",
         "search": "Search Kost",
-        "favorites": "Favorites",
         "contact": "Contact",
         "account": "Account",
         "login": "Login",
@@ -71,6 +70,7 @@
     },
     "pricing": {
         "perMonth": "/month",
+        "packages": "Price packages",
         "startingFrom": "Starting from",
         "priceIncludes": "Price includes",
         "capacity": "Capacity 1-2 persons",
@@ -100,7 +100,6 @@
             "password": "Password",
             "passwordPlaceholder": "Enter your password",
             "rememberMe": "Remember me",
-            "forgotPassword": "Forgot password?",
             "loginButton": "Sign In",
             "loggingIn": "Signing in...",
             "noAccount": "Don't have an account?",
@@ -145,23 +144,6 @@
                 "unknownError": "An error occurred. Please try again."
             }
         },
-        "forgotPassword": {
-            "title": "Forgot Password?",
-            "subtitle": "Enter your email and we'll send you a reset link.",
-            "email": "Email",
-            "emailPlaceholder": "name@email.com",
-            "sendButton": "Send Reset Link",
-            "sending": "Sending...",
-            "backToLogin": "Back to sign in",
-            "emailSent": "Email sent!",
-            "checkInbox": "Please check your inbox for the password reset link.",
-            "errors": {
-                "invalidEmail": "Invalid email address",
-                "emailNotFound": "Email not found",
-                "networkError": "Network error. Please try again.",
-                "unknownError": "An error occurred. Please try again."
-            }
-        },
         "dashboard": {
             "title": "Tenant Dashboard",
             "welcome": "Welcome, {name}",
@@ -184,9 +166,24 @@
         "noResults": "No kost found",
         "tryDifferentFilters": "Try using different filters",
         "resultsCount": "Showing {count} properties ({total} rooms matched)",
-        "unitTypeResultsCount": "Showing {count} unit types ({total} matching rooms)",
+        "unitTypeResultsCount": "Showing {count} of {total} room types ({units} matching rooms)",
         "updating": "Updating…",
         "loadError": "Could not load search results. Check that the API is running and try again.",
+        "filtersTitle": "Search filters",
+        "propertyLabel": "Property",
+        "propertyAny": "All properties",
+        "availabilityVacant": "Vacant only",
+        "availabilityAll": "All rooms",
+        "sortLabel": "Sort by",
+        "sortProperty": "Property name",
+        "sortPriceAsc": "Price: Low to high",
+        "sortPriceDesc": "Price: High to low",
+        "sortNewest": "Newest",
+        "reset": "Reset",
+        "apply": "Search",
+        "paginationShowing": "Showing {start}–{end} of {total}",
+        "paginationPrevious": "Previous page",
+        "paginationNext": "Next page",
         "durationLabel": "Rent duration (days)",
         "durationAny": "Any duration",
         "duration7": "7 days",
@@ -209,8 +206,13 @@
     "propertyDetail": {
         "notFound": "Property not found",
         "notFoundDescription": "The property you are looking for is not available",
+        "breadcrumbHome": "Home",
+        "breadcrumbSearch": "Search Kost",
+        "aboutProperty": "About this property",
         "unitTypes": "Room Types",
         "unitTypesDescription": "Choose a room type to view details and availability",
+        "otherRoomTypes": "Other room types at this property",
+        "otherRoomTypesDescription": "Explore other options before you book",
         "noUnitTypes": "No room types available for this property yet",
         "availableRooms": "{available} of {total} rooms available",
         "backToProperty": "Back to Property",
@@ -228,7 +230,11 @@
         "newsletterDesc": "Subscribe for updates on new rooms",
         "emailPlaceholder": "Email address",
         "subscribe": "Subscribe",
-        "copyright": "© {year} Cherry Sky Kost. All rights reserved."
+        "copyright": "© {year} Cherry Sky Kost. All rights reserved.",
+        "termsConditions": "Terms & Conditions",
+        "location": "Medan, Indonesia",
+        "website": "Website",
+        "email": "Email"
     },
     "whatsapp": {
         "inquiry": "Hello, I'm interested in {propertyName}",
@@ -256,6 +262,14 @@
         "verified": "Verified"
     },
     "common": {
+        "brand": {
+            "name": "Cherry Sky",
+            "fullName": "Cherry Sky Kost"
+        },
+        "accountSection": "Account",
+        "language": "Language",
+        "closeMenu": "Close menu",
+        "openMenu": "Menu",
         "or": "or",
         "and": "and",
         "close": "Close",
@@ -328,7 +342,15 @@
             "hours": "Operating Hours",
             "weekdaysHours": "Monday - Friday: 08:00 - 17:00",
             "saturdayHours": "Saturday: 09:00 - 14:00",
-            "weekendClosed": "Sunday: Closed"
+            "weekendClosed": "Sunday: Closed",
+            "addressSkykost": "SKYKOST: Jl. Gaharu Gg. Amat Lama No. 12, Medan",
+            "addressCherry": "CHERRY KOST: Jl. Setia Budi No. 45, Medan",
+            "phonePrimary": "+62 812-3456-7890",
+            "phoneSecondary": "+62 812-3456-7891",
+            "emailPrimary": "info@cherryskykost.com",
+            "emailSecondary": "support@cherryskykost.com",
+            "viewMap": "View Map",
+            "contactCta": "Contact"
         },
         "form": {
             "title": "Send us a Message",
@@ -518,6 +540,13 @@
         "acknowledge": "I Acknowledge the Privacy Policy"
     },
     "admin": {
+        "brand": {
+            "name": "Sky Kost",
+            "suite": "Admin Suite"
+        },
+        "common": {
+            "closeMenu": "Close menu"
+        },
         "nav": {
             "overview": "Dashboard",
             "properties": "Properties",
@@ -527,9 +556,9 @@
             "leases": "Leases",
             "leaseRenewals": "Lease renewals",
             "users": "Tenants",
+            "staff": "Staff",
             "pricing": "Pricing",
             "bookkeeping": "Bookkeeping",
-            "settings": "Settings",
             "signOut": "Logout",
             "groups": {
                 "main": "Main",
@@ -539,11 +568,15 @@
             }
         },
         "header": {
-            "searchPlaceholder": "Search leases, tenants, or units...",
             "notifications": "Notifications",
-            "roleManager": "Manager",
             "breadcrumb": "Admin",
             "openMenu": "Open navigation menu"
+        },
+        "signOutDialog": {
+            "title": "Log out?",
+            "description": "You will need to sign in again to access the admin panel.",
+            "confirm": "Log out",
+            "confirming": "Logging out…"
         },
         "table": {
             "unitProperty": "Unit / Property",
@@ -560,15 +593,14 @@
             "passwordLabel": "Password",
             "showPassword": "Show password",
             "hidePassword": "Hide password",
-            "forgotPassword": "Forgot password?",
-            "forgotPasswordHint": "Password reset is not available yet. Contact your administrator.",
             "securityNote": "Secure access restricted to authorized personnel only.",
             "submit": "Sign In",
             "submitting": "Signing in…",
             "success": "Welcome back!",
             "errors": {
                 "invalid": "Invalid email or password.",
-                "forbidden": "You cannot sign in here. Tenant accounts must use the tenant portal."
+                "forbidden": "You cannot sign in here. Tenant accounts must use the tenant portal.",
+                "deactivated": "This account has been deactivated. Contact your administrator."
             }
         },
         "crud": {
@@ -620,11 +652,16 @@
             "selectPricing": "Select pricing package",
             "propertyRequired": "Property is required.",
             "startDate": "Start date",
+            "pickDate": "Pick a date",
             "pricing": "Pricing package",
             "tenantUserId": "Tenant user ID",
             "tenantUserIdHint": "User ID from the auth database",
             "selectTenant": "Select a tenant",
-            "noTenantsAvailable": "No tenant accounts found. Register a user with the tenant role first."
+            "noTenantsAvailable": "No tenant accounts found. Register a user with the tenant role first.",
+            "sortBy": "Sorted by {column}, {direction}",
+            "sortAscending": "ascending",
+            "sortDescending": "descending",
+            "sortByColumn": "Sort by {column}"
         },
         "attachments": {
             "column": "Images",
@@ -703,29 +740,67 @@
             },
             "units": {
                 "title": "Units",
-                "description": "Physical rooms within your properties.",
+                "description": "View all rooms on the map or table, and check which are vacant for a date range.",
                 "formDescription": "Add or update a rentable unit.",
-                "sizeRequired": "Enter a valid size in square meters."
-            },
-            "vacantUnits": {
-                "title": "Vacant room search",
-                "description": "Find units with no lease overlapping your selected date range.",
-                "filters": "Search criteria",
-                "endDate": "End date",
-                "search": "Search",
-                "hint": "Choose a start and end date, then search to see available rooms.",
-                "empty": "No vacant rooms found for this period.",
-                "resultsCount": "{count, plural, one {# vacant room} other {# vacant rooms}}",
-                "datesRequired": "Start and end dates are required.",
-                "invalidDateRange": "Start date must be before end date."
+                "sizeRequired": "Enter a valid size in square meters.",
+                "viewMode": "View mode",
+                "mapView": "Map",
+                "tableView": "Table",
+                "legend": "Status",
+                "occupancy": "Occupancy",
+                "floorLabel": "Floor {floor}",
+                "floorOther": "Other rooms",
+                "mapEmpty": "No rooms match your filters.",
+                "hoverHint": "Hover a room for a quick preview",
+                "clickForDetails": "Click for full details",
+                "roomAria": "{name}, {status}",
+                "activeLease": "Active lease",
+                "noActiveLease": "No active lease on this room.",
+                "createLease": "Create lease",
+                "viewLease": "View lease",
+                "leaseStart": "Lease start",
+                "leaseEnd": "Lease end",
+                "tenant": "Tenant",
+                "status": {
+                    "vacant": "Vacant",
+                    "occupied": "Occupied"
+                },
+                "availability": {
+                    "toggle": "Check availability",
+                    "filters": "Availability period",
+                    "dateRange": "Date range",
+                    "dateRangePlaceholder": "Select start and end dates",
+                    "endDate": "End date",
+                    "search": "Search",
+                    "clear": "Clear",
+                    "active": "Vacant between {start} and {end}",
+                    "hint": "Find rooms with no lease overlapping the selected period.",
+                    "empty": "No vacant rooms found for this period.",
+                    "resultsCount": "{count, plural, one {# vacant room} other {# vacant rooms}}",
+                    "datesRequired": "Start and end dates are required.",
+                    "invalidDateRange": "Start date must be before end date."
+                }
             },
             "users": {
                 "title": "Tenants",
                 "description": "View tenant accounts for lease assignment and portal access.",
                 "createTitle": "Add tenant",
                 "formDescription": "Create a tenant account for lease assignment and portal sign-in.",
+                "accountSection": "Account details",
+                "forbiddenAction": "You do not have permission to perform this action.",
                 "searchPlaceholder": "Search by name or email…",
                 "empty": "No tenants found.",
+                "status": "Status",
+                "statusActive": "Active",
+                "statusInactive": "Inactive",
+                "activate": "Activate",
+                "deactivate": "Deactivate",
+                "activateTitle": "Activate tenant?",
+                "deactivateTitle": "Deactivate tenant?",
+                "activateDescription": "\"{name}\" will be able to sign in to the tenant portal again.",
+                "deactivateDescription": "\"{name}\" will be signed out and cannot sign in until reactivated.",
+                "activateSuccess": "Tenant activated.",
+                "deactivateSuccess": "Tenant deactivated.",
                 "joined": "Joined",
                 "password": "Password",
                 "passwordHint": "Minimum 8 characters. The tenant will use this to sign in.",
@@ -744,6 +819,61 @@
                 "temporaryPassword": "Temporary password",
                 "copyPassword": "Copy password",
                 "copied": "Copied!",
+                "done": "Done",
+                "viewDetails": "View tenant details",
+                "detailTitle": "Tenant details",
+                "detailDescription": "Account information and lease history.",
+                "detailNotFound": "Tenant not found.",
+                "leaseCount": "Leases",
+                "leasesSection": "Lease history",
+                "leasesEmpty": "This tenant has no leases yet."
+            },
+            "staff": {
+                "title": "Staff",
+                "description": "Manage admin portal accounts for your team.",
+                "createTitle": "Add staff",
+                "editTitle": "Edit staff",
+                "formDescription": "Create or update an admin portal account.",
+                "searchPlaceholder": "Search by name or email…",
+                "empty": "No staff accounts found.",
+                "joined": "Joined",
+                "role": "Role",
+                "you": "you",
+                "roles": {
+                    "admin": "Admin",
+                    "superadmin": "Superadmin"
+                },
+                "roleHint": "Only superadmin accounts can assign the superadmin role.",
+                "password": "Password",
+                "passwordHint": "Minimum 8 characters. The staff member will use this to sign in.",
+                "showPassword": "Show password",
+                "hidePassword": "Hide password",
+                "emailExists": "This email is already registered.",
+                "forbiddenAction": "You do not have permission to perform this action.",
+                "status": "Status",
+                "statusActive": "Active",
+                "statusInactive": "Inactive",
+                "activate": "Activate",
+                "deactivate": "Deactivate",
+                "activateTitle": "Activate staff account?",
+                "deactivateTitle": "Deactivate staff account?",
+                "activateDescription": "\"{name}\" will be able to sign in to the admin portal again.",
+                "deactivateDescription": "\"{name}\" will be signed out and cannot sign in until reactivated.",
+                "activateSuccess": "Staff account activated.",
+                "deactivateSuccess": "Staff account deactivated.",
+                "deactivateBlocked": "Cannot deactivate the last superadmin account.",
+                "resetPassword": "Reset password",
+                "resetTitle": "Reset staff password?",
+                "resetDescription": "This will generate a new temporary password for \"{name}\" and sign them out of all active sessions.",
+                "resetConfirm": "Reset password",
+                "resetting": "Resetting…",
+                "resetSuccess": "Password reset successfully.",
+                "resetFailed": "Failed to reset password.",
+                "resetResultTitle": "Temporary password",
+                "resetResultDescription": "Copy this password and share it with the staff member securely.",
+                "temporaryPassword": "Temporary password",
+                "copyPassword": "Copy password",
+                "copied": "Copied!",
                 "done": "Done"
             },
             "leases": {
@@ -755,6 +885,10 @@
                 "to": "to",
                 "expiring": "Expiring",
                 "formDescription": "Create or update a tenant lease agreement.",
+                "unitPrefillHint": "Creating a lease for {unit} at {property}. Choose the tenant and pricing package below.",
+                "addNewTenant": "Add new tenant",
+                "noTenantsMatch": "No tenants match your search.",
+                "noPricingForUnit": "No pricing package exists for this unit type. Add one under Pricing first.",
                 "stats": {
                     "totalBadge": "Total",
                     "attentionBadge": "Attention",
@@ -807,6 +941,27 @@
                 "title": "Pricing",
                 "description": "Price packages per unit type and duration.",
                 "formDescription": "Set rental price for a duration package."
+            },
+            "profile": {
+                "title": "My profile",
+                "description": "Update your account name and password.",
+                "emailReadOnly": "Email cannot be changed here. Ask a superadmin to update it in Staff.",
+                "memberSince": "Member since",
+                "accountSection": "Account details",
+                "passwordSection": "Change password",
+                "passwordDescription": "Enter your current password to set a new one.",
+                "currentPassword": "Current password",
+                "newPassword": "New password",
+                "confirmPassword": "Confirm new password",
+                "updatePassword": "Update password",
+                "updatingPassword": "Updating…",
+                "showPassword": "Show",
+                "hidePassword": "Hide",
+                "profileUpdated": "Profile updated successfully.",
+                "passwordUpdated": "Password updated successfully.",
+                "saveFailed": "Failed to update profile.",
+                "passwordFailed": "Failed to update password.",
+                "incorrectCurrentPassword": "Current password is incorrect."
             },
             "bookkeeping": {
                 "title": "Bookkeeping",
@@ -865,6 +1020,12 @@
             "openMenu": "Open navigation menu",
             "roleTenant": "Tenant"
         },
+        "signOutDialog": {
+            "title": "Log out?",
+            "description": "You will need to sign in again to access the tenant portal.",
+            "confirm": "Log out",
+            "confirming": "Logging out…"
+        },
         "login": {
             "title": "Sky Kost Tenant Portal",
             "subtitle": "Sign in to view your leases and profile",
@@ -879,7 +1040,8 @@
             "success": "Welcome back!",
             "errors": {
                 "invalid": "Invalid email or password.",
-                "forbidden": "You cannot sign in here. Admin accounts must use the admin login."
+                "forbidden": "You cannot sign in here. Admin accounts must use the admin login.",
+                "deactivated": "This account has been deactivated. Contact your administrator."
             }
         },
         "common": {

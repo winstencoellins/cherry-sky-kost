@@ -5,8 +5,8 @@
 
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Icon } from '@/components/shared/Icon';
@@ -32,7 +32,6 @@ function getDurationLabel(
 
 export function UnitTypeSearchGrid({ unitTypes, isLoading }: UnitTypeSearchGridProps) {
     const t = useTranslations();
-    const locale = useLocale();
 
     if (isLoading) {
         return (
@@ -92,7 +91,7 @@ export function UnitTypeSearchGrid({ unitTypes, isLoading }: UnitTypeSearchGridP
             className="grid grid-cols-1 gap-6 md:grid-cols-2"
         >
             {unitTypes.map((unitType) => {
-                const detailUrl = `/${locale}/kosts/${unitType.propertyId}--${unitType.id}`;
+                const detailUrl = `/kosts/${unitType.propertyId}--${unitType.id}`;
                 const pricingRows =
                     unitType.pricings.length > 0
                         ? unitType.pricings

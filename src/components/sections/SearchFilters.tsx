@@ -1,16 +1,19 @@
 /**
  * Search Filters Component
- * Filters for searching and filtering kost properties
+ * Filters aligned with GET /public/search query params
  */
 
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Icon } from '@/components/shared/Icon';
+import { listPublicProperties } from '@/lib/api/public/properties';
+import { publicKeys } from '@/lib/query/keys';
 import type { SearchFilters as SearchFiltersState } from '@/lib/types';
 
 interface SearchFiltersProps {
@@ -22,27 +25,71 @@ interface SearchFiltersProps {
 export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFiltersProps) {
     const t = useTranslations();
     const [isExpanded, setIsExpanded] = useState(true);
+    const [draftLocation, setDraftLocation] = useState(filters.location ?? '');
+    const [draftPriceMin, setDraftPriceMin] = useState(filters.priceMin ?? 500_000);
+    const [draftPriceMax, setDraftPriceMax] = useState(filters.priceMax ?? 2_500_000);
 
-    const handlePriceChange = (values: number[]) => {
+    const propertiesQuery = useQuery({
+        queryKey: publicKeys.properties.all(),
+        queryFn: listPublicProperties,
+        staleTime: 5 * 60 * 1000,
+    });
+
+    const properties = propertiesQuery.data?.data ?? [];
+
+    useEffect(() => {
+        setDraftLocation(filters.location ?? '');
+        setDraftPriceMin(filters.priceMin ?? 500_000);
+        setDraftPriceMax(filters.priceMax ?? 2_500_000);
+    }, [
+        filters.location,
+        filters.priceMin,
+        filters.priceMax,
+        filters.availability,
+        filters.propertyId,
+        filters.durationDays,
+        filters.sortBy,
+    ]);
+
+    const applyPending = (overrides?: Partial<SearchFiltersState>) => {
         onFiltersChange({
             ...filters,
-            priceMin: values[0],
-            priceMax: values[1],
+            location: draftLocation.trim() || undefined,
+            priceMin: draftPriceMin,
+            priceMax: draftPriceMax,
+            page: 1,
+            ...overrides,
         });
     };
 
-    const handleSortChange = (sortBy: 'price-asc' | 'price-desc' | 'newest' | 'popular') => {
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        applyPending();
+    };
+
+    const handleReset = () => {
+        setDraftLocation('');
+        setDraftPriceMin(500_000);
+        setDraftPriceMax(2_500_000);
+        onReset?.();
+    };
+
+    const applyImmediate = (patch: Partial<SearchFiltersState>) => {
         onFiltersChange({
             ...filters,
-            sortBy,
+            location: draftLocation.trim() || undefined,
+            priceMin: draftPriceMin,
+            priceMax: draftPriceMax,
+            ...patch,
+            page: 1,
         });
     };
 
     const sortOptions = [
-        { id: 'price-asc', label: 'Harga: Terendah' },
-        { id: 'price-desc', label: 'Harga: Tertinggi' },
-        { id: 'newest', label: 'Terbaru' },
-        { id: 'popular', label: 'Paling Populer' },
+        { id: 'property-asc', label: t('search.sortProperty') },
+        { id: 'price-asc', label: t('search.sortPriceAsc') },
+        { id: 'price-desc', label: t('search.sortPriceDesc') },
+        { id: 'newest', label: t('search.sortNewest') },
     ] as const;
 
     return (
@@ -52,10 +99,10 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
             viewport={{ once: true }}
             className="sticky top-24 z-40 rounded-2xl border border-[#e3e2e0] bg-white/90 p-6 shadow-sm"
         >
-            <div className="flex items-center justify-between mb-6">
+            <div className="mb-6 flex items-center justify-between">
                 <h3 className="flex items-center gap-2 text-base font-semibold text-[#1a1c1a]">
                     <Icon name="tune" size={20} />
-                    Filter Pencarian
+                    {t('search.filtersTitle')}
                 </h3>
                 <button
                     type="button"
@@ -67,28 +114,80 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
             </div>
 
             {isExpanded && (
-                <>
-                    {/* Location / keyword */}
+                <form onSubmit={handleSubmit} className="space-y-0">
+                    {/* Keyword */}
                     <div className="mb-8 border-b border-[#e3e2e0] pb-8">
                         <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
-                            <Icon name="location_on" size={16} />
+                            <Icon name="search" size={16} />
                             {t('search.location')}
                         </h4>
                         <input
                             type="search"
-                            value={filters.location ?? ''}
-                            onChange={(e) =>
-                                onFiltersChange({
-                                    ...filters,
-                                    location: e.target.value || undefined,
-                                })
-                            }
+                            name="location"
+                            value={draftLocation}
+                            onChange={(e) => setDraftLocation(e.target.value)}
                             placeholder={t('search.placeholder')}
+                            enterKeyHint="search"
                             className="w-full rounded-lg border border-[#e3e2e0] bg-[#faf9f6] px-3 py-2.5 text-sm text-[#1a1c1a] placeholder:text-[#83746b]/60 focus:border-[#6f4627] focus:outline-none focus:ring-2 focus:ring-[#6f4627]/25"
                         />
                     </div>
 
-                    {/* Rent duration (maps to durationDays on API) */}
+                    {/* Property */}
+                    <div className="mb-8 border-b border-[#e3e2e0] pb-8">
+                        <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
+                            <Icon name="apartment" size={16} />
+                            {t('search.propertyLabel')}
+                        </h4>
+                        <select
+                            value={filters.propertyId ?? ''}
+                            onChange={(e) =>
+                                applyImmediate({
+                                    propertyId: e.target.value || undefined,
+                                })
+                            }
+                            className="w-full rounded-lg border border-[#e3e2e0] bg-[#faf9f6] px-3 py-2.5 text-sm text-[#1a1c1a] focus:border-[#6f4627] focus:outline-none focus:ring-2 focus:ring-[#6f4627]/25"
+                        >
+                            <option value="">{t('search.propertyAny')}</option>
+                            {properties.map((property) => (
+                                <option key={property.id} value={property.id}>
+                                    {property.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Availability */}
+                    <div className="mb-8 border-b border-[#e3e2e0] pb-8">
+                        <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
+                            <Icon name="event_available" size={16} />
+                            {t('search.availability')}
+                        </h4>
+                        <div className="grid grid-cols-2 gap-2">
+                            {(
+                                [
+                                    { id: 'available', label: t('search.availabilityVacant') },
+                                    { id: 'all', label: t('search.availabilityAll') },
+                                ] as const
+                            ).map((option) => (
+                                <button
+                                    key={option.id}
+                                    type="button"
+                                    onClick={() =>
+                                        applyImmediate({ availability: option.id })
+                                    }
+                                    className={`rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+                                        (filters.availability ?? 'available') === option.id
+                                            ? 'bg-[#6f4627] text-white'
+                                            : 'bg-[#faf9f6] text-[#51443c] hover:bg-white'
+                                    }`}
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Rent duration */}
                     <div className="mb-8 border-b border-[#e3e2e0] pb-8">
                         <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
                             <Icon name="calendar_month" size={16} />
@@ -98,8 +197,7 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
                             value={filters.durationDays?.toString() ?? ''}
                             onChange={(e) => {
                                 const value = e.target.value;
-                                onFiltersChange({
-                                    ...filters,
+                                applyImmediate({
                                     durationDays: value ? Number(value) : undefined,
                                 });
                             }}
@@ -112,46 +210,55 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
                         </select>
                     </div>
 
-                    {/* Price Range */}
+                    {/* Price range */}
                     <div className="mb-8 border-b border-[#e3e2e0] pb-8">
                         <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
                             <Icon name="local_offer" size={16} />
-                            Rentang Harga
+                            {t('search.priceRange')}
                         </h4>
                         <div className="space-y-4">
                             <Slider
-                                value={[filters.priceMin || 500000, filters.priceMax || 2500000]}
+                                value={[draftPriceMin, draftPriceMax]}
                                 min={500000}
                                 max={5000000}
                                 step={100000}
-                                onValueChange={handlePriceChange}
+                                onValueChange={(values) => {
+                                    setDraftPriceMin(values[0]);
+                                    setDraftPriceMax(values[1]);
+                                }}
+                                onValueCommit={(values) => {
+                                    applyImmediate({
+                                        priceMin: values[0],
+                                        priceMax: values[1],
+                                    });
+                                }}
                                 className="w-full"
                             />
                             <div className="flex items-center justify-between text-sm">
                                 <span className="text-[#83746b]">
-                                    Rp {((filters.priceMin || 500000) / 1000000).toFixed(1)}M
+                                    Rp {(draftPriceMin / 1_000_000).toFixed(1)}M
                                 </span>
                                 <span className="text-[#83746b]">
-                                    Rp {((filters.priceMax || 2500000) / 1000000).toFixed(1)}M+
+                                    Rp {(draftPriceMax / 1_000_000).toFixed(1)}M+
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Sort By */}
+                    {/* Sort */}
                     <div className="mb-6 border-b border-[#e3e2e0] pb-6">
                         <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#51443c]">
                             <Icon name="sort" size={16} />
-                            Urutkan
+                            {t('search.sortLabel')}
                         </h4>
                         <div className="space-y-2">
                             {sortOptions.map((option) => (
                                 <button
                                     type="button"
                                     key={option.id}
-                                    onClick={() => handleSortChange(option.id)}
-                                    className={`w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                        filters.sortBy === option.id
+                                    onClick={() => applyImmediate({ sortBy: option.id })}
+                                    className={`w-full rounded-lg px-4 py-2 text-left text-sm font-medium transition-all ${
+                                        (filters.sortBy ?? 'property-asc') === option.id
                                             ? 'bg-[#6f4627] text-white'
                                             : 'bg-[#faf9f6] text-[#51443c] hover:bg-white'
                                     }`}
@@ -162,22 +269,26 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
                         </div>
                     </div>
 
-                    {/* Action Buttons */}
+                    {/* Actions */}
                     <div className="flex gap-3">
                         <Button
-                            onClick={onReset}
+                            type="button"
+                            onClick={handleReset}
                             variant="outline"
                             className="flex-1 rounded-xl border-[#e3e2e0] bg-white/80 text-[#1a1c1a] hover:bg-white hover:text-[#6f4627]"
                         >
                             <Icon name="restart_alt" size={16} className="mr-2" />
-                            Reset
+                            {t('search.reset')}
                         </Button>
-                        <Button className="flex-1 rounded-xl bg-[#6f4627] text-white hover:bg-[#805533]">
+                        <Button
+                            type="submit"
+                            className="flex-1 rounded-xl bg-[#6f4627] text-white hover:bg-[#805533]"
+                        >
                             <Icon name="search" size={16} className="mr-2" />
-                            Cari
+                            {t('search.apply')}
                         </Button>
                     </div>
-                </>
+                </form>
             )}
         </motion.div>
     );

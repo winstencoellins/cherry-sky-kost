@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Icon } from "@/components/shared/Icon";
+import { SignOutDialog } from "@/components/shared/sign-out-dialog";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
 import { ADMIN_PROFILE_IMAGE } from "@/features/admin/constants/assets";
 import { tenantNavItems } from "@/features/tenant/constants/nav-items";
@@ -23,16 +25,26 @@ function resolveActiveNavHref(pathname: string): string | null {
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const t = useTranslations("tenant");
+  const tc = useTranslations("common");
   const pathname = usePathname();
   const router = useRouter();
   const { user } = useTenantShell();
   const activeHref = resolveActiveNavHref(pathname);
+  const profileActive = pathname.startsWith("/tenant/profile");
+  const [signOutOpen, setSignOutOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
 
-  async function handleSignOut() {
-    await authClient.signOut();
-    onNavigate?.();
-    router.push("/tenant/login");
-    router.refresh();
+  async function confirmSignOut() {
+    setSigningOut(true);
+    try {
+      await authClient.signOut();
+      onNavigate?.();
+      setSignOutOpen(false);
+      router.push("/tenant/login");
+      router.refresh();
+    } finally {
+      setSigningOut(false);
+    }
   }
 
   return (
@@ -47,7 +59,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </div>
         <div>
           <p className="truncate text-base font-bold tracking-tight text-[#1a1c1a]">
-            Sky Kost
+            {tc("brand.name")}
           </p>
           <p className="text-xs font-medium text-[#8b5e3c]">{t("portalName")}</p>
         </div>
@@ -99,7 +111,16 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       </nav>
 
       <div className="mt-6 space-y-2 border-t border-[#e3e2e0] pt-5">
-        <div className="flex items-center gap-3 rounded-2xl bg-[#f4f3f1] p-3">
+        <Link
+          href="/tenant/profile"
+          onClick={onNavigate}
+          className={cn(
+            "flex items-center gap-3 rounded-2xl p-3 transition-colors",
+            profileActive
+              ? "bg-[#f5e4d4] ring-1 ring-[#e8dfd6]"
+              : "bg-[#f4f3f1] hover:bg-[#efeeeb]",
+          )}
+        >
           <div className="relative size-10 shrink-0 overflow-hidden rounded-full ring-2 ring-white">
             <Image
               src={user.avatar ?? ADMIN_PROFILE_IMAGE}
@@ -115,22 +136,32 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             </p>
             <p className="truncate text-xs text-[#83746b]">{user.email}</p>
           </div>
-        </div>
+          <Icon name="chevron_right" size={20} className="shrink-0 text-[#83746b]" />
+        </Link>
 
         <button
           type="button"
-          onClick={() => void handleSignOut()}
+          onClick={() => setSignOutOpen(true)}
           className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#51443c] transition-colors hover:bg-[#ffdad6]/50 hover:text-[#ba1a1a]"
         >
           <Icon name="logout" size={20} />
           {t("nav.signOut")}
         </button>
       </div>
+
+      <SignOutDialog
+        namespace="tenant.signOutDialog"
+        open={signOutOpen}
+        onOpenChange={setSignOutOpen}
+        onConfirm={confirmSignOut}
+        pending={signingOut}
+      />
     </>
   );
 }
 
 export function TenantSidebar() {
+  const tc = useTranslations("common");
   const { mobileOpen, setMobileOpen } = useTenantShell();
 
   return (
@@ -142,7 +173,7 @@ export function TenantSidebar() {
       {mobileOpen && (
         <button
           type="button"
-          aria-label="Close menu"
+          aria-label={tc("closeMenu")}
           className="fixed inset-0 z-50 bg-[#1a1c1a]/40 backdrop-blur-sm lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
