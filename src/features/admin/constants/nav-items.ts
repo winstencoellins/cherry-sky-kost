@@ -6,6 +6,7 @@ export type AdminNavPageKey =
   | "vacantSearch"
   | "pricing"
   | "leases"
+  | "leaseRenewals"
   | "users"
   | "bookkeeping";
 
@@ -86,6 +87,12 @@ export const adminNavGroups: AdminNavGroup[] = [
         href: "/admin/leases",
         icon: "description",
         labelKey: "nav.leases",
+      },
+      {
+        key: "leaseRenewals",
+        href: "/admin/lease-renewals",
+        icon: "autorenew",
+        labelKey: "nav.leaseRenewals",
       },
       {
         key: "users",

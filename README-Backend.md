@@ -8,9 +8,23 @@ REST API for the Cherry Sky Kost property management system, built with [Elysia]
 bun run dev              # start with hot-reload on port 8000
 bunx prisma generate     # regenerate client after schema changes
 bunx prisma db push      # apply schema to the database
+bun run db:seed          # seed SKYKOST, CHERRY KOST, tenants, and sample units
 ```
 
 Base URL (local): `http://localhost:8000`
+
+### Background jobs
+
+Scheduled tasks run inside the same Elysia process via `@elysia/cron` (daily at **00:00:00**).
+
+| Job | Schedule | What it does |
+|---|---|---|
+| `expire-leases` | `0 0 0 * * *` | Sets `occupied` units to `vacant` when their paid lease has ended and no other active paid lease covers the unit |
+| `confirm-lease-renewals` | `0 0 0 * * *` | Sets `leaseRenewal.isConfirmed` to `true` when the confirmation deadline has passed and it is still `false` |
+
+Renewal confirmation deadline = lease `endDate` minus **5 days** (stored on `leaseRenewal.leaseEndDate`).
+
+Jobs only run while the server process is running.
 
 All successful API responses use `{ "data": ... }` unless noted otherwise.
 
@@ -181,7 +195,7 @@ Admin list/detail responses also embed related data directly (see each resource 
 | Unit type | `property`, `pricings`, `units`, `unitTypeAttachments`, `_count` |
 | Unit pricing | `property`, `unitType` (+ property, attachments); detail adds `leases` |
 | Unit | `property`, `unitType` (+ pricings, attachments), `activeLease` or `leases` |
-| Lease | `property`, `unit`, `user`, `unitPricing`, `createdBy`, `updatedBy` |
+| Lease | `property`, `unit`, `user`, `unitPricing`, `leaseRenewal` (+ `updatedBy`), `createdBy`, `updatedBy` |
 | Tenant (detail) | profile fields + `leases` (full lease graph) |
 | Ledger entry | `property`, `createdBy` |
 
@@ -366,7 +380,7 @@ Categories of units within a property (e.g. Studio, 1 Bedroom). Pricing packages
 
 #### `PUT /admin/unit-types/:id`
 
-All fields optional. Same fields as create (except `propertyId` cannot be changed via this endpoint).
+All fields optional. Same fields as create (except `propertyId` cannot be changed via this endpoint). Send `null` for `size` to clear.
 
 **Errors:** `404` · `409` · `422`
 
@@ -597,14 +611,19 @@ Share `temporaryPassword` with the tenant securely. They should sign in and chan
 Rental agreements. `endDate` is **always computed** as `startDate + unitPricing.durationDays`.
 
 - Creating a lease does **not** auto-occupy the unit.
+- Creating a lease **also creates** a linked `leaseRenewal` (1:1) with `isRenewLease: false`, `isConfirmed: false`, `markAsCompleted: false`, and `leaseEndDate` set to 5 days before the lease `endDate`.
+- When creating a lease to fulfill a tenant renewal, pass `leaseRenewalId` (the existing renewal record's `id`) — the API sets that renewal's `markAsCompleted` to `true` in the same transaction.
+- Renewal flow: tenant requests via `PUT /leases/:id/renewal` (`isRenewLease`) → admin confirms via `PUT /admin/leases/:id/renewal` (`isConfirmed`, or auto-confirmed by cron) → admin creates follow-up lease via `POST /admin/leases` with `leaseRenewalId` (`markAsCompleted`).
 - Setting `status` to `paid` sets the unit to `occupied`.
-- Deleting a lease sets the unit to `vacant`.
+- Deleting a lease sets the unit to `vacant` (cascades to `leaseRenewal`).
+- When `startDate` or `unitPricingId` changes on update, `leaseRenewal.leaseEndDate` is recalculated from the new `endDate`.
+- After lease `endDate`, the `expire-leases` cron sets the unit back to `vacant` if no other active paid lease exists.
 
 #### `GET /admin/leases`
 
 **Query params:** `unitId`, `userId`, `propertyId` (all optional)
 
-**Response `200`** — includes `unit` (with `property`, `unitType`), `user`, `unitPricing`, `createdBy`, `updatedBy`.
+**Response `200`** — includes `unit` (with `property`, `unitType`), `user`, `unitPricing`, `leaseRenewal` (or `null`), `createdBy`, `updatedBy`.
 
 ---
 
@@ -621,7 +640,8 @@ Rental agreements. `endDate` is **always computed** as `startDate + unitPricing.
   "unitId": "clx...",
   "userId": "usr...",
   "startDate": "2026-05-01",
-  "unitPricingId": "clx..."
+  "unitPricingId": "clx...",
+  "leaseRenewalId": "clx..."
 }
 ```
 
@@ -631,10 +651,15 @@ Rental agreements. `endDate` is **always computed** as `startDate + unitPricing.
 | `userId` | string | yes |
 | `startDate` | string (ISO date) | yes |
 | `unitPricingId` | string | yes |
+| `leaseRenewalId` | string | no |
 
 `unitPricing` must belong to the unit's `unitTypeId`.
 
-**Errors:** `404` unit or pricing not found · `409` date overlap on same unit · `422` validation failed
+When `leaseRenewalId` is provided, the API marks that renewal's `markAsCompleted` as `true` after the new lease is created. The `userId` must match the tenant on the renewal's parent lease. Use the renewal record's `id` (from the tenant's existing lease), not the lease `id`.
+
+**Response `200`** — includes the new lease and its `leaseRenewal`.
+
+**Errors:** `404` unit, pricing, or lease renewal not found · `409` date overlap on same unit · `422` validation failed (including renewal already completed or tenant mismatch)
 
 ---
 
@@ -655,6 +680,28 @@ Rental agreements. `endDate` is **always computed** as `startDate + unitPricing.
 `endDate` is recalculated when `startDate` or `unitPricingId` changes (cannot be sent in the body).
 
 **Errors:** `404` · `409` overlap · `422`
+
+---
+
+#### `PUT /admin/leases/:id/renewal`
+
+Update renewal confirmation for a lease.
+
+```json
+{
+  "isConfirmed": true
+}
+```
+
+| Field | Type | Required |
+|---|---|---|
+| `isConfirmed` | boolean | yes |
+
+**Response `200`** — updated `leaseRenewal` (with `updatedBy`).
+
+**Errors:** `404` lease or renewal not found · `422` validation failed
+
+**Note:** If `isConfirmed` is still `false` when the confirmation deadline (`leaseEndDate`) is reached, the `confirm-lease-renewals` cron auto-sets it to `true` at the next midnight run.
 
 ---
 
@@ -1074,13 +1121,37 @@ Tenants can view their own leases only.
 
 Returns all leases for the authenticated user.
 
-**Response `200`** — includes `unit` (with `property`, `unitType`) and `unitPricing`.
+**Response `200`** — includes `unit` (with `property`, `unitType`), `unitPricing`, and `leaseRenewal` (`isRenewLease`, `isConfirmed`, `markAsCompleted`, `leaseEndDate`, etc.).
 
 ---
 
 #### `GET /leases/:id`
 
 **Error `404`** — lease not found or does not belong to the current user.
+
+---
+
+#### `PUT /leases/:id/renewal`
+
+Request or cancel a lease renewal for the tenant's own lease.
+
+```json
+{
+  "isRenewLease": true
+}
+```
+
+| Field | Type | Required |
+|---|---|---|
+| `isRenewLease` | boolean | yes |
+
+Set `isRenewLease` to `true` to request renewal, or `false` to cancel a pending request. Only **paid** leases can request renewal. Cannot update a renewal that has already been marked completed by admin.
+
+**Response `200`** — updated `leaseRenewal`.
+
+**Errors:** `404` lease or renewal not found · `422` validation failed (including lease not paid or renewal already completed)
+
+Renewal confirmation (`isConfirmed`) is admin-only via `PUT /admin/leases/:id/renewal`.
 
 ---
 
@@ -1142,8 +1213,25 @@ Returns all leases for the authenticated user.
 | `startDate` | datetime | Lease start |
 | `endDate` | datetime | Lease end (computed) |
 | `status` | `unpaid` \| `waiting_for_review` \| `paid` | Payment status |
+| `leaseRenewal` | `LeaseRenewal` \| null | 1:1 renewal record (auto-created on lease create) |
 | `createdById` | string | Admin who created this lease |
 | `updatedById` | string | Admin who last updated this lease |
+
+### `LeaseRenewal`
+
+One renewal record per lease (1:1). Created automatically when a lease is created. Included on lease reads as `leaseRenewal`.
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | string (cuid) | Unique identifier |
+| `leaseId` | string | Parent lease (unique — one renewal per lease) |
+| `isRenewLease` | boolean | Tenant requested renewal (default `false`) |
+| `isConfirmed` | boolean | Renewal confirmed (default `false`; auto-set by cron after deadline) |
+| `markAsCompleted` | boolean | Admin has created the follow-up lease for this renewal (default `false`; set via `POST /admin/leases` with `leaseRenewalId`) |
+| `leaseEndDate` | datetime | Confirmation deadline — lease `endDate` minus 5 days |
+| `updatedById` | string | User who last updated this renewal |
+| `createdAt` | datetime | |
+| `updatedAt` | datetime | |
 
 ### `User` (tenant, admin read)
 

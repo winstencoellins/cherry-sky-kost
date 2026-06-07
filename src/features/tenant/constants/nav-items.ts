@@ -1,4 +1,4 @@
-export type TenantNavPageKey = "leases" | "profile";
+export type TenantNavPageKey = "leases" | "leaseRenewals" | "profile";
 
 export interface TenantNavItem {
   key: TenantNavPageKey;
@@ -13,6 +13,12 @@ export const tenantNavItems: TenantNavItem[] = [
     href: "/tenant/leases",
     icon: "description",
     labelKey: "nav.leases",
+  },
+  {
+    key: "leaseRenewals",
+    href: "/tenant/lease-renewals",
+    icon: "autorenew",
+    labelKey: "nav.leaseRenewals",
   },
   {
     key: "profile",

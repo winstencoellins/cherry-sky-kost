@@ -1,6 +1,19 @@
 import { cn } from "@/lib/utils";
 import type { LeaseStatus, UnitStatus } from "@/lib/types/admin";
 
+export type LeaseRenewalStatus =
+  | "not_requested"
+  | "pending_confirmation"
+  | "confirmed"
+  | "completed";
+
+const renewalStyles: Record<LeaseRenewalStatus, string> = {
+  not_requested: "bg-[#e3e2e0] text-[#51443c]",
+  pending_confirmation: "bg-[#FEF7E0] text-[#B06000]",
+  confirmed: "bg-[#E6F4EA] text-[#137333]",
+  completed: "bg-blue-50 text-blue-700",
+};
+
 const unitStyles: Record<UnitStatus, string> = {
   vacant: "bg-emerald-50 text-emerald-700",
   occupied: "bg-blue-50 text-blue-700",
@@ -41,6 +54,25 @@ export function LeaseStatusBadge({ status }: { status: LeaseStatus }) {
       )}
     >
       {leaseLabels[status]}
+    </span>
+  );
+}
+
+export function LeaseRenewalStatusBadge({
+  status,
+  label,
+}: {
+  status: LeaseRenewalStatus;
+  label: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold",
+        renewalStyles[status],
+      )}
+    >
+      {label}
     </span>
   );
 }

@@ -2,12 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
 import {
   AdminField,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminFormPage } from "@/features/admin/crud/admin-form-page";
+import { AdminLeaseRenewalActions } from "@/features/admin/leases/lease-renewal-actions";
 import {
   useLease,
   useLeaseMutations,
@@ -34,6 +36,7 @@ type FormState = {
   startDate: string;
   unitPricingId: string;
   status: LeaseStatus;
+  leaseRenewalId: string;
 };
 
 const emptyForm: FormState = {
@@ -42,12 +45,15 @@ const emptyForm: FormState = {
   startDate: "",
   unitPricingId: "",
   status: "unpaid",
+  leaseRenewalId: "",
 };
 
 export function LeaseForm({ id }: { id?: string }) {
   const t = useTranslations("admin.crud");
   const tp = useTranslations("admin.pages.leases");
+  const tr = useTranslations("admin.pages.leaseRenewals");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const isEdit = !!id;
   const { data: units = [] } = useUnits();
   const { data: pricings = [] } = useUnitPricings();
@@ -57,6 +63,16 @@ export function LeaseForm({ id }: { id?: string }) {
   const lookups = useAdminLookups();
   const [form, setForm] = useState<FormState>(emptyForm);
   const [formError, setFormError] = useState<string | null>(null);
+
+  const renewalPrefill = useMemo(() => {
+    if (isEdit) return null;
+    const renewalId = searchParams.get("renewalId");
+    const unitId = searchParams.get("unitId");
+    const userId = searchParams.get("userId");
+    const startDate = searchParams.get("startDate");
+    if (!renewalId || !unitId || !userId) return null;
+    return { renewalId, unitId, userId, startDate: startDate ?? "" };
+  }, [isEdit, searchParams]);
 
   const selectedUnit = useMemo(
     () => units.find((u) => u.id === form.unitId),
@@ -76,14 +92,18 @@ export function LeaseForm({ id }: { id?: string }) {
         startDate: toDateInputValue(lease.startDate),
         unitPricingId: lease.unitPricingId,
         status: lease.status,
+        leaseRenewalId: "",
       });
     } else if (!isEdit) {
       setForm((f) => ({
         ...f,
-        startDate: toDateInputValue(new Date()),
+        startDate: renewalPrefill?.startDate || toDateInputValue(new Date()),
+        unitId: renewalPrefill?.unitId ?? f.unitId,
+        userId: renewalPrefill?.userId ?? f.userId,
+        leaseRenewalId: renewalPrefill?.renewalId ?? "",
       }));
     }
-  }, [lease, isEdit]);
+  }, [lease, isEdit, renewalPrefill]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -103,10 +123,11 @@ export function LeaseForm({ id }: { id?: string }) {
           userId: form.userId,
           startDate: form.startDate,
           unitPricingId: form.unitPricingId,
+          leaseRenewalId: form.leaseRenewalId || undefined,
         });
         showApiSuccess(t("created"));
       }
-      router.push(BASE);
+      router.push(form.leaseRenewalId ? "/admin/lease-renewals" : BASE);
       router.refresh();
     } catch (err) {
       const msg = getErrorMessage(err, t("saveFailed"));
@@ -135,9 +156,14 @@ export function LeaseForm({ id }: { id?: string }) {
       pending={pending}
       submitLabel={t("save")}
       pendingLabel={t("saving")}
-      cancelHref={BASE}
+      cancelHref={form.leaseRenewalId ? "/admin/lease-renewals" : BASE}
       cancelLabel={t("cancel")}
     >
+      {!isEdit && renewalPrefill && (
+        <div className="rounded-xl border border-[#8b5e3c]/20 bg-[#fef7e0]/40 px-4 py-3 text-sm text-[#51443c]">
+          {tr("renewalFormHint")}
+        </div>
+      )}
       {!isEdit && (
         <>
           <AdminField label={t("unit")} htmlFor="lease-unit">
@@ -146,6 +172,7 @@ export function LeaseForm({ id }: { id?: string }) {
               required
               className={adminInputClassName}
               value={form.unitId}
+              disabled={!!renewalPrefill}
               onChange={(e) =>
                 setForm((f) => ({
                   ...f,
@@ -171,7 +198,7 @@ export function LeaseForm({ id }: { id?: string }) {
               required
               className={adminInputClassName}
               value={form.userId}
-              disabled={tenantsLoading}
+              disabled={tenantsLoading || !!renewalPrefill}
               onChange={(e) =>
                 setForm((f) => ({ ...f, userId: e.target.value }))
               }
@@ -253,6 +280,9 @@ export function LeaseForm({ id }: { id?: string }) {
             <option value="paid">Paid</option>
           </select>
         </AdminField>
+      )}
+      {isEdit && lease?.leaseRenewal && (
+        <AdminLeaseRenewalActions lease={lease} />
       )}
     </AdminFormPage>
   );

@@ -20,6 +20,12 @@ export function toDateInputValue(value: string | Date): string {
   return date.toISOString().slice(0, 10);
 }
 
+export function dayAfterDate(value: string | Date): string {
+  const date = typeof value === "string" ? new Date(value) : new Date(value);
+  date.setDate(date.getDate() + 1);
+  return toDateInputValue(date);
+}
+
 export function formatIdrCompact(amount: number): string {
   if (amount >= 1_000_000_000) {
     return `${(amount / 1_000_000_000).toFixed(1)}B`;

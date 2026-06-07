@@ -21,6 +21,8 @@ import {
 } from "@/features/admin/lib/format";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { useTenantLeases } from "@/features/tenant/hooks/use-tenant-queries";
+import { LeaseRenewalPrompt } from "@/features/tenant/leases/lease-renewal-prompt";
+import { getTenantRenewalView } from "@/features/tenant/lib/lease-renewal";
 
 const BASE = "/tenant/leases";
 
@@ -47,9 +49,22 @@ export function TenantLeasesList() {
   const { page, setPage, pageData, total, pageSize } =
     useClientPagination(filtered);
 
+  const renewalNotices = useMemo(
+    () => data.filter((lease) => getTenantRenewalView(lease) !== "none"),
+    [data],
+  );
+
   return (
     <>
       <AdminPageHeader title={tp("title")} description={tp("description")} />
+
+      {renewalNotices.length > 0 && (
+        <div className="mb-4 space-y-3">
+          {renewalNotices.map((lease) => (
+            <LeaseRenewalPrompt key={lease.id} lease={lease} compact />
+          ))}
+        </div>
+      )}
 
       <div className="mb-4">
         <div className="relative max-w-md">

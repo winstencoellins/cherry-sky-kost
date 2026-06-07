@@ -11,6 +11,8 @@ import {
 } from "@/features/admin/lib/format";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { useTenantLease } from "@/features/tenant/hooks/use-tenant-queries";
+import { LeaseRenewalPrompt } from "@/features/tenant/leases/lease-renewal-prompt";
+import { getTenantRenewalView } from "@/features/tenant/lib/lease-renewal";
 
 export function TenantLeaseDetail({ id }: { id: string }) {
   const t = useTranslations("tenant.common");
@@ -40,6 +42,7 @@ export function TenantLeaseDetail({ id }: { id: string }) {
 
   const rent = lease.unitPricing?.price ?? 0;
   const duration = lease.unitPricing?.durationDays;
+  const renewalView = getTenantRenewalView(lease);
 
   return (
     <div className="space-y-6">
@@ -50,6 +53,10 @@ export function TenantLeaseDetail({ id }: { id: string }) {
         <Icon name="arrow_back" size={18} />
         {t("backToList")}
       </Link>
+
+      {renewalView !== "none" && (
+        <LeaseRenewalPrompt lease={lease} />
+      )}
 
       <div className="rounded-2xl border border-[#e3e2e0] bg-white/80 p-6 shadow-sm">
         <div className="mb-6 flex flex-wrap items-start justify-between gap-4">

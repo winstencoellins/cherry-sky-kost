@@ -7,6 +7,7 @@ import {
   getLease,
   listLeases,
   updateLease,
+  updateLeaseRenewal,
 } from "@/lib/api/admin/leases";
 import {
   createLedgerEntry,
@@ -276,7 +277,11 @@ export function useLeaseMutations() {
   };
 
   return {
-    create: useMutation({ mutationFn: createLease, onSuccess: invalidate }),
+    create: useMutation({
+      mutationFn: (input: Parameters<typeof createLease>[0]) =>
+        createLease(input),
+      onSuccess: invalidate,
+    }),
     update: useMutation({
       mutationFn: ({
         id,
@@ -287,6 +292,16 @@ export function useLeaseMutations() {
         unitPricingId?: string;
         status?: LeaseStatus;
       }) => updateLease(id, input),
+      onSuccess: invalidate,
+    }),
+    confirmRenewal: useMutation({
+      mutationFn: ({
+        leaseId,
+        isConfirmed,
+      }: {
+        leaseId: string;
+        isConfirmed: boolean;
+      }) => updateLeaseRenewal(leaseId, { isConfirmed }),
       onSuccess: invalidate,
     }),
     remove: useMutation({ mutationFn: deleteLease, onSuccess: invalidate }),

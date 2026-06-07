@@ -3,6 +3,7 @@ import type {
   ApiDataResponse,
   ApiListResponse,
   Lease,
+  LeaseRenewal,
   LeaseStatus,
 } from "@/lib/types/admin";
 
@@ -30,6 +31,7 @@ export async function createLease(input: {
   userId: string;
   startDate: string;
   unitPricingId: string;
+  leaseRenewalId?: string;
 }): Promise<Lease> {
   const res = await apiFetch<ApiDataResponse<Lease>>("/admin/leases", {
     method: "POST",
@@ -57,5 +59,19 @@ export async function deleteLease(id: string): Promise<Lease> {
   const res = await apiFetch<ApiDataResponse<Lease>>(`/admin/leases/${id}`, {
     method: "DELETE",
   });
+  return res.data;
+}
+
+export async function updateLeaseRenewal(
+  leaseId: string,
+  input: { isConfirmed: boolean },
+): Promise<LeaseRenewal> {
+  const res = await apiFetch<ApiDataResponse<LeaseRenewal>>(
+    `/admin/leases/${leaseId}/renewal`,
+    {
+      method: "PUT",
+      body: input,
+    },
+  );
   return res.data;
 }

@@ -109,6 +109,19 @@ export interface Unit {
   updatedAt: string;
 }
 
+export interface LeaseRenewal {
+  id: string;
+  leaseId: string;
+  isRenewLease: boolean;
+  isConfirmed: boolean;
+  markAsCompleted: boolean;
+  leaseEndDate: string;
+  updatedById: string;
+  updatedBy?: UnitUserRef;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Lease {
   id: string;
   status: LeaseStatus;
@@ -122,6 +135,7 @@ export interface Lease {
   unit?: Unit & { property?: Property; unitType?: UnitType };
   user?: UnitUserRef;
   unitPricing?: UnitPricing;
+  leaseRenewal?: LeaseRenewal | null;
   createdBy?: UnitUserRef;
   updatedBy?: UnitUserRef;
   createdById: string;

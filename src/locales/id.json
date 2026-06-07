@@ -525,6 +525,7 @@
             "units": "Unit",
             "vacantSearch": "Cari kamar kosong",
             "leases": "Sewa",
+            "leaseRenewals": "Perpanjangan sewa",
             "users": "Penyewa",
             "pricing": "Harga",
             "bookkeeping": "Buku kas",
@@ -763,6 +764,45 @@
                     "collected": "Terkumpul bulan ini"
                 }
             },
+            "leaseRenewals": {
+                "title": "Perpanjangan sewa",
+                "description": "Pantau permintaan perpanjangan penyewa, konfirmasi perpanjangan, dan buat sewa lanjutan.",
+                "leaseEnd": "Berakhir sewa",
+                "confirmationDeadline": "Konfirmasi sebelum",
+                "empty": "Tidak ada catatan perpanjangan untuk filter ini.",
+                "confirm": "Konfirmasi perpanjangan",
+                "confirming": "Mengonfirmasi…",
+                "confirmed": "Perpanjangan dikonfirmasi.",
+                "confirmFailed": "Gagal mengonfirmasi perpanjangan.",
+                "renewalSection": "Perpanjangan sewa",
+                "viewAllRenewals": "Semua perpanjangan",
+                "createRenewalLease": "Buat sewa lanjutan",
+                "viewLease": "Lihat sewa",
+                "renewalFormHint": "Membuat sewa lanjutan untuk perpanjangan yang sudah dikonfirmasi. Unit dan penyewa dikunci agar sesuai sewa saat ini.",
+                "filters": {
+                    "all": "Semua perpanjangan",
+                    "requested": "Diminta penyewa",
+                    "pendingConfirmation": "Menunggu konfirmasi",
+                    "confirmed": "Dikonfirmasi",
+                    "completed": "Selesai"
+                },
+                "stats": {
+                    "requested": "Permintaan perpanjangan",
+                    "requestedHint": "Penyewa yang ingin memperpanjang",
+                    "pendingConfirmation": "Menunggu konfirmasi",
+                    "pendingHint": "Perlu persetujuan admin",
+                    "confirmed": "Siap buat sewa baru",
+                    "confirmedHint": "Dikonfirmasi, sewa belum dibuat",
+                    "completed": "Selesai",
+                    "completedHint": "Sewa lanjutan sudah dibuat"
+                },
+                "status": {
+                    "not_requested": "Belum diminta",
+                    "pending_confirmation": "Menunggu konfirmasi",
+                    "confirmed": "Dikonfirmasi",
+                    "completed": "Selesai"
+                }
+            },
             "pricing": {
                 "title": "Harga",
                 "description": "Paket harga per tipe unit dan durasi.",
@@ -816,6 +856,7 @@
         "nav": {
             "group": "Akun saya",
             "leases": "Sewa saya",
+            "leaseRenewals": "Perpanjangan sewa",
             "profile": "Profil",
             "signOut": "Keluar"
         },
@@ -869,7 +910,61 @@
                 "endDate": "Tanggal selesai",
                 "duration": "Durasi",
                 "address": "Alamat",
-                "city": "Kota"
+                "city": "Kota",
+                "renewal": {
+                    "promptTitle": "Apakah Anda ingin memperpanjang sewa?",
+                    "promptDescription": "Sewa Anda untuk {unit} berakhir pada {endDate}. Beri tahu kami sebelum {deadline} jika ingin tetap tinggal.",
+                    "yesRenew": "Ya, perpanjang sewa saya",
+                    "noRenew": "Tidak, terima kasih",
+                    "submitting": "Mengirim…",
+                    "respondNow": "Respon sekarang",
+                    "requestedSuccess": "Permintaan perpanjangan terkirim. Kami akan segera meninjaunya.",
+                    "requestFailed": "Gagal mengirim permintaan perpanjangan.",
+                    "declineFailed": "Gagal menyimpan respons Anda.",
+                    "cancelRequest": "Batalkan permintaan perpanjangan",
+                    "cancelFailed": "Gagal membatalkan permintaan perpanjangan.",
+                    "cancelledSuccess": "Permintaan perpanjangan dibatalkan.",
+                    "requestedTitle": "Permintaan perpanjangan terkirim",
+                    "requestedDescription": "Kami meninjau permintaan perpanjangan Anda. Anda akan mendapat kabar sebelum {deadline}.",
+                    "confirmedTitle": "Perpanjangan dikonfirmasi",
+                    "confirmedDescription": "Perpanjangan Anda telah disetujui. Sewa baru akan segera disiapkan."
+                }
+            },
+            "leaseRenewals": {
+                "title": "Perpanjangan sewa",
+                "description": "Pantau permintaan perpanjangan Anda dan respon sebelum sewa memasuki 5 hari terakhir.",
+                "empty": "Belum ada catatan perpanjangan. Perpanjangan dibuat otomatis untuk setiap sewa.",
+                "viewLeases": "Lihat sewa saya",
+                "viewLease": "Lihat sewa",
+                "respondBy": "Respon sebelum",
+                "filters": {
+                    "all": "Semua",
+                    "active": "Aktif",
+                    "completed": "Selesai"
+                },
+                "stats": {
+                    "total": "Total perpanjangan",
+                    "actionNeeded": "Perlu respon Anda",
+                    "inProgress": "Sedang diproses"
+                },
+                "status": {
+                    "action_needed": "Perlu respon",
+                    "requested": "Permintaan terkirim",
+                    "confirmed": "Disetujui",
+                    "completed": "Selesai",
+                    "declined": "Ditolak",
+                    "window_closed": "Jendela ditutup",
+                    "not_eligible": "Tidak memenuhi syarat"
+                },
+                "statusHint": {
+                    "action_needed": "Beritahu kami jika ingin memperpanjang sebelum tanggal respon.",
+                    "requested": "Permintaan perpanjangan Anda sedang ditinjau tim properti.",
+                    "confirmed": "Perpanjangan Anda disetujui. Sewa baru akan segera disiapkan.",
+                    "completed": "Perpanjangan selesai dan sewa lanjutan telah dibuat.",
+                    "declined": "Anda memilih untuk tidak memperpanjang sewa ini.",
+                    "window_closed": "Jendela perpanjangan telah ditutup. Hubungi administrator jika masih membutuhkan bantuan.",
+                    "not_eligible": "Hanya sewa berstatus lunas yang dapat meminta perpanjangan. Selesaikan pembayaran terlebih dahulu."
+                }
             },
             "profile": {
                 "title": "Profil",

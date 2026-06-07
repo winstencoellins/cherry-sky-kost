@@ -525,6 +525,7 @@
             "units": "Units",
             "vacantSearch": "Vacant rooms",
             "leases": "Leases",
+            "leaseRenewals": "Lease renewals",
             "users": "Tenants",
             "pricing": "Pricing",
             "bookkeeping": "Bookkeeping",
@@ -763,6 +764,45 @@
                     "collected": "Collected this month"
                 }
             },
+            "leaseRenewals": {
+                "title": "Lease renewals",
+                "description": "Track tenant renewal requests, confirm renewals, and create follow-up leases.",
+                "leaseEnd": "Lease end",
+                "confirmationDeadline": "Confirm by",
+                "empty": "No renewal records match this filter.",
+                "confirm": "Confirm renewal",
+                "confirming": "Confirming…",
+                "confirmed": "Renewal confirmed.",
+                "confirmFailed": "Failed to confirm renewal.",
+                "renewalSection": "Lease renewal",
+                "viewAllRenewals": "All renewals",
+                "createRenewalLease": "Create renewal lease",
+                "viewLease": "View lease",
+                "renewalFormHint": "Creating a follow-up lease for a confirmed renewal. Unit and tenant are locked to match the current lease.",
+                "filters": {
+                    "all": "All renewals",
+                    "requested": "Tenant requested",
+                    "pendingConfirmation": "Awaiting confirmation",
+                    "confirmed": "Confirmed",
+                    "completed": "Completed"
+                },
+                "stats": {
+                    "requested": "Renewal requests",
+                    "requestedHint": "Tenants who want to renew",
+                    "pendingConfirmation": "Awaiting confirmation",
+                    "pendingHint": "Needs admin approval",
+                    "confirmed": "Ready for new lease",
+                    "confirmedHint": "Confirmed, lease not yet created",
+                    "completed": "Completed",
+                    "completedHint": "Follow-up lease created"
+                },
+                "status": {
+                    "not_requested": "No request",
+                    "pending_confirmation": "Awaiting confirmation",
+                    "confirmed": "Confirmed",
+                    "completed": "Completed"
+                }
+            },
             "pricing": {
                 "title": "Pricing",
                 "description": "Price packages per unit type and duration.",
@@ -816,6 +856,7 @@
         "nav": {
             "group": "My account",
             "leases": "My leases",
+            "leaseRenewals": "Lease renewals",
             "profile": "Profile",
             "signOut": "Logout"
         },
@@ -869,7 +910,61 @@
                 "endDate": "End date",
                 "duration": "Duration",
                 "address": "Address",
-                "city": "City"
+                "city": "City",
+                "renewal": {
+                    "promptTitle": "Would you like to renew your lease?",
+                    "promptDescription": "Your lease for {unit} ends on {endDate}. Please let us know before {deadline} if you'd like to stay.",
+                    "yesRenew": "Yes, renew my lease",
+                    "noRenew": "No thanks",
+                    "submitting": "Submitting…",
+                    "respondNow": "Respond now",
+                    "requestedSuccess": "Renewal request submitted. We'll review it shortly.",
+                    "requestFailed": "Failed to submit renewal request.",
+                    "declineFailed": "Failed to save your response.",
+                    "cancelRequest": "Cancel renewal request",
+                    "cancelFailed": "Failed to cancel renewal request.",
+                    "cancelledSuccess": "Renewal request cancelled.",
+                    "requestedTitle": "Renewal request submitted",
+                    "requestedDescription": "We're reviewing your request to renew. You'll hear back before {deadline}.",
+                    "confirmedTitle": "Renewal confirmed",
+                    "confirmedDescription": "Your renewal has been approved. A new lease will be prepared for you soon."
+                }
+            },
+            "leaseRenewals": {
+                "title": "Lease renewals",
+                "description": "Track your renewal requests and respond before your lease enters its final 5 days.",
+                "empty": "No renewal records yet. Renewals are created automatically for each lease.",
+                "viewLeases": "View my leases",
+                "viewLease": "View lease",
+                "respondBy": "Respond by",
+                "filters": {
+                    "all": "All",
+                    "active": "Active",
+                    "completed": "Completed"
+                },
+                "stats": {
+                    "total": "Total renewals",
+                    "actionNeeded": "Needs your response",
+                    "inProgress": "In progress"
+                },
+                "status": {
+                    "action_needed": "Response needed",
+                    "requested": "Request submitted",
+                    "confirmed": "Approved",
+                    "completed": "Completed",
+                    "declined": "Declined",
+                    "window_closed": "Window closed",
+                    "not_eligible": "Not eligible"
+                },
+                "statusHint": {
+                    "action_needed": "Let us know if you'd like to renew before the respond-by date.",
+                    "requested": "Your renewal request is being reviewed by the property team.",
+                    "confirmed": "Your renewal has been approved. A new lease will be prepared soon.",
+                    "completed": "Your renewal is complete and a follow-up lease has been created.",
+                    "declined": "You chose not to renew this lease.",
+                    "window_closed": "The renewal window has closed. Contact your administrator if you still need help.",
+                    "not_eligible": "Only paid leases can request renewal. Complete payment first, then return here."
+                }
             },
             "profile": {
                 "title": "Profile",

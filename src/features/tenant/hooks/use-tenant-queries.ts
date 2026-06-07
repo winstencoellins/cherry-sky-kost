@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getTenantLease, listTenantLeases } from "@/lib/api/tenant/leases";
+import { getTenantLease, listTenantLeases, updateTenantLeaseRenewal } from "@/lib/api/tenant/leases";
 import {
   changeTenantPassword,
   getTenantProfile,
@@ -22,6 +22,26 @@ export function useTenantLease(id: string, enabled = true) {
     queryFn: () => getTenantLease(id),
     enabled: enabled && !!id,
   });
+}
+
+export function useTenantLeaseMutations() {
+  const qc = useQueryClient();
+  const invalidate = () => {
+    void qc.invalidateQueries({ queryKey: tenantKeys.leases.all() });
+  };
+
+  return {
+    updateRenewal: useMutation({
+      mutationFn: ({
+        leaseId,
+        isRenewLease,
+      }: {
+        leaseId: string;
+        isRenewLease: boolean;
+      }) => updateTenantLeaseRenewal(leaseId, { isRenewLease }),
+      onSuccess: invalidate,
+    }),
+  };
 }
 
 export function useTenantProfile() {
