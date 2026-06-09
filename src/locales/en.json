@@ -11,10 +11,42 @@
     },
     "hero": {
         "title": "Find Your Dream Kost",
+        "location": "in Medan",
+        "scroll": "Scroll",
         "subtitle": "Comfortable boarding house with complete facilities in strategic locations",
         "cta": "View Our Properties",
         "learnMore": "Learn More",
         "scheduleVisit": "Dashboard"
+    },
+    "home": {
+        "properties": {
+            "eyebrow": "Featured Properties",
+            "title": "Curated Kost Rooms in Medan",
+            "description": "Browse curated boarding rooms with strategic locations and complete facilities."
+        },
+        "amenities": {
+            "badge": "Premium Living",
+            "title": "Featured Facilities",
+            "description": "Enjoy modern living with complete facilities designed for you.",
+            "items": {
+                "wifi": {
+                    "title": "High-Speed WiFi",
+                    "description": "Free fast internet on every floor and in every room."
+                },
+                "ac": {
+                    "title": "Full AC",
+                    "description": "Every room has AC for maximum comfort."
+                },
+                "security": {
+                    "title": "24/7 Security",
+                    "description": "24-hour CCTV and on-site security for your safety."
+                },
+                "parking": {
+                    "title": "Spacious Parking",
+                    "description": "Secure parking for motorcycles and cars."
+                }
+            }
+        }
     },
     "roomTypes": {
         "skyRoomAC": "Sky Room AC",
@@ -593,14 +625,23 @@
             "passwordLabel": "Password",
             "showPassword": "Show password",
             "hidePassword": "Hide password",
-            "securityNote": "Secure access restricted to authorized personnel only.",
+            "securityNote": "Authorized staff only.",
             "submit": "Sign In",
             "submitting": "Signing in…",
             "success": "Welcome back!",
             "errors": {
-                "invalid": "Invalid email or password.",
-                "forbidden": "You cannot sign in here. Tenant accounts must use the tenant portal.",
-                "deactivated": "This account has been deactivated. Contact your administrator."
+                "invalid": {
+                    "title": "Sign-in failed",
+                    "description": "Invalid email or password."
+                },
+                "forbidden": {
+                    "title": "Wrong portal",
+                    "description": "Use the tenant portal to sign in."
+                },
+                "deactivated": {
+                    "title": "Account deactivated",
+                    "description": "Contact your administrator."
+                }
             }
         },
         "crud": {
@@ -1034,14 +1075,23 @@
             "passwordLabel": "Password",
             "showPassword": "Show password",
             "hidePassword": "Hide password",
-            "securityNote": "Secure access for registered tenants only.",
+            "securityNote": "Registered tenants only.",
             "submit": "Sign In",
             "submitting": "Signing in…",
             "success": "Welcome back!",
             "errors": {
-                "invalid": "Invalid email or password.",
-                "forbidden": "You cannot sign in here. Admin accounts must use the admin login.",
-                "deactivated": "This account has been deactivated. Contact your administrator."
+                "invalid": {
+                    "title": "Sign-in failed",
+                    "description": "Invalid email or password."
+                },
+                "forbidden": {
+                    "title": "Wrong portal",
+                    "description": "Use the admin login to sign in."
+                },
+                "deactivated": {
+                    "title": "Account deactivated",
+                    "description": "Contact your administrator."
+                }
             }
         },
         "common": {

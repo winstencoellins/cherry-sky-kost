@@ -8,7 +8,6 @@
 import { useState } from 'react';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
-import { BottomNav } from './BottomNav';
 
 interface AppLayoutProps {
     children: React.ReactNode;
@@ -26,12 +25,9 @@ export function AppLayout({ children }: AppLayoutProps) {
             <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
 
             {/* Main Content */}
-            <main className="flex-1 pb-28 md:pb-0">
+            <main className="flex-1">
                 {children}
             </main>
-
-            {/* Bottom Navigation (Mobile) */}
-            <BottomNav />
         </div>
     );
 }

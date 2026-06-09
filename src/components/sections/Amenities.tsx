@@ -7,35 +7,20 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { Icon } from '@/components/shared/Icon';
 
+const amenityIds = ['wifi', 'ac', 'security', 'parking'] as const;
+
+const amenityIcons: Record<(typeof amenityIds)[number], string> = {
+    wifi: 'wifi',
+    ac: 'ac_unit',
+    security: 'security',
+    parking: 'local_parking',
+};
+
 export function Amenities() {
-    const amenities = [
-        {
-            id: 'wifi',
-            icon: 'wifi',
-            title: 'High-Speed WiFi',
-            description: 'Internet cepat gratis di setiap lantai dan kamar.',
-        },
-        {
-            id: 'ac',
-            icon: 'ac_unit',
-            title: 'Full AC',
-            description: 'Setiap kamar dilengkapi AC untuk kenyamanan maksimal.',
-        },
-        {
-            id: 'security',
-            icon: 'security',
-            title: 'Keamanan 24/7',
-            description: 'CCTV 24 jam dan penjaga kost untuk keamanan Anda.',
-        },
-        {
-            id: 'parking',
-            icon: 'local_parking',
-            title: 'Parkir Luas',
-            description: 'Area parkir aman untuk motor dan mobil penghuni.',
-        },
-    ];
+    const t = useTranslations('home.amenities');
 
     const container = {
         hidden: { opacity: 0 },
@@ -70,7 +55,7 @@ export function Amenities() {
                         className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#e3e2e0] bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#6f4627]"
                     >
                         <Icon name="star" size={14} filled />
-                        <span>Premium Living</span>
+                        <span>{t('badge')}</span>
                     </motion.div>
 
                     <motion.h2
@@ -79,7 +64,7 @@ export function Amenities() {
                         viewport={{ once: true }}
                         className="mb-4 text-3xl font-semibold tracking-tight text-[#1a1c1a] lg:text-4xl"
                     >
-                        Fasilitas Unggulan
+                        {t('title')}
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -87,8 +72,7 @@ export function Amenities() {
                         viewport={{ once: true }}
                         className="mx-auto max-w-2xl text-base font-normal leading-relaxed text-[#51443c]"
                     >
-                        Nikmati kenyamanan hunian modern dengan fasilitas lengkap yang kami sediakan
-                        khusus untuk Anda.
+                        {t('description')}
                     </motion.p>
                 </div>
 
@@ -99,22 +83,22 @@ export function Amenities() {
                     viewport={{ once: true, margin: "-50px" }}
                     className="grid gap-5 sm:grid-cols-2 md:grid-cols-4"
                 >
-                    {amenities.map((amenity) => (
+                    {amenityIds.map((id) => (
                         <motion.div
-                            key={amenity.id}
+                            key={id}
                             variants={item}
                             whileHover={{ y: -5 }}
                             className="group flex flex-col items-center gap-5 rounded-2xl border border-[#e3e2e0] bg-white/90 p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#d0b59b] hover:shadow-md"
                         >
                             <div className="rounded-2xl bg-[#f5e4d4]/60 p-3 text-[#6f4627] transition-colors duration-300 group-hover:bg-[#f0d8bf]">
-                                <Icon name={amenity.icon} size={32} className="!text-3xl" />
+                                <Icon name={amenityIcons[id]} size={32} className="!text-3xl" />
                             </div>
                             <div className="text-center space-y-2">
                                 <h3 className="text-base font-semibold text-[#1a1c1a]">
-                                    {amenity.title}
+                                    {t(`items.${id}.title`)}
                                 </h3>
                                 <p className="text-sm font-normal leading-relaxed text-[#83746b]">
-                                    {amenity.description}
+                                    {t(`items.${id}.description`)}
                                 </p>
                             </div>
                         </motion.div>

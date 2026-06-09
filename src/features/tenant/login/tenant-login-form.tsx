@@ -43,6 +43,17 @@ const inputClassName = cn(
   "focus:border-[#6f4627] focus:outline-none focus:ring-2 focus:ring-[#6f4627]/25",
 );
 
+type LoginErrorKey = "invalid" | "forbidden" | "deactivated";
+
+function showLoginError(
+  t: ReturnType<typeof useTranslations<"tenant.login">>,
+  key: LoginErrorKey,
+) {
+  toast.error(t(`errors.${key}.title`), {
+    description: t(`errors.${key}.description`),
+  });
+}
+
 export function TenantLoginForm() {
   const t = useTranslations("tenant.login");
   const router = useRouter();
@@ -53,13 +64,13 @@ export function TenantLoginForm() {
 
   useEffect(() => {
     if (forbiddenFromUrl) {
-      toast.error(t("errors.forbidden"));
+      showLoginError(t, "forbidden");
     }
   }, [forbiddenFromUrl, t]);
 
   useEffect(() => {
     if (deactivatedFromUrl) {
-      toast.error(t("errors.deactivated"));
+      showLoginError(t, "deactivated");
     }
   }, [deactivatedFromUrl, t]);
 
@@ -71,7 +82,7 @@ export function TenantLoginForm() {
     onSubmit: async ({ value }) => {
       const parsed = adminLoginSchema.safeParse(value);
       if (!parsed.success) {
-        toast.error(t("errors.invalid"));
+        showLoginError(t, "invalid");
         return;
       }
 
@@ -81,10 +92,9 @@ export function TenantLoginForm() {
       });
 
       if (result.error) {
-        toast.error(
-          isDeactivatedAuthError(result.error)
-            ? t("errors.deactivated")
-            : t("errors.invalid"),
+        showLoginError(
+          t,
+          isDeactivatedAuthError(result.error) ? "deactivated" : "invalid",
         );
         return;
       }
@@ -113,9 +123,7 @@ export function TenantLoginForm() {
 
       if (!access.ok || !role) {
         await authClient.signOut();
-        toast.error(
-          access.isStaff ? t("errors.forbidden") : t("errors.invalid"),
-        );
+        showLoginError(t, access.isStaff ? "forbidden" : "invalid");
         return;
       }
 

@@ -11,10 +11,42 @@
     },
     "hero": {
         "title": "Temukan Kost Impian Anda",
+        "location": "di Medan",
+        "scroll": "Gulir",
         "subtitle": "Kost nyaman dengan fasilitas lengkap di lokasi strategis",
         "cta": "Lihat Kost Kami",
         "learnMore": "Pelajari Lebih Lanjut",
         "scheduleVisit": "Dashboard"
+    },
+    "home": {
+        "properties": {
+            "eyebrow": "Properti Pilihan",
+            "title": "Kamar Kost Pilihan di Medan",
+            "description": "Telusuri kamar kost pilihan dengan lokasi strategis dan fasilitas lengkap."
+        },
+        "amenities": {
+            "badge": "Premium Living",
+            "title": "Fasilitas Unggulan",
+            "description": "Nikmati kenyamanan hunian modern dengan fasilitas lengkap untuk Anda.",
+            "items": {
+                "wifi": {
+                    "title": "WiFi Cepat",
+                    "description": "Internet cepat gratis di setiap lantai dan kamar."
+                },
+                "ac": {
+                    "title": "AC Penuh",
+                    "description": "Setiap kamar dilengkapi AC untuk kenyamanan maksimal."
+                },
+                "security": {
+                    "title": "Keamanan 24/7",
+                    "description": "CCTV 24 jam dan penjaga kost untuk keamanan Anda."
+                },
+                "parking": {
+                    "title": "Parkir Luas",
+                    "description": "Area parkir aman untuk motor dan mobil penghuni."
+                }
+            }
+        }
     },
     "roomTypes": {
         "skyRoomAC": "Sky Room AC",
@@ -593,14 +625,23 @@
             "passwordLabel": "Kata Sandi",
             "showPassword": "Tampilkan kata sandi",
             "hidePassword": "Sembunyikan kata sandi",
-            "securityNote": "Akses aman hanya untuk personel yang berwenang.",
+            "securityNote": "Hanya untuk staf berwenang.",
             "submit": "Masuk",
             "submitting": "Memproses…",
             "success": "Selamat datang kembali!",
             "errors": {
-                "invalid": "Email atau kata sandi salah.",
-                "forbidden": "Anda tidak dapat masuk di sini. Akun penyewa harus menggunakan portal penyewa.",
-                "deactivated": "Akun ini telah dinonaktifkan. Hubungi administrator."
+                "invalid": {
+                    "title": "Gagal masuk",
+                    "description": "Email atau kata sandi salah."
+                },
+                "forbidden": {
+                    "title": "Portal salah",
+                    "description": "Gunakan portal penyewa untuk masuk."
+                },
+                "deactivated": {
+                    "title": "Akun dinonaktifkan",
+                    "description": "Hubungi administrator Anda."
+                }
             }
         },
         "crud": {
@@ -1034,14 +1075,23 @@
             "passwordLabel": "Kata Sandi",
             "showPassword": "Tampilkan kata sandi",
             "hidePassword": "Sembunyikan kata sandi",
-            "securityNote": "Akses aman hanya untuk penyewa terdaftar.",
+            "securityNote": "Hanya untuk penyewa terdaftar.",
             "submit": "Masuk",
             "submitting": "Sedang masuk…",
             "success": "Selamat datang kembali!",
             "errors": {
-                "invalid": "Email atau kata sandi tidak valid.",
-                "forbidden": "Anda tidak dapat masuk di sini. Akun admin harus menggunakan login admin.",
-                "deactivated": "Akun ini telah dinonaktifkan. Hubungi administrator."
+                "invalid": {
+                    "title": "Gagal masuk",
+                    "description": "Email atau kata sandi tidak valid."
+                },
+                "forbidden": {
+                    "title": "Portal salah",
+                    "description": "Gunakan login admin untuk masuk."
+                },
+                "deactivated": {
+                    "title": "Akun dinonaktifkan",
+                    "description": "Hubungi administrator Anda."
+                }
             }
         },
         "common": {

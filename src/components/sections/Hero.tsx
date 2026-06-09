@@ -40,7 +40,7 @@ export function Hero() {
                 className="absolute bottom-10 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 text-[#faf9f6]/80 md:flex"
             >
                 <span className="text-xs font-semibold uppercase tracking-[0.2em]">
-                    Scroll
+                    {t('hero.scroll')}
                 </span>
                 <motion.div
                     animate={{ y: [0, 8, 0] }}
@@ -70,7 +70,7 @@ export function Hero() {
                     >
                         {t('hero.title')}
                         <span className="mt-2 block bg-gradient-to-r from-[#ffedd5] via-[#f5e4d4] to-[#e3c9aa] bg-clip-text text-transparent drop-shadow-lg">
-                            di Medan
+                            {t('hero.location')}
                         </span>
                     </motion.h1>
                 </div>

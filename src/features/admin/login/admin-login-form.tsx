@@ -39,6 +39,17 @@ const inputClassName = cn(
   "focus:border-[#6f4627] focus:outline-none focus:ring-2 focus:ring-[#6f4627]/25",
 );
 
+type LoginErrorKey = "invalid" | "forbidden" | "deactivated";
+
+function showLoginError(
+  t: ReturnType<typeof useTranslations<"admin.login">>,
+  key: LoginErrorKey,
+) {
+  toast.error(t(`errors.${key}.title`), {
+    description: t(`errors.${key}.description`),
+  });
+}
+
 export function AdminLoginForm() {
   const t = useTranslations("admin.login");
   const router = useRouter();
@@ -49,13 +60,13 @@ export function AdminLoginForm() {
 
   useEffect(() => {
     if (forbiddenFromUrl) {
-      toast.error(t("errors.forbidden"));
+      showLoginError(t, "forbidden");
     }
   }, [forbiddenFromUrl, t]);
 
   useEffect(() => {
     if (deactivatedFromUrl) {
-      toast.error(t("errors.deactivated"));
+      showLoginError(t, "deactivated");
     }
   }, [deactivatedFromUrl, t]);
 
@@ -67,7 +78,7 @@ export function AdminLoginForm() {
     onSubmit: async ({ value }) => {
       const parsed = adminLoginSchema.safeParse(value);
       if (!parsed.success) {
-        toast.error(t("errors.invalid"));
+        showLoginError(t, "invalid");
         return;
       }
 
@@ -77,10 +88,9 @@ export function AdminLoginForm() {
       });
 
       if (result.error) {
-        toast.error(
-          isDeactivatedAuthError(result.error)
-            ? t("errors.deactivated")
-            : t("errors.invalid"),
+        showLoginError(
+          t,
+          isDeactivatedAuthError(result.error) ? "deactivated" : "invalid",
         );
         return;
       }
@@ -104,9 +114,7 @@ export function AdminLoginForm() {
 
       if (!access.ok || !role) {
         await authClient.signOut();
-        toast.error(
-          access.isTenant ? t("errors.forbidden") : t("errors.invalid"),
-        );
+        showLoginError(t, access.isTenant ? "forbidden" : "invalid");
         return;
       }
 

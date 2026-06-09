@@ -5,6 +5,7 @@
 
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
@@ -14,6 +15,7 @@ import { DEFAULT_SEARCH_FILTERS } from '@/lib/api/public/search-contract';
 import { useKosts } from '@/lib/hooks/use-kost-data';
 
 export default function HomePage() {
+  const t = useTranslations('home.properties');
   const { data: kosts, isLoading } = useKosts();
 
   return (
@@ -30,17 +32,16 @@ export default function HomePage() {
         <div className="flex w-full max-w-[1080px] flex-col gap-10">
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#83746b]">
-              Properti Pilihan
+              {t('eyebrow')}
             </p>
             <h2
               id="featured-properties-heading"
               className="text-2xl font-semibold tracking-tight text-[#1a1c1a] md:text-3xl"
             >
-              Kamar Kost Pilihan di Medan
+              {t('title')}
             </h2>
             <p className="max-w-2xl text-sm leading-relaxed text-[#83746b]">
-              Telusuri kamar kost yang sudah kami kurasi dengan lokasi strategis dan fasilitas
-              lengkap.
+              {t('description')}
             </p>
           </div>
 
