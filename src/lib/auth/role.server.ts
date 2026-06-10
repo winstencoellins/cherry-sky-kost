@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
-import { env } from "@/env";
+import { getServerApiBaseUrl } from "@/lib/api/base-url";
+import { getRequestSiteOrigin } from "@/lib/api/request-origin";
 import { normalizeRole } from "@/lib/auth/role";
 
 export async function fetchProfileRoleFromCookies(): Promise<string | undefined> {
@@ -7,7 +8,10 @@ export async function fetchProfileRoleFromCookies(): Promise<string | undefined>
   const cookieHeader = cookieStore.toString();
   if (!cookieHeader) return undefined;
 
-  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/profile`, {
+  const siteOrigin = await getRequestSiteOrigin();
+  const apiBaseUrl = getServerApiBaseUrl(siteOrigin);
+
+  const response = await fetch(`${apiBaseUrl}/profile`, {
     headers: { cookie: cookieHeader },
     cache: "no-store",
   });

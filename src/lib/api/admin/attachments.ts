@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { getClientApiBaseUrl } from "@/lib/api/base-url";
 import { apiFetch } from "@/lib/api/client";
 import { parseApiError } from "@/lib/api/errors";
 import type {
@@ -17,7 +17,7 @@ async function uploadAttachment(
   form.set(idField, id);
   form.set("file", file);
 
-  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}${path}`, {
+  const response = await fetch(`${getClientApiBaseUrl()}${path}`, {
     method: "POST",
     credentials: "include",
     body: form,

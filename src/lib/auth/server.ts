@@ -1,5 +1,6 @@
 import { cookies, headers } from "next/headers";
-import { env } from "@/env";
+import { getServerApiBaseUrl } from "@/lib/api/base-url";
+import { getRequestSiteOrigin } from "@/lib/api/request-origin";
 import type { User } from "@/lib/types/auth";
 
 export interface AuthSession {
@@ -15,15 +16,21 @@ interface GetSessionResponse {
   session: AuthSession["session"] | null;
 }
 
+async function resolveAuthBaseUrl(): Promise<string> {
+  const siteOrigin = await getRequestSiteOrigin();
+  return getServerApiBaseUrl(siteOrigin);
+}
+
 export async function getSession(): Promise<AuthSession | null> {
   const cookieStore = await cookies();
   const headerStore = await headers();
   const cookieHeader = cookieStore.toString();
+  const authBaseUrl = await resolveAuthBaseUrl();
 
   let response: Response;
 
   try {
-    response = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/get-session`, {
+    response = await fetch(`${authBaseUrl}/auth/get-session`, {
       headers: {
         cookie: cookieHeader,
         "user-agent": headerStore.get("user-agent") ?? "",
@@ -54,8 +61,6 @@ export async function getSession(): Promise<AuthSession | null> {
   };
 }
 
-const SESSION_COOKIE = "better-auth.session_token";
-
 /**
  * Invalidate the current session on the API.
  *
@@ -67,9 +72,10 @@ const SESSION_COOKIE = "better-auth.session_token";
 export async function signOutSession(): Promise<void> {
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
+  const authBaseUrl = await resolveAuthBaseUrl();
 
   try {
-    await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/sign-out`, {
+    await fetch(`${authBaseUrl}/auth/sign-out`, {
       method: "POST",
       headers: cookieHeader ? { cookie: cookieHeader } : undefined,
       cache: "no-store",

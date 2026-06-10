@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { getClientApiBaseUrl } from "@/lib/api/base-url";
 import { ApiError, networkError, parseApiError } from "@/lib/api/errors";
 import { handleDeactivatedApiError } from "@/lib/auth/handle-api-auth-error";
 
@@ -12,7 +12,8 @@ export async function apiFetch<T>(
 ): Promise<T> {
   const { body, headers, ...rest } = options;
 
-  const url = `${env.NEXT_PUBLIC_API_URL}${path.startsWith("/") ? path : `/${path}`}`;
+  const baseUrl = getClientApiBaseUrl();
+  const url = `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`;
 
   let response: Response;
 
