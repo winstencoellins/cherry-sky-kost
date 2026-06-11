@@ -1,35 +1,34 @@
 import { env } from "@/env";
 
-function originsDiffer(a: string, b: string): boolean {
-  try {
-    return new URL(a).origin !== new URL(b).origin;
-  } catch {
-    return false;
-  }
+const LOCAL_API_URL = "http://localhost:8000";
+
+/**
+ * Backend URL for server-side code (proxy route, SSR session checks).
+ *
+ * Resolution order:
+ * 1. API_URL — server-only, available at runtime on Vercel (no rebuild needed)
+ * 2. NEXT_PUBLIC_API_URL — build-time fallback for local dev / existing deploys
+ * 3. localhost:8000 — local default
+ */
+export function getServerApiUrl(): string {
+  return (env.API_URL ?? env.NEXT_PUBLIC_API_URL ?? LOCAL_API_URL).replace(
+    /\/$/,
+    "",
+  );
 }
 
 /**
- * Client-side base URL for all API and auth traffic.
+ * Base URL for browser-side API and auth traffic.
  *
- * When the frontend and backend are on different origins (production: Vercel +
- * Railway) every client-side request goes through the same-origin proxy at
- * /api/backend so that Set-Cookie responses land on the Vercel domain.
- * The Next.js server can then read the session cookie from its own cookieStore
- * and forward it directly to Railway for SSR guard checks.
- *
- * In local development both servers are on localhost so the proxy is still used
- * (ports differ → origins differ), keeping dev/prod parity.
+ * Always routes through the same-origin /api/backend proxy so session cookies
+ * stay on the frontend domain. Does not read NEXT_PUBLIC_API_URL — that avoids
+ * production builds silently falling back to localhost when the public env var
+ * was not set at build time.
  */
 export function getClientApiBaseUrl(): string {
   if (typeof window === "undefined") {
-    // Server-side evaluation at module load — actual requests never happen here;
-    // return the real API URL so any accidental server-side use goes direct.
-    return env.NEXT_PUBLIC_API_URL;
+    return getServerApiUrl();
   }
 
-  if (originsDiffer(env.NEXT_PUBLIC_API_URL, window.location.origin)) {
-    return `${window.location.origin}/api/backend`;
-  }
-
-  return env.NEXT_PUBLIC_API_URL;
+  return `${window.location.origin}/api/backend`;
 }

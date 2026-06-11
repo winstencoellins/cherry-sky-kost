@@ -1,5 +1,5 @@
 import { cookies, headers } from "next/headers";
-import { env } from "@/env";
+import { getServerApiUrl } from "@/lib/api/base-url";
 import type { User } from "@/lib/types/auth";
 
 export interface AuthSession {
@@ -32,7 +32,7 @@ export async function getSession(): Promise<AuthSession | null> {
   let response: Response;
 
   try {
-    response = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/get-session`, {
+    response = await fetch(`${getServerApiUrl()}/auth/get-session`, {
       headers: {
         cookie: cookieHeader,
         "user-agent": headerStore.get("user-agent") ?? "",
@@ -76,7 +76,7 @@ export async function signOutSession(): Promise<void> {
   const cookieHeader = cookieStore.toString();
 
   try {
-    await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/sign-out`, {
+    await fetch(`${getServerApiUrl()}/auth/sign-out`, {
       method: "POST",
       headers: cookieHeader ? { cookie: cookieHeader } : undefined,
       cache: "no-store",

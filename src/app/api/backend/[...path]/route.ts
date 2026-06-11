@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { getServerApiUrl } from "@/lib/api/base-url";
 
 /**
  * Same-origin API proxy — routes /api/backend/** to the Railway backend.
@@ -11,8 +11,6 @@ import { env } from "@/env";
  * rewrites Set-Cookie so the session cookie is stored on the Vercel domain, where
  * the Next.js server can read it and forward it to Railway for SSR session checks.
  */
-
-const BACKEND_BASE = env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
 
 /**
  * Strip the Domain attribute and normalise SameSite so the browser accepts the
@@ -42,7 +40,7 @@ function rewriteSetCookie(cookie: string, isHttps: boolean): string {
 async function proxyRequest(request: Request, pathSegments: string[]) {
   const incomingUrl = new URL(request.url);
   const targetPath = pathSegments.join("/");
-  const target = new URL(`${BACKEND_BASE}/${targetPath}`);
+  const target = new URL(`${getServerApiUrl()}/${targetPath}`);
   target.search = incomingUrl.search;
 
   // Copy headers, dropping hop-by-hop headers that must not be forwarded.
