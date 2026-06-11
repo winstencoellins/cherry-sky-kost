@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
-import { getServerApiBaseUrl } from "@/lib/api/base-url";
-import { getRequestSiteOrigin } from "@/lib/api/request-origin";
+import { env } from "@/env";
 import { normalizeRole } from "@/lib/auth/role";
 
 export async function fetchProfileRoleFromCookies(): Promise<string | undefined> {
@@ -8,10 +7,10 @@ export async function fetchProfileRoleFromCookies(): Promise<string | undefined>
   const cookieHeader = cookieStore.toString();
   if (!cookieHeader) return undefined;
 
-  const siteOrigin = await getRequestSiteOrigin();
-  const apiBaseUrl = getServerApiBaseUrl(siteOrigin);
-
-  const response = await fetch(`${apiBaseUrl}/profile`, {
+  // Call Railway directly — the cookie is already on the Vercel domain after the
+  // client-side proxy login, so cookieStore holds the session token and we can
+  // forward it straight without a loopback through /api/backend.
+  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/profile`, {
     headers: { cookie: cookieHeader },
     cache: "no-store",
   });

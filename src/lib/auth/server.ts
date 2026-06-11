@@ -1,6 +1,5 @@
 import { cookies, headers } from "next/headers";
-import { getServerApiBaseUrl } from "@/lib/api/base-url";
-import { getRequestSiteOrigin } from "@/lib/api/request-origin";
+import { env } from "@/env";
 import type { User } from "@/lib/types/auth";
 
 export interface AuthSession {
@@ -16,21 +15,24 @@ interface GetSessionResponse {
   session: AuthSession["session"] | null;
 }
 
-async function resolveAuthBaseUrl(): Promise<string> {
-  const siteOrigin = await getRequestSiteOrigin();
-  return getServerApiBaseUrl(siteOrigin);
-}
-
+/**
+ * Server-side session fetch.
+ *
+ * Calls Railway DIRECTLY from the Next.js server process — no loopback through
+ * the /api/backend proxy. The proxy is only needed client-side (to store the
+ * cookie on the Vercel origin). Once the cookie is on the Vercel domain the
+ * Next.js cookieStore already holds the session token, so we can forward it
+ * straight to Railway for validation.
+ */
 export async function getSession(): Promise<AuthSession | null> {
   const cookieStore = await cookies();
   const headerStore = await headers();
   const cookieHeader = cookieStore.toString();
-  const authBaseUrl = await resolveAuthBaseUrl();
 
   let response: Response;
 
   try {
-    response = await fetch(`${authBaseUrl}/auth/get-session`, {
+    response = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/get-session`, {
       headers: {
         cookie: cookieHeader,
         "user-agent": headerStore.get("user-agent") ?? "",
@@ -72,10 +74,9 @@ export async function getSession(): Promise<AuthSession | null> {
 export async function signOutSession(): Promise<void> {
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
-  const authBaseUrl = await resolveAuthBaseUrl();
 
   try {
-    await fetch(`${authBaseUrl}/auth/sign-out`, {
+    await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/sign-out`, {
       method: "POST",
       headers: cookieHeader ? { cookie: cookieHeader } : undefined,
       cache: "no-store",

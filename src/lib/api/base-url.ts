@@ -1,36 +1,34 @@
 import { env } from "@/env";
 
-function originsDiffer(apiUrl: string, siteOrigin: string): boolean {
+function originsDiffer(a: string, b: string): boolean {
   try {
-    return new URL(apiUrl).origin !== new URL(siteOrigin).origin;
+    return new URL(a).origin !== new URL(b).origin;
   } catch {
     return false;
   }
 }
 
-/** Whether API requests should be routed through the Next.js same-origin proxy. */
-export function shouldUseApiProxy(siteOrigin: string | undefined): boolean {
-  if (!siteOrigin) return false;
-  return originsDiffer(env.NEXT_PUBLIC_API_URL, siteOrigin);
-}
-
-/** Client-side API/auth base URL (same-origin proxy when API is on another host). */
+/**
+ * Client-side base URL for all API and auth traffic.
+ *
+ * When the frontend and backend are on different origins (production: Vercel +
+ * Railway) every client-side request goes through the same-origin proxy at
+ * /api/backend so that Set-Cookie responses land on the Vercel domain.
+ * The Next.js server can then read the session cookie from its own cookieStore
+ * and forward it directly to Railway for SSR guard checks.
+ *
+ * In local development both servers are on localhost so the proxy is still used
+ * (ports differ → origins differ), keeping dev/prod parity.
+ */
 export function getClientApiBaseUrl(): string {
   if (typeof window === "undefined") {
+    // Server-side evaluation at module load — actual requests never happen here;
+    // return the real API URL so any accidental server-side use goes direct.
     return env.NEXT_PUBLIC_API_URL;
   }
 
-  if (shouldUseApiProxy(window.location.origin)) {
+  if (originsDiffer(env.NEXT_PUBLIC_API_URL, window.location.origin)) {
     return `${window.location.origin}/api/backend`;
-  }
-
-  return env.NEXT_PUBLIC_API_URL;
-}
-
-/** Server-side API/auth base URL for the current request. */
-export function getServerApiBaseUrl(siteOrigin: string | undefined): string {
-  if (siteOrigin && shouldUseApiProxy(siteOrigin)) {
-    return `${siteOrigin}/api/backend`;
   }
 
   return env.NEXT_PUBLIC_API_URL;

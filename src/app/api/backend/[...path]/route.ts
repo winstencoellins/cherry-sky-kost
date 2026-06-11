@@ -1,49 +1,79 @@
 import { env } from "@/env";
 
-function rewriteSetCookie(cookie: string, isSecure: boolean): string {
-  let rewritten = cookie.replace(/;\s*Domain=[^;]*/gi, "");
+/**
+ * Same-origin API proxy — routes /api/backend/** to the Railway backend.
+ *
+ * WHY: In production the Next.js frontend (Vercel) and the API (Railway) live on
+ * different origins. Browsers won't share cookies across origins, so a session
+ * cookie set by Railway would never be sent back to the Vercel SSR process.
+ *
+ * FIX: Client-side auth and API calls go through this proxy instead. The proxy
+ * rewrites Set-Cookie so the session cookie is stored on the Vercel domain, where
+ * the Next.js server can read it and forward it to Railway for SSR session checks.
+ */
 
-  // First-party cookies through the proxy can use Lax instead of None.
-  rewritten = rewritten.replace(/;\s*SameSite=None/gi, "; SameSite=Lax");
+const BACKEND_BASE = env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
 
-  if (!isSecure) {
-    rewritten = rewritten
+/**
+ * Strip the Domain attribute and normalise SameSite so the browser accepts the
+ * cookie when it is served from the Vercel origin rather than the API origin.
+ */
+function rewriteSetCookie(cookie: string, isHttps: boolean): string {
+  // Remove Domain attribute entirely — the browser will bind the cookie to the
+  // responding origin (Vercel) which is exactly what we want.
+  let out = cookie.replace(/;\s*Domain=[^;]*/gi, "");
+
+  // SameSite=None is only needed for genuine cross-origin cookies. Now that the
+  // cookie is first-party (same Vercel origin) Lax is both correct and stricter.
+  out = out.replace(/;\s*SameSite=None/gi, "; SameSite=Lax");
+
+  // In HTTP dev environments the Secure flag and the __Secure- prefix are not
+  // allowed. Strip them so local dev keeps working.
+  if (!isHttps) {
+    out = out
       .replace(/;\s*Secure/gi, "")
       .replace(/^__Secure-/i, "")
       .replace(/^__Host-/i, "");
   }
 
-  return rewritten;
+  return out;
 }
 
 async function proxyRequest(request: Request, pathSegments: string[]) {
   const incomingUrl = new URL(request.url);
   const targetPath = pathSegments.join("/");
-  const target = new URL(
-    `${env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}/${targetPath}`,
-  );
+  const target = new URL(`${BACKEND_BASE}/${targetPath}`);
   target.search = incomingUrl.search;
 
-  const headers = new Headers(request.headers);
-  headers.delete("host");
-  headers.delete("connection");
+  // Copy headers, dropping hop-by-hop headers that must not be forwarded.
+  const forwardHeaders = new Headers(request.headers);
+  for (const h of ["host", "connection", "transfer-encoding", "te"]) {
+    forwardHeaders.delete(h);
+  }
 
   const hasBody =
     request.method !== "GET" &&
     request.method !== "HEAD" &&
     request.method !== "OPTIONS";
 
-  const response = await fetch(target, {
+  // Buffer the body rather than streaming — Vercel's Node.js serverless runtime
+  // does not reliably support streaming request bodies (duplex:"half").
+  let body: string | undefined;
+  if (hasBody) {
+    body = await request.text();
+  }
+
+  const upstream = await fetch(target, {
     method: request.method,
-    headers,
-    body: hasBody ? request.body : undefined,
-    // @ts-expect-error duplex is required for streaming request bodies in Node fetch
-    duplex: hasBody ? "half" : undefined,
+    headers: forwardHeaders,
+    body,
     redirect: "manual",
   });
 
-  const responseHeaders = new Headers(response.headers);
-  const isSecure = incomingUrl.protocol === "https:";
+  const responseHeaders = new Headers(upstream.headers);
+  const isHttps = incomingUrl.protocol === "https:";
+
+  // Rewrite every Set-Cookie header so the cookie lands on the Vercel domain.
   const setCookies =
     typeof responseHeaders.getSetCookie === "function"
       ? responseHeaders.getSetCookie()
@@ -51,18 +81,19 @@ async function proxyRequest(request: Request, pathSegments: string[]) {
 
   if (setCookies.length > 0) {
     responseHeaders.delete("set-cookie");
-    for (const cookie of setCookies) {
-      responseHeaders.append("set-cookie", rewriteSetCookie(cookie, isSecure));
+    for (const c of setCookies) {
+      responseHeaders.append("set-cookie", rewriteSetCookie(c, isHttps));
     }
   }
 
-  // Avoid sending a mismatched CORS origin from the upstream API.
+  // Remove the upstream CORS headers — the browser sees this response as
+  // same-origin, so Vercel's own CORS policy applies instead.
   responseHeaders.delete("access-control-allow-origin");
   responseHeaders.delete("access-control-allow-credentials");
 
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
+  return new Response(upstream.body, {
+    status: upstream.status,
+    statusText: upstream.statusText,
     headers: responseHeaders,
   });
 }
