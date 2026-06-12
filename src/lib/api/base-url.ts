@@ -32,3 +32,12 @@ export function getClientApiBaseUrl(): string {
 
   return `${window.location.origin}/api/backend`;
 }
+
+/** Better Auth is mounted at /auth on the API — client calls must include that prefix. */
+export function getClientAuthBaseUrl(): string {
+  if (typeof window === "undefined") {
+    return `${getServerApiUrl()}/auth`;
+  }
+
+  return `${window.location.origin}/api/backend/auth`;
+}

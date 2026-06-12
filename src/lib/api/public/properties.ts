@@ -46,23 +46,62 @@ export interface PublicPropertyResponse {
   data: PublicProperty;
 }
 
-export async function listPublicProperties(): Promise<PublicPropertiesResponse> {
+function unwrapList<T>(payload: { data: T[] } | T[] | null | undefined): T[] {
+  if (!payload) return [];
+  if (Array.isArray(payload)) return payload;
+  return payload.data ?? [];
+}
+
+function unwrapItem<T>(payload: { data: T } | T | null | undefined): T | null {
+  if (!payload) return null;
+  if (
+    typeof payload === "object" &&
+    "data" in payload &&
+    payload.data != null &&
+    !Array.isArray(payload.data)
+  ) {
+    return payload.data as T;
+  }
+  return payload as T;
+}
+
+export async function listPublicProperties(): Promise<PublicProperty[]> {
   try {
-    return await apiFetch<PublicPropertiesResponse>("/public/properties");
+    const res = await apiFetch<PublicPropertiesResponse | PublicProperty[]>(
+      "/public/properties",
+    );
+    return unwrapList(res);
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) {
-      return apiFetch<PublicPropertiesResponse>("/properties");
+      const fallback = await apiFetch<PublicPropertiesResponse | PublicProperty[]>(
+        "/properties",
+      );
+      return unwrapList(fallback);
     }
     throw error;
   }
 }
 
-export async function getPublicProperty(id: string): Promise<PublicPropertyResponse> {
+export async function getPublicProperty(id: string): Promise<PublicProperty> {
   try {
-    return await apiFetch<PublicPropertyResponse>(`/public/properties/${id}`);
+    const res = await apiFetch<PublicPropertyResponse | PublicProperty>(
+      `/public/properties/${id}`,
+    );
+    const property = unwrapItem(res);
+    if (!property) {
+      throw new ApiError("NOT_FOUND", "Property not found", 404);
+    }
+    return property;
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) {
-      return apiFetch<PublicPropertyResponse>(`/properties/${id}`);
+      const fallback = await apiFetch<PublicPropertyResponse | PublicProperty>(
+        `/properties/${id}`,
+      );
+      const property = unwrapItem(fallback);
+      if (!property) {
+        throw new ApiError("NOT_FOUND", "Property not found", 404);
+      }
+      return property;
     }
     throw error;
   }

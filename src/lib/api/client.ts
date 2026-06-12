@@ -31,14 +31,29 @@ export async function apiFetch<T>(
     throw networkError();
   }
 
-  const contentType = response.headers.get("content-type");
-  const isJson = contentType?.includes("application/json");
-  const payload = isJson ? await response.json().catch(() => null) : null;
+  const contentType = response.headers.get("content-type") ?? "";
+  const isJson = contentType.includes("application/json");
+
+  let payload: unknown = null;
+  if (isJson) {
+    const text = await response.text();
+    if (text) {
+      try {
+        payload = JSON.parse(text) as unknown;
+      } catch {
+        payload = null;
+      }
+    }
+  }
 
   if (!response.ok) {
     const error = parseApiError(response.status, payload);
     void handleDeactivatedApiError(error);
     throw error;
+  }
+
+  if (isJson && payload === null) {
+    throw parseApiError(response.status, null, "Invalid JSON response");
   }
 
   return payload as T;

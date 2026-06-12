@@ -35,7 +35,7 @@ export function SearchFilters({ filters, onFiltersChange, onReset }: SearchFilte
         staleTime: 5 * 60 * 1000,
     });
 
-    const properties = propertiesQuery.data?.data ?? [];
+    const properties = propertiesQuery.data ?? [];
 
     useEffect(() => {
         setDraftLocation(filters.location ?? '');

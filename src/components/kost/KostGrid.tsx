@@ -18,9 +18,10 @@ interface KostGridProps {
     kosts: Kost[];
     filters: SearchFilters;
     isLoading?: boolean;
+    error?: Error | null;
 }
 
-export function KostGrid({ kosts, isLoading }: KostGridProps) {
+export function KostGrid({ kosts, isLoading, error }: KostGridProps) {
     const t = useTranslations();
 
     const filteredKosts = kosts;
@@ -35,6 +36,30 @@ export function KostGrid({ kosts, isLoading }: KostGridProps) {
                     />
                 ))}
             </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="col-span-full flex flex-col items-center justify-center px-6 py-20"
+            >
+                <div className="max-w-md text-center">
+                    <Icon
+                        name="error_outline"
+                        size={64}
+                        className="mx-auto mb-4 text-slate-300 dark:text-slate-700"
+                    />
+                    <h3 className="mb-2 text-2xl font-bold text-slate-900 dark:text-white">
+                        {t('common.error')}
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                        {error.message || t('search.tryDifferentFilters')}
+                    </p>
+                </div>
+            </motion.div>
         );
     }
 

@@ -16,7 +16,7 @@ import { useKosts } from '@/lib/hooks/use-kost-data';
 
 export default function HomePage() {
   const t = useTranslations('home.properties');
-  const { data: kosts, isLoading } = useKosts();
+  const { data: kosts, isLoading, error } = useKosts();
 
   return (
     <AppLayout>
@@ -49,6 +49,7 @@ export default function HomePage() {
             kosts={kosts ?? []}
             filters={DEFAULT_SEARCH_FILTERS}
             isLoading={isLoading}
+            error={error}
           />
         </div>
       </section>

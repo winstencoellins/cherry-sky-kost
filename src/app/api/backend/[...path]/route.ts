@@ -1,4 +1,5 @@
 import { getServerApiUrl } from "@/lib/api/base-url";
+import { rewriteSessionCookieForBackend } from "@/lib/auth/session-cookie";
 
 /**
  * Same-origin API proxy — routes /api/backend/** to the Railway backend.
@@ -49,6 +50,11 @@ async function proxyRequest(request: Request, pathSegments: string[]) {
     forwardHeaders.delete(h);
   }
 
+  const cookie = forwardHeaders.get("cookie");
+  if (cookie) {
+    forwardHeaders.set("cookie", rewriteSessionCookieForBackend(cookie));
+  }
+
   const hasBody =
     request.method !== "GET" &&
     request.method !== "HEAD" &&
@@ -89,7 +95,17 @@ async function proxyRequest(request: Request, pathSegments: string[]) {
   responseHeaders.delete("access-control-allow-origin");
   responseHeaders.delete("access-control-allow-credentials");
 
-  return new Response(upstream.body, {
+  // Buffer the response body — streaming upstream.body through the Next.js
+  // proxy can leave clients with an unreadable or empty body (fetch().json()
+  // then fails even when the upstream returned 200 + JSON).
+  const responseBody = await upstream.arrayBuffer();
+  // upstream fetch decodes compressed bodies; drop encoding headers so clients
+  // do not attempt to decompress an already-decoded buffer (causes Z_DATA_ERROR).
+  responseHeaders.delete("content-encoding");
+  responseHeaders.delete("transfer-encoding");
+  responseHeaders.set("content-length", String(responseBody.byteLength));
+
+  return new Response(responseBody, {
     status: upstream.status,
     statusText: upstream.statusText,
     headers: responseHeaders,

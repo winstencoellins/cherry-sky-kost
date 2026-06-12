@@ -47,13 +47,14 @@ const FALLBACK_THUMBNAILS = [
 ];
 
 function mapPublicPropertyToKost(property: PublicProperty, index: number): Kost {
-    const allPricings = property.unitTypes.flatMap((ut) => ut.pricings ?? []);
+    const unitTypes = property.unitTypes ?? [];
+    const allPricings = unitTypes.flatMap((ut) => ut.pricings ?? []);
     const prices = allPricings.map((p) => p.price).filter((p) => Number.isFinite(p));
     const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
     const maxPrice = prices.length > 0 ? Math.max(...prices) : 0;
 
-    const totalRooms = property.unitTypes.reduce((sum, ut) => sum + (ut.units?.length ?? 0), 0);
-    const availableRooms = property.unitTypes.reduce(
+    const totalRooms = unitTypes.reduce((sum, ut) => sum + (ut.units?.length ?? 0), 0);
+    const availableRooms = unitTypes.reduce(
         (sum, ut) => sum + (ut.units ?? []).filter((u) => u.status === 'vacant').length,
         0,
     );
@@ -61,7 +62,7 @@ function mapPublicPropertyToKost(property: PublicProperty, index: number): Kost 
     const propertyImageUrls =
         property.propertyAttachments?.map((a) => a.url).filter(Boolean) ?? [];
 
-    const roomTypes = property.unitTypes.map((ut) => {
+    const roomTypes = unitTypes.map((ut) => {
         const utPrices = (ut.pricings ?? []).map((p) => p.price).filter((p) => Number.isFinite(p));
         const price = utPrices.length > 0 ? Math.min(...utPrices) : minPrice;
         const totalCount = ut.units?.length ?? 0;
@@ -136,11 +137,11 @@ export function useKosts() {
     });
 
     const data = useMemo(() => {
-        const rows = query.data?.data ?? [];
+        const rows = query.data ?? [];
         return rows.map((p, idx) => mapPublicPropertyToKost(p, idx));
     }, [query.data]);
 
-    return { data, isLoading: query.isLoading, error: query.error as Error | null };
+    return { data, isLoading: query.isPending, error: query.error as Error | null };
 }
 
 /**
@@ -153,11 +154,11 @@ export function useFeaturedKosts() {
     });
 
     const data = useMemo(() => {
-        const rows = query.data?.data ?? [];
+        const rows = query.data ?? [];
         return rows.slice(0, 2).map((p, idx) => mapPublicPropertyToKost(p, idx));
     }, [query.data]);
 
-    return { data, isLoading: query.isLoading, error: query.error as Error | null };
+    return { data, isLoading: query.isPending, error: query.error as Error | null };
 }
 
 /**
@@ -171,11 +172,11 @@ export function useKost(id: string) {
     });
 
     const data = useMemo(() => {
-        const p = query.data?.data;
+        const p = query.data;
         return p ? mapPublicPropertyToKost(p, 0) : null;
     }, [query.data]);
 
-    return { data, isLoading: query.isLoading, error: query.error as Error | null };
+    return { data, isLoading: query.isPending, error: query.error as Error | null };
 }
 
 function mapSearchUnitTypeResults(rows: PublicSearchUnitTypeResult[]): SearchUnitTypeResult[] {
@@ -238,7 +239,7 @@ export function useSearchUnitTypes(filters: SearchFilters) {
         total: query.data?.meta?.total ?? 0,
         unitTotal: query.data?.meta?.unitTotal ?? 0,
         pagination: query.data?.meta?.pagination,
-        isLoading: query.isLoading,
+        isLoading: query.isPending,
         isFetching: query.isFetching,
         error: query.error as Error | null,
     };
