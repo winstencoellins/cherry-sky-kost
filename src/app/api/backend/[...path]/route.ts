@@ -1,5 +1,8 @@
 import { getServerApiUrl } from "@/lib/api/base-url";
-import { rewriteSessionCookieForBackend } from "@/lib/auth/session-cookie";
+import {
+  cookieHeaderForBackend,
+  setCookieForBrowser,
+} from "@/lib/auth/session-cookie";
 
 /**
  * Same-origin API proxy — routes /api/backend/** to the Railway backend.
@@ -12,31 +15,6 @@ import { rewriteSessionCookieForBackend } from "@/lib/auth/session-cookie";
  * rewrites Set-Cookie so the session cookie is stored on the Vercel domain, where
  * the Next.js server can read it and forward it to Railway for SSR session checks.
  */
-
-/**
- * Strip the Domain attribute and normalise SameSite so the browser accepts the
- * cookie when it is served from the Vercel origin rather than the API origin.
- */
-function rewriteSetCookie(cookie: string, isHttps: boolean): string {
-  // Remove Domain attribute entirely — the browser will bind the cookie to the
-  // responding origin (Vercel) which is exactly what we want.
-  let out = cookie.replace(/;\s*Domain=[^;]*/gi, "");
-
-  // SameSite=None is only needed for genuine cross-origin cookies. Now that the
-  // cookie is first-party (same Vercel origin) Lax is both correct and stricter.
-  out = out.replace(/;\s*SameSite=None/gi, "; SameSite=Lax");
-
-  // In HTTP dev environments the Secure flag and the __Secure- prefix are not
-  // allowed. Strip them so local dev keeps working.
-  if (!isHttps) {
-    out = out
-      .replace(/;\s*Secure/gi, "")
-      .replace(/^__Secure-/i, "")
-      .replace(/^__Host-/i, "");
-  }
-
-  return out;
-}
 
 async function proxyRequest(request: Request, pathSegments: string[]) {
   const incomingUrl = new URL(request.url);
@@ -52,7 +30,7 @@ async function proxyRequest(request: Request, pathSegments: string[]) {
 
   const cookie = forwardHeaders.get("cookie");
   if (cookie) {
-    forwardHeaders.set("cookie", rewriteSessionCookieForBackend(cookie));
+    forwardHeaders.set("cookie", cookieHeaderForBackend(cookie));
   }
 
   const hasBody =
@@ -86,7 +64,7 @@ async function proxyRequest(request: Request, pathSegments: string[]) {
   if (setCookies.length > 0) {
     responseHeaders.delete("set-cookie");
     for (const c of setCookies) {
-      responseHeaders.append("set-cookie", rewriteSetCookie(c, isHttps));
+      responseHeaders.append("set-cookie", setCookieForBrowser(c, isHttps));
     }
   }
 
