@@ -1,6 +1,6 @@
-# Cherry Sky Kost — Backend API
+# Cherry Sky Living — Backend API
 
-REST API for the Cherry Sky Kost property management system, built with [Elysia](https://elysiajs.com/) on the Bun runtime.
+REST API for the Cherry Sky Living property management system, built with [Elysia](https://elysiajs.com/) on the Bun runtime.
 
 ## Development
 
@@ -218,7 +218,7 @@ Returns a list of all properties.
   "data": [
     {
       "id": "clx...",
-      "name": "Cherry Sky Kost A",
+      "name": "Cherry Sky Living A",
       "address": "Jl. Sudirman No. 12",
       "city": "Jakarta",
       "createdById": "usr...",
@@ -250,7 +250,7 @@ Returns a single property by ID.
 {
   "data": {
     "id": "clx...",
-    "name": "Cherry Sky Kost A",
+    "name": "Cherry Sky Living A",
     "address": "Jl. Sudirman No. 12",
     "city": "Jakarta",
     "createdById": "usr...",
@@ -275,7 +275,7 @@ Creates a new property.
 
 ```json
 {
-  "name": "Cherry Sky Kost A",
+  "name": "Cherry Sky Living A",
   "address": "Jl. Sudirman No. 12",
   "city": "Jakarta"
 }
@@ -303,7 +303,7 @@ Updates a property. All fields are optional — send only what you want to chang
 
 ```json
 {
-  "name": "Cherry Sky Kost B",
+  "name": "Cherry Sky Living B",
   "city": "Bandung"
 }
 ```
@@ -891,7 +891,7 @@ Returns all properties with their unit types, units, pricing options, and attach
   "data": [
     {
       "id": "clx...",
-      "name": "Cherry Sky Kost A",
+      "name": "Cherry Sky Living A",
       "address": "Jl. Sudirman No. 12",
       "city": "Jakarta",
       "unitTypes": [
@@ -1009,7 +1009,7 @@ To support monthly search in the UI, add admin pricing with `durationDays: 30` f
       "status": "vacant",
       "property": {
         "id": "clx...",
-        "name": "Cherry Sky Kost A",
+        "name": "Cherry Sky Living A",
         "address": "Jl. Sudirman No. 12",
         "city": "Jakarta"
       },

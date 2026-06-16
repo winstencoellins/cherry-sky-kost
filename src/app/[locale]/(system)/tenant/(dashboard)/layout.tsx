@@ -3,7 +3,7 @@ import { TenantShell } from "@/features/tenant/components/tenant-shell";
 import { requireTenant } from "@/lib/auth/guards";
 
 export const metadata: Metadata = {
-  title: "Tenant Portal | Cherry Sky Kost",
+  title: "Tenant Portal | Cherry Sky Living",
 };
 
 export default async function TenantDashboardLayout({

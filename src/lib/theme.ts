@@ -1,5 +1,5 @@
 /**
- * Sky Kost design tokens — aligned with DESIGN (1).md
+ * Cherry Sky Living design tokens — aligned with DESIGN (1).md
  */
 
 export const colors = {

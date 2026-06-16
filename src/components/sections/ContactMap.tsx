@@ -107,7 +107,7 @@ export function ContactMap() {
                             allowFullScreen={true}
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade"
-                            title="Cherry Sky Kost Locations"
+                            title="Cherry Sky Living Locations"
                         />
                     </motion.div>
 

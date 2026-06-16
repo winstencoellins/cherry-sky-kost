@@ -3,7 +3,7 @@ import { AdminShell } from "@/features/admin/components/admin-shell";
 import { requireAdmin } from "@/lib/auth/guards";
 
 export const metadata: Metadata = {
-  title: "Admin | Cherry Sky Kost",
+  title: "Admin | Cherry Sky Living",
 };
 
 export default async function AdminDashboardLayout({

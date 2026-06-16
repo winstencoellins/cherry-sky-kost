@@ -262,7 +262,7 @@
         "newsletterDesc": "Berlangganan untuk update kamar baru",
         "emailPlaceholder": "Alamat email",
         "subscribe": "Berlangganan",
-        "copyright": "© {year} Cherry Sky Kost. Hak cipta dilindungi.",
+        "copyright": "© {year} Cherry Sky Living. Hak cipta dilindungi.",
         "termsConditions": "Syarat & Ketentuan",
         "location": "Medan, Indonesia",
         "website": "Situs web",
@@ -295,8 +295,8 @@
     },
     "common": {
         "brand": {
-            "name": "Cherry Sky",
-            "fullName": "Cherry Sky Kost"
+            "name": "Cherry Sky Living",
+            "fullName": "Cherry Sky Living"
         },
         "accountSection": "Akun",
         "language": "Bahasa",
@@ -421,7 +421,7 @@
         "sections": {
             "introduction": {
                 "title": "1. Pengenalan",
-                "content": "Syarat dan Ketentuan ini mengatur penggunaan Anda terhadap platform Cherry Sky Kost, website, dan layanan kami. Dengan mengakses atau menggunakan layanan kami, Anda setuju untuk terikat oleh Syarat dan Ketentuan ini. Jika Anda tidak setuju dengan bagian mana pun dari Syarat ini, mohon jangan gunakan layanan kami."
+                "content": "Syarat dan Ketentuan ini mengatur penggunaan Anda terhadap platform Cherry Sky Living, website, dan layanan kami. Dengan mengakses atau menggunakan layanan kami, Anda setuju untuk terikat oleh Syarat dan Ketentuan ini. Jika Anda tidak setuju dengan bagian mana pun dari Syarat ini, mohon jangan gunakan layanan kami."
             },
             "userResponsibilities": {
                 "title": "2. Tanggung Jawab Pengguna",
@@ -444,7 +444,7 @@
             },
             "liability": {
                 "title": "5. Pembatasan Tanggung Jawab",
-                "content": "Cherry Sky Kost tidak bertanggung jawab atas kerugian tidak langsung, insidental, khusus, atau konsekuensial yang timbul dari penggunaan platform atau layanan kami. Ini termasuk kehilangan data, gangguan bisnis, atau kerusakan lainnya."
+                "content": "Cherry Sky Living tidak bertanggung jawab atas kerugian tidak langsung, insidental, khusus, atau konsekuensial yang timbul dari penggunaan platform atau layanan kami. Ini termasuk kehilangan data, gangguan bisnis, atau kerusakan lainnya."
             },
             "privacy": {
                 "title": "6. Privasi dan Perlindungan Data",
@@ -488,7 +488,7 @@
         "sections": {
             "introduction": {
                 "title": "1. Pengenalan",
-                "content": "Cherry Sky Kost (selanjutnya disebut 'Perusahaan', 'kami', 'kita') berkomitmen untuk melindungi privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan menjaga informasi Anda saat menggunakan website dan platform kami."
+                "content": "Cherry Sky Living (selanjutnya disebut 'Perusahaan', 'kami', 'kita') berkomitmen untuk melindungi privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan menjaga informasi Anda saat menggunakan website dan platform kami."
             },
             "informationCollection": {
                 "title": "2. Informasi yang Kami Kumpulkan",
@@ -573,7 +573,7 @@
     },
     "admin": {
         "brand": {
-            "name": "Sky Kost",
+            "name": "Cherry Sky Living",
             "suite": "Admin Suite"
         },
         "common": {
@@ -618,7 +618,7 @@
             "next": "Halaman berikutnya"
         },
         "login": {
-            "title": "Sky Kost Admin Suite",
+            "title": "Cherry Sky Living Admin Suite",
             "subtitle": "Masuk untuk mengelola properti Anda",
             "emailLabel": "Alamat Email",
             "emailPlaceholder": "admin@skykost.com",
@@ -694,6 +694,9 @@
             "propertyRequired": "Properti wajib dipilih.",
             "startDate": "Tanggal mulai",
             "pickDate": "Pilih tanggal",
+            "chooseFile": "Pilih file",
+            "noFileChosen": "Belum ada file",
+            "clearFile": "Hapus file terpilih",
             "pricing": "Paket harga",
             "tenantUserId": "ID pengguna penyewa",
             "tenantUserIdHint": "ID user dari database auth",
@@ -930,6 +933,9 @@
                 "addNewTenant": "Tambah penyewa baru",
                 "noTenantsMatch": "Tidak ada penyewa yang cocok dengan pencarian.",
                 "noPricingForUnit": "Belum ada paket harga untuk tipe unit ini. Tambahkan di menu Harga terlebih dahulu.",
+                "downpaymentProof": "Bukti pembayaran",
+                "downpaymentProofHint": "Opsional. Unggah bukti pembayaran saat membuat sewa ini.",
+                "downpaymentProofSection": "Bukti pembayaran yang terhubung ke sewa ini.",
                 "stats": {
                     "totalBadge": "Total",
                     "attentionBadge": "Perhatian",
@@ -1021,6 +1027,9 @@
                 "leasesLoadFailed": "Gagal memuat data sewa untuk pemasukan.",
                 "leaseIncomeDescription": "Sewa {unit} - {property}",
                 "fromLease": "Dari sewa",
+                "attachment": "Kwitansi atau faktur",
+                "attachmentHint": "Opsional. Unggah gambar kwitansi atau faktur (JPEG, PNG, WebP, atau GIF, maks. 5 MB).",
+                "attachmentSection": "Dokumen pendukung yang terhubung ke entri ini.",
                 "stats": {
                     "income": "Total pemasukan",
                     "incomeHint": "Pemasukan buku besar plus sewa berbayar penuh",
@@ -1068,7 +1077,7 @@
             "confirming": "Sedang keluar…"
         },
         "login": {
-            "title": "Portal Penyewa Sky Kost",
+            "title": "Portal Penyewa Cherry Sky Living",
             "subtitle": "Masuk untuk melihat sewa dan profil Anda",
             "emailLabel": "Alamat Email",
             "emailPlaceholder": "anda@contoh.com",

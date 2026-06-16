@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sky Kost Admin Suite — Sign in",
+  title: "Cherry Sky Living Admin Suite — Sign in",
 };
 
 export default function AdminLoginLayout({

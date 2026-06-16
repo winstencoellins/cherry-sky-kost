@@ -1,5 +1,5 @@
 /**
- * Homepage - Cherry Sky Kost
+ * Homepage - Cherry Sky Living
  * Main landing page with hero, property listings, and facilities
  */
 

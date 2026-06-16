@@ -420,6 +420,7 @@ export function useLedgerEntryMutations() {
         category?: string | null;
         date?: string;
         propertyId?: string | null;
+        file?: File | null;
       }) => updateLedgerEntry(id, input),
       onSuccess: invalidate,
     }),

@@ -1,20 +1,64 @@
+import { getServerApiUrl } from "@/lib/api/base-url";
+
 /**
- * Canonical Better Auth session cookie name on the API.
- * All upstream requests must use this name — the backend never accepts aliases.
+ * Session cookie stored by the browser on HTTPS (production Vercel).
+ * Better Auth adds the __Secure- prefix when the API runs over HTTPS.
  */
 export const SESSION_COOKIE_NAME = "__Secure-better-auth.session_token";
 
-/** Derived name used by the browser on local HTTP dev only (see setCookieForBrowser). */
-const HTTP_DEV_COOKIE_NAME = SESSION_COOKIE_NAME.replace(/^__Secure-/, "");
+/**
+ * Session cookie stored by the browser on local HTTP dev (localhost:3000).
+ * Kept separate from production so local and deployed sessions never collide.
+ */
+export const LOCAL_SESSION_COOKIE_NAME = SESSION_COOKIE_NAME.replace(
+  /^__Secure-/,
+  "",
+);
+
+/** Better Auth cookie name expected by the configured API origin. */
+export function backendSessionCookieName(): string {
+  return backendUsesSecureSessionCookies()
+    ? SESSION_COOKIE_NAME
+    : LOCAL_SESSION_COOKIE_NAME;
+}
+
+/** Cookie name the browser stores on the current frontend origin. */
+export function browserSessionCookieName(isHttps: boolean): string {
+  return isHttps ? SESSION_COOKIE_NAME : LOCAL_SESSION_COOKIE_NAME;
+}
+
+function backendUsesSecureSessionCookies(): boolean {
+  return getServerApiUrl().startsWith("https://");
+}
+
+function rewriteSessionCookiePart(
+  part: string,
+  fromName: string,
+  toName: string,
+): string {
+  const eq = part.indexOf("=");
+  if (eq === -1) return part;
+
+  const name = part.slice(0, eq);
+  const value = part.slice(eq + 1);
+  if (name === fromName) {
+    return `${toName}=${value}`;
+  }
+
+  return part;
+}
 
 /**
- * Rewrite a browser Cookie header so Railway receives the backend cookie name.
- * On HTTPS (production) the browser already sends SESSION_COOKIE_NAME — no-op.
+ * Rewrite the session cookie in a browser Cookie header to the name the
+ * configured API expects.
+ *
+ * - Local API (http://localhost:8000): keep `better-auth.session_token`
+ * - Production API (https://…): map local cookie → `__Secure-better-auth.session_token`
  */
 export function cookieHeaderForBackend(cookieHeader: string): string {
-  if (!cookieHeader.includes(`${HTTP_DEV_COOKIE_NAME}=`)) {
-    return cookieHeader;
-  }
+  if (!cookieHeader) return cookieHeader;
+
+  const backendName = backendSessionCookieName();
 
   return cookieHeader
     .split(";")
@@ -23,13 +67,57 @@ export function cookieHeaderForBackend(cookieHeader: string): string {
       const eq = part.indexOf("=");
       if (eq === -1) return part;
       const name = part.slice(0, eq);
-      const value = part.slice(eq + 1);
-      if (name === HTTP_DEV_COOKIE_NAME) {
-        return `${SESSION_COOKIE_NAME}=${value}`;
+
+      if (
+        name === LOCAL_SESSION_COOKIE_NAME &&
+        backendName === SESSION_COOKIE_NAME
+      ) {
+        return rewriteSessionCookiePart(
+          part,
+          LOCAL_SESSION_COOKIE_NAME,
+          SESSION_COOKIE_NAME,
+        );
       }
+
+      if (
+        name === SESSION_COOKIE_NAME &&
+        backendName === LOCAL_SESSION_COOKIE_NAME
+      ) {
+        return rewriteSessionCookiePart(
+          part,
+          SESSION_COOKIE_NAME,
+          LOCAL_SESSION_COOKIE_NAME,
+        );
+      }
+
       return part;
     })
     .join("; ");
+}
+
+type CookieReader = {
+  get: (name: string) => { value: string } | undefined;
+  toString: () => string;
+};
+
+/** Read the session token from the Next.js cookie store (either local or prod name). */
+export function readSessionToken(cookieStore: CookieReader): string | undefined {
+  return (
+    cookieStore.get(LOCAL_SESSION_COOKIE_NAME)?.value ??
+    cookieStore.get(SESSION_COOKIE_NAME)?.value
+  );
+}
+
+/** Build a Cookie header for upstream session validation from the Next.js cookie store. */
+export function sessionCookieHeaderForBackend(
+  cookieStore: CookieReader,
+): string {
+  const token = readSessionToken(cookieStore);
+  if (token) {
+    return `${backendSessionCookieName()}=${token}`;
+  }
+
+  return cookieHeaderForBackend(cookieStore.toString());
 }
 
 /**

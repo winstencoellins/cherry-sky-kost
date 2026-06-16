@@ -1,5 +1,5 @@
 ---
-name: Sky Kost Identity
+name: Cherry Sky Living Identity
 colors:
   surface: '#faf9f6'
   surface-dim: '#dbdad7'

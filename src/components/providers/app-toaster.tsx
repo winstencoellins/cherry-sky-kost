@@ -3,7 +3,7 @@
 import { Toaster } from "sonner";
 
 /**
- * Global Sonner toaster — center-top, minimal Sky Kost styling.
+ * Global Sonner toaster — center-top, minimal Cherry Sky Living styling.
  * Variant accents via globals.css ([data-sonner-toast][data-type]).
  */
 export function AppToaster() {

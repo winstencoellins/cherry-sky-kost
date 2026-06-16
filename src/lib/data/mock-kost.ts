@@ -1,5 +1,5 @@
 /**
- * Mock Data for Cherry Sky Kost Platform
+ * Mock Data for Cherry Sky Living Platform
  * Contains realistic data for SKYKOST and CHERRY KOST properties
  */
 

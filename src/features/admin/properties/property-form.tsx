@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import {
   AdminField,
+  AdminFileInput,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminAttachmentsList } from "@/features/admin/components/admin-attachments-list";
@@ -177,12 +178,10 @@ export function PropertyForm({ id }: { id?: string }) {
         />
       </AdminField>
       <AdminField label={tp("image")} htmlFor="prop-image">
-        <input
+        <AdminFileInput
           id="prop-image"
-          type="file"
-          accept="image/*"
-          className={adminInputClassName}
-          onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
+          file={imageFile}
+          onFileChange={setImageFile}
         />
         <p className="mt-1 text-xs text-[#83746b]">{tp("imageHint")}</p>
         <div className="mt-2 flex items-center gap-3">

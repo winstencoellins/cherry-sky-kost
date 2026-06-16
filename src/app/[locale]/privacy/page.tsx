@@ -1,5 +1,5 @@
 /**
- * Privacy Policy Page - Cherry Sky Kost
+ * Privacy Policy Page - Cherry Sky Living
  * Comprehensive privacy policy with full i18n support
  */
 

@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api/client";
+import { apiFetch, apiFetchFormData } from "@/lib/api/client";
 import type {
   ApiDataResponse,
   ApiListResponse,
@@ -32,10 +32,31 @@ export async function createLease(input: {
   startDate: string;
   unitPricingId: string;
   leaseRenewalId?: string;
+  file?: File | null;
 }): Promise<Lease> {
+  const { file, ...fields } = input;
+
+  if (file) {
+    const form = new FormData();
+    form.set("unitId", fields.unitId);
+    form.set("userId", fields.userId);
+    form.set("startDate", fields.startDate);
+    form.set("unitPricingId", fields.unitPricingId);
+    if (fields.leaseRenewalId) {
+      form.set("leaseRenewalId", fields.leaseRenewalId);
+    }
+    form.set("file", file);
+
+    const res = await apiFetchFormData<ApiDataResponse<Lease>>(
+      "/admin/leases",
+      form,
+    );
+    return res.data;
+  }
+
   const res = await apiFetch<ApiDataResponse<Lease>>("/admin/leases", {
     method: "POST",
-    body: input,
+    body: fields,
   });
   return res.data;
 }

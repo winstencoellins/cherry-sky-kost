@@ -1,6 +1,6 @@
 import { cookies, headers } from "next/headers";
 import { getServerApiUrl } from "@/lib/api/base-url";
-import { cookieHeaderForBackend } from "@/lib/auth/session-cookie";
+import { sessionCookieHeaderForBackend } from "@/lib/auth/session-cookie";
 import type { User } from "@/lib/types/auth";
 
 export interface AuthSession {
@@ -28,7 +28,7 @@ interface GetSessionResponse {
 export async function getSession(): Promise<AuthSession | null> {
   const cookieStore = await cookies();
   const headerStore = await headers();
-  const cookieHeader = cookieHeaderForBackend(cookieStore.toString());
+  const cookieHeader = sessionCookieHeaderForBackend(cookieStore);
 
   let response: Response;
 
@@ -74,7 +74,7 @@ export async function getSession(): Promise<AuthSession | null> {
  */
 export async function signOutSession(): Promise<void> {
   const cookieStore = await cookies();
-  const cookieHeader = cookieHeaderForBackend(cookieStore.toString());
+  const cookieHeader = sessionCookieHeaderForBackend(cookieStore);
 
   try {
     await fetch(`${getServerApiUrl()}/auth/sign-out`, {

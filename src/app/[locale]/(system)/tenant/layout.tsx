@@ -6,8 +6,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Tenant Portal - Cherry Sky Kost',
-    description: 'Manage your bookings and account on Cherry Sky Kost',
+    title: 'Tenant Portal - Cherry Sky Living',
+    description: 'Manage your bookings and account on Cherry Sky Living',
 };
 
 export default function TenantLayout({

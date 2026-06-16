@@ -1,5 +1,5 @@
 /**
- * Core Type Definitions for Cherry Sky Kost Platform
+ * Core Type Definitions for Cherry Sky Living Platform
  */
 
 export type BathroomType = 'dalam' | 'luar' | 'bersama';

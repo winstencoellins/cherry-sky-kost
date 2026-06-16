@@ -3,6 +3,8 @@ import { apiFetch } from "@/lib/api/client";
 import { parseApiError } from "@/lib/api/errors";
 import type {
   ApiDataResponse,
+  LedgerEntryAttachment,
+  LeaseDownpaymentAttachment,
   PropertyAttachment,
   UnitTypeAttachment,
 } from "@/lib/types/admin";
@@ -68,6 +70,26 @@ export async function deleteUnitTypeAttachment(
 ): Promise<UnitTypeAttachment> {
   const res = await apiFetch<ApiDataResponse<UnitTypeAttachment>>(
     `/admin/attachments/unit-type/${id}`,
+    { method: "DELETE" },
+  );
+  return res.data;
+}
+
+export async function deleteLeaseDownpaymentAttachment(
+  id: string,
+): Promise<LeaseDownpaymentAttachment> {
+  const res = await apiFetch<ApiDataResponse<LeaseDownpaymentAttachment>>(
+    `/admin/attachments/lease-downpayment/${id}`,
+    { method: "DELETE" },
+  );
+  return res.data;
+}
+
+export async function deleteLedgerEntryAttachment(
+  id: string,
+): Promise<LedgerEntryAttachment> {
+  const res = await apiFetch<ApiDataResponse<LedgerEntryAttachment>>(
+    `/admin/attachments/ledger-entry/${id}`,
     { method: "DELETE" },
   );
   return res.data;

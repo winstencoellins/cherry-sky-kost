@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import {
   AdminDatePicker,
   AdminField,
+  AdminFileInput,
   AdminSelect,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
+import { AdminAttachmentsList } from "@/features/admin/components/admin-attachments-list";
 import { AdminFormPage } from "@/features/admin/crud/admin-form-page";
 import {
   useLedgerEntry,
@@ -18,6 +21,8 @@ import {
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
 import { toDateInputValue } from "@/features/admin/lib/format";
+import { deleteLedgerEntryAttachment } from "@/lib/api/admin/attachments";
+import { adminKeys } from "@/lib/query/keys";
 import type { LedgerEntryType } from "@/lib/types/admin";
 
 const BASE = "/admin/bookkeeping";
@@ -41,13 +46,19 @@ const emptyForm: FormState = {
 export function LedgerEntryForm({ id }: { id?: string }) {
   const t = useTranslations("admin.crud");
   const tp = useTranslations("admin.pages.bookkeeping");
+  const ta = useTranslations("admin.attachments");
   const router = useRouter();
+  const qc = useQueryClient();
   const isEdit = !!id;
   const { data: properties = [] } = useProperties();
   const { data: entry, isLoading } = useLedgerEntry(id ?? "", isEdit);
   const mutations = useLedgerEntryMutations();
   const [form, setForm] = useState<FormState>(emptyForm);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+  const [deletePending, setDeletePending] = useState(false);
+
+  const attachments = entry?.attachments ?? [];
 
   useEffect(() => {
     if (entry) {
@@ -60,6 +71,27 @@ export function LedgerEntryForm({ id }: { id?: string }) {
       });
     }
   }, [entry]);
+
+  function invalidateEntry() {
+    void qc.invalidateQueries({ queryKey: adminKeys.ledgerEntries.all() });
+    if (id) {
+      void qc.invalidateQueries({ queryKey: adminKeys.ledgerEntries.detail(id) });
+    }
+  }
+
+  async function handleDeleteAttachment(attachmentId: string) {
+    setDeletePending(true);
+    try {
+      await deleteLedgerEntryAttachment(attachmentId);
+      showApiSuccess(ta("deleted"));
+      invalidateEntry();
+    } catch (err) {
+      showApiError(err, ta("deleteFailed"));
+      throw err;
+    } finally {
+      setDeletePending(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -77,6 +109,7 @@ export function LedgerEntryForm({ id }: { id?: string }) {
       description: form.description.trim(),
       date: form.date,
       propertyId: form.propertyId || null,
+      file: imageFile,
     };
 
     try {
@@ -183,6 +216,29 @@ export function LedgerEntryForm({ id }: { id?: string }) {
           ))}
         </AdminSelect>
       </AdminField>
+
+      <AdminField label={tp("attachment")} htmlFor="ledger-attachment">
+        <AdminFileInput
+          id="ledger-attachment"
+          file={imageFile}
+          onFileChange={setImageFile}
+        />
+        <p className="mt-1 text-xs text-[#83746b]">{tp("attachmentHint")}</p>
+      </AdminField>
+
+      {isEdit ? (
+        <div className="space-y-3">
+          <div>
+            <h3 className="text-sm font-bold text-[#1a1c1a]">{ta("title")}</h3>
+            <p className="text-xs text-[#83746b]">{tp("attachmentSection")}</p>
+          </div>
+          <AdminAttachmentsList
+            attachments={attachments}
+            onDelete={handleDeleteAttachment}
+            deletePending={deletePending}
+          />
+        </div>
+      ) : null}
     </AdminFormPage>
   );
 }

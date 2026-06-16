@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Icon } from "@/components/shared/Icon";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +41,81 @@ export const adminSearchInputClassName = cn(
   adminControlBase,
   "h-10 pl-10 pr-4 placeholder:text-[#83746b]/60",
 );
+
+export function AdminFileInput({
+  id,
+  accept = "image/*",
+  file,
+  onFileChange,
+  className,
+  disabled,
+}: {
+  id?: string;
+  accept?: string;
+  file: File | null;
+  onFileChange: (file: File | null) => void;
+  className?: string;
+  disabled?: boolean;
+}) {
+  const t = useTranslations("admin.crud");
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    onFileChange(event.target.files?.[0] ?? null);
+  }
+
+  function handleClear() {
+    onFileChange(null);
+    if (inputRef.current) inputRef.current.value = "";
+  }
+
+  return (
+    <div
+      className={cn(
+        "flex w-full items-center gap-3 rounded-xl border border-[#d5c3b8] bg-[#faf9f6] px-3 py-2.5",
+        disabled && "opacity-50",
+        className,
+      )}
+    >
+      <input
+        ref={inputRef}
+        id={id}
+        type="file"
+        accept={accept}
+        disabled={disabled}
+        className="sr-only"
+        onChange={handleChange}
+      />
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => inputRef.current?.click()}
+        className="shrink-0 rounded-lg border border-[#d5c3b8] bg-white px-3 py-1.5 text-sm font-semibold text-[#51443c] transition-colors hover:border-[#8b5e3c]/40 hover:bg-[#efeeeb] disabled:cursor-not-allowed"
+      >
+        {t("chooseFile")}
+      </button>
+      <span
+        className={cn(
+          "min-w-0 flex-1 truncate text-sm",
+          file ? "font-medium text-[#1a1c1a]" : "text-[#83746b]",
+        )}
+      >
+        {file?.name ?? t("noFileChosen")}
+      </span>
+      {file ? (
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={handleClear}
+          className="shrink-0 rounded-lg p-1.5 text-[#83746b] transition-colors hover:bg-[#efeeeb] hover:text-[#51443c] disabled:cursor-not-allowed"
+          aria-label={t("clearFile")}
+        >
+          <Icon name="close" size={18} />
+        </button>
+      ) : null}
+    </div>
+  );
+}
 
 export function AdminSelect({
   className,

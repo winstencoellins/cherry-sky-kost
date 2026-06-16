@@ -1,5 +1,5 @@
 /**
- * About Page - Cherry Sky Kost
+ * About Page - Cherry Sky Living
  * Information about the company, mission, values, and achievements
  */
 

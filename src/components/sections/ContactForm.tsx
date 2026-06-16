@@ -77,7 +77,7 @@ export function ContactForm() {
         if (!validateForm()) return;
 
         const whatsappMessage = `
-Hello, I'd like to inquire about Cherry Sky Kost.
+Hello, I'd like to inquire about Cherry Sky Living.
 
 Name: ${formData.name}
 Email: ${formData.email}

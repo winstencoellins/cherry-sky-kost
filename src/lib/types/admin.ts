@@ -22,6 +22,28 @@ export interface UnitTypeAttachment {
   updatedAt?: string;
 }
 
+export interface LeaseDownpaymentAttachment {
+  id: string;
+  leaseId: string;
+  fileName?: string;
+  url: string;
+  objectKey?: string;
+  contentType?: string | null;
+  sizeBytes?: number | null;
+  createdAt: string;
+}
+
+export interface LedgerEntryAttachment {
+  id: string;
+  ledgerEntryId: string;
+  fileName?: string;
+  url: string;
+  objectKey?: string;
+  contentType?: string | null;
+  sizeBytes?: number | null;
+  createdAt: string;
+}
+
 export interface Property {
   id: string;
   name: string;
@@ -155,6 +177,7 @@ export interface Lease {
   user?: UnitUserRef;
   unitPricing?: UnitPricing;
   leaseRenewal?: LeaseRenewal | null;
+  downpaymentAttachments?: LeaseDownpaymentAttachment[];
   createdBy?: UnitUserRef;
   updatedBy?: UnitUserRef;
   createdById: string;
@@ -178,6 +201,7 @@ export interface LedgerEntry {
   date: string;
   propertyId: string | null;
   property?: Pick<Property, "id" | "name" | "city">;
+  attachments?: LedgerEntryAttachment[];
   createdBy?: UnitUserRef;
   updatedBy?: UnitUserRef;
   createdById: string;

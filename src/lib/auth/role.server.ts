@@ -1,11 +1,11 @@
 import { cookies } from "next/headers";
 import { getServerApiUrl } from "@/lib/api/base-url";
 import { normalizeRole } from "@/lib/auth/role";
-import { cookieHeaderForBackend } from "@/lib/auth/session-cookie";
+import { sessionCookieHeaderForBackend } from "@/lib/auth/session-cookie";
 
 export async function fetchProfileRoleFromCookies(): Promise<string | undefined> {
   const cookieStore = await cookies();
-  const cookieHeader = cookieHeaderForBackend(cookieStore.toString());
+  const cookieHeader = sessionCookieHeaderForBackend(cookieStore);
   if (!cookieHeader) return undefined;
 
   // Call Railway directly — the cookie is already on the Vercel domain after the

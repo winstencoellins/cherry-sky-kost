@@ -1,5 +1,5 @@
 /**
- * Contact Page - Cherry Sky Kost
+ * Contact Page - Cherry Sky Living
  * Complete contact page with hero, form, info, and map
  */
 

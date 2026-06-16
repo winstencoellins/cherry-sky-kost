@@ -40,9 +40,10 @@ async function proxyRequest(request: Request, pathSegments: string[]) {
 
   // Buffer the body rather than streaming — Vercel's Node.js serverless runtime
   // does not reliably support streaming request bodies (duplex:"half").
-  let body: string | undefined;
+  // Use arrayBuffer (not text) so multipart/form-data file uploads stay intact.
+  let body: ArrayBuffer | undefined;
   if (hasBody) {
-    body = await request.text();
+    body = await request.arrayBuffer();
   }
 
   const upstream = await fetch(target, {

@@ -16,7 +16,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Cherry Sky Kost - Temukan Kost Impian Anda",
+  title: "Cherry Sky Living - Temukan Kost Impian Anda",
   description:
     "Kost nyaman dengan fasilitas lengkap di Medan. SKYKOST dan CHERRY KOST menawarkan kamar dengan AC, Wi-Fi cepat, dan fasilitas premium.",
   keywords: [

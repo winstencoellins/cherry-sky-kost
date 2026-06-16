@@ -57,7 +57,7 @@ export function AdminLoginShell({ children }: { children: React.ReactNode }) {
             >
               <Image
                 src={ADMIN_LOGIN_LOGO_IMAGE}
-                alt="Sky Kost"
+                alt="Cherry Sky Living"
                 fill
                 className="object-cover"
                 sizes="64px"

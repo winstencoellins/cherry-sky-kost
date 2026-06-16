@@ -262,7 +262,7 @@
         "newsletterDesc": "Subscribe for updates on new rooms",
         "emailPlaceholder": "Email address",
         "subscribe": "Subscribe",
-        "copyright": "© {year} Cherry Sky Kost. All rights reserved.",
+        "copyright": "© {year} Cherry Sky Living. All rights reserved.",
         "termsConditions": "Terms & Conditions",
         "location": "Medan, Indonesia",
         "website": "Website",
@@ -295,8 +295,8 @@
     },
     "common": {
         "brand": {
-            "name": "Cherry Sky",
-            "fullName": "Cherry Sky Kost"
+            "name": "Cherry Sky Living",
+            "fullName": "Cherry Sky Living"
         },
         "accountSection": "Account",
         "language": "Language",
@@ -421,7 +421,7 @@
         "sections": {
             "introduction": {
                 "title": "1. Introduction",
-                "content": "These Terms and Conditions (hereinafter referred to as 'Terms') govern your use of the Cherry Sky Kost platform, website, and services. By accessing or using our services, you agree to be bound by these Terms. If you do not agree to any part of these Terms, please do not use our services."
+                "content": "These Terms and Conditions (hereinafter referred to as 'Terms') govern your use of the Cherry Sky Living platform, website, and services. By accessing or using our services, you agree to be bound by these Terms. If you do not agree to any part of these Terms, please do not use our services."
             },
             "userResponsibilities": {
                 "title": "2. User Responsibilities",
@@ -444,7 +444,7 @@
             },
             "liability": {
                 "title": "5. Limitation of Liability",
-                "content": "Cherry Sky Kost shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of our platform or services. This includes loss of data, business interruption, or any other damage."
+                "content": "Cherry Sky Living shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of our platform or services. This includes loss of data, business interruption, or any other damage."
             },
             "privacy": {
                 "title": "6. Privacy and Data Protection",
@@ -488,7 +488,7 @@
         "sections": {
             "introduction": {
                 "title": "1. Introduction",
-                "content": "Cherry Sky Kost (hereinafter referred to as 'Company', 'we', 'us', or 'our') is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when using our website and platform."
+                "content": "Cherry Sky Living (hereinafter referred to as 'Company', 'we', 'us', or 'our') is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when using our website and platform."
             },
             "informationCollection": {
                 "title": "2. Information We Collect",
@@ -573,7 +573,7 @@
     },
     "admin": {
         "brand": {
-            "name": "Sky Kost",
+            "name": "Cherry Sky Living",
             "suite": "Admin Suite"
         },
         "common": {
@@ -618,7 +618,7 @@
             "next": "Next page"
         },
         "login": {
-            "title": "Sky Kost Admin Suite",
+            "title": "Cherry Sky Living Admin Suite",
             "subtitle": "Sign in to manage your properties",
             "emailLabel": "Email Address",
             "emailPlaceholder": "admin@skykost.com",
@@ -694,6 +694,9 @@
             "propertyRequired": "Property is required.",
             "startDate": "Start date",
             "pickDate": "Pick a date",
+            "chooseFile": "Choose file",
+            "noFileChosen": "No file chosen",
+            "clearFile": "Remove selected file",
             "pricing": "Pricing package",
             "tenantUserId": "Tenant user ID",
             "tenantUserIdHint": "User ID from the auth database",
@@ -930,6 +933,9 @@
                 "addNewTenant": "Add new tenant",
                 "noTenantsMatch": "No tenants match your search.",
                 "noPricingForUnit": "No pricing package exists for this unit type. Add one under Pricing first.",
+                "downpaymentProof": "Downpayment proof",
+                "downpaymentProofHint": "Optional. Upload a payment proof image when creating this lease.",
+                "downpaymentProofSection": "Payment proof images linked to this lease.",
                 "stats": {
                     "totalBadge": "Total",
                     "attentionBadge": "Attention",
@@ -1021,6 +1027,9 @@
                 "leasesLoadFailed": "Failed to load leases for rent income.",
                 "leaseIncomeDescription": "Rent {unit} - {property}",
                 "fromLease": "From lease",
+                "attachment": "Receipt or invoice",
+                "attachmentHint": "Optional. Upload a receipt or invoice image (JPEG, PNG, WebP, or GIF, max 5 MB).",
+                "attachmentSection": "Supporting documents linked to this entry.",
                 "stats": {
                     "income": "Total income",
                     "incomeHint": "Ledger income plus full paid lease rent",
@@ -1068,7 +1077,7 @@
             "confirming": "Logging out…"
         },
         "login": {
-            "title": "Sky Kost Tenant Portal",
+            "title": "Cherry Sky Living Tenant Portal",
             "subtitle": "Sign in to view your leases and profile",
             "emailLabel": "Email Address",
             "emailPlaceholder": "you@example.com",

@@ -1,5 +1,5 @@
 /**
- * Terms & Conditions Page - Cherry Sky Kost
+ * Terms & Conditions Page - Cherry Sky Living
  * Displays company terms and conditions with full i18n support
  */
 

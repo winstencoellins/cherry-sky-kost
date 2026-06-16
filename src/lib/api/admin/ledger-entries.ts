@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api/client";
+import { apiFetch, apiFetchFormData } from "@/lib/api/client";
 import type {
   ApiDataResponse,
   ApiLedgerListResponse,
@@ -39,35 +39,80 @@ export async function getLedgerEntry(id: string): Promise<LedgerEntry> {
   return res.data;
 }
 
-export async function createLedgerEntry(input: {
+type LedgerEntryInput = {
   type: LedgerEntryType;
   amount: number;
   description: string;
   category?: string | null;
   date: string;
   propertyId?: string | null;
-}): Promise<LedgerEntry> {
+  file?: File | null;
+};
+
+function buildLedgerEntryFormData(
+  input: Omit<LedgerEntryInput, "file">,
+  file?: File | null,
+): FormData {
+  const form = new FormData();
+  form.set("type", input.type);
+  form.set("amount", String(input.amount));
+  form.set("description", input.description);
+  form.set("date", input.date);
+  if (input.category) form.set("category", input.category);
+  if (input.propertyId) form.set("propertyId", input.propertyId);
+  if (file) form.set("file", file);
+  return form;
+}
+
+export async function createLedgerEntry(
+  input: LedgerEntryInput,
+): Promise<LedgerEntry> {
+  const { file, ...fields } = input;
+
+  if (file) {
+    const res = await apiFetchFormData<ApiDataResponse<LedgerEntry>>(
+      "/admin/ledger-entries",
+      buildLedgerEntryFormData(fields, file),
+    );
+    return res.data;
+  }
+
   const res = await apiFetch<ApiDataResponse<LedgerEntry>>(
     "/admin/ledger-entries",
-    { method: "POST", body: input },
+    { method: "POST", body: fields },
   );
   return res.data;
 }
 
 export async function updateLedgerEntry(
   id: string,
-  input: Partial<{
-    type: LedgerEntryType;
-    amount: number;
-    description: string;
-    category: string | null;
-    date: string;
-    propertyId: string | null;
-  }>,
+  input: Partial<Omit<LedgerEntryInput, "file">> & { file?: File | null },
 ): Promise<LedgerEntry> {
+  const { file, ...fields } = input;
+
+  if (file) {
+    const form = new FormData();
+    if (fields.type !== undefined) form.set("type", fields.type);
+    if (fields.amount !== undefined) form.set("amount", String(fields.amount));
+    if (fields.description !== undefined) {
+      form.set("description", fields.description);
+    }
+    if (fields.date !== undefined) form.set("date", fields.date);
+    if (fields.category) form.set("category", fields.category);
+    if (fields.propertyId) form.set("propertyId", fields.propertyId);
+    form.set("file", file);
+
+    const res = await apiFetchFormData<ApiDataResponse<LedgerEntry>>(
+      `/admin/ledger-entries/${id}`,
+      form,
+      "PUT",
+    );
+    return res.data;
+  }
+
   const res = await apiFetch<ApiDataResponse<LedgerEntry>>(
     `/admin/ledger-entries/${id}`,
-    { method: "PUT", body: input },
+    { method: "PUT", body: fields },
   );
   return res.data;
 }

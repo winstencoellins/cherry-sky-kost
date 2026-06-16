@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
 import {
   AdminDatePicker,
   AdminField,
+  AdminFileInput,
   AdminSelect,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
+import { AdminAttachmentsList } from "@/features/admin/components/admin-attachments-list";
 import { AdminFormPage } from "@/features/admin/crud/admin-form-page";
 import { AdminLeaseRenewalActions } from "@/features/admin/leases/lease-renewal-actions";
 import {
@@ -29,6 +32,8 @@ import { formatIdrTable, toDateInputValue } from "@/features/admin/lib/format";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { showApiError, showApiSuccess } from "@/features/admin/lib/show-api-error";
 import { createLeaseFormSchema } from "@/features/admin/leases/lease-form.schema";
+import { deleteLeaseDownpaymentAttachment } from "@/lib/api/admin/attachments";
+import { adminKeys } from "@/lib/query/keys";
 import type { LeaseStatus } from "@/lib/types/admin";
 
 const BASE = "/admin/leases";
@@ -55,7 +60,9 @@ export function LeaseForm({ id }: { id?: string }) {
   const t = useTranslations("admin.crud");
   const tp = useTranslations("admin.pages.leases");
   const tr = useTranslations("admin.pages.leaseRenewals");
+  const ta = useTranslations("admin.attachments");
   const router = useRouter();
+  const qc = useQueryClient();
   const searchParams = useSearchParams();
   const isEdit = !!id;
   const { data: units = [] } = useUnits();
@@ -64,7 +71,11 @@ export function LeaseForm({ id }: { id?: string }) {
   const mutations = useLeaseMutations();
   const lookups = useAdminLookups();
   const [form, setForm] = useState<FormState>(emptyForm);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+  const [deletePending, setDeletePending] = useState(false);
+
+  const attachments = lease?.downpaymentAttachments ?? [];
 
   const renewalPrefill = useMemo(() => {
     if (isEdit) return null;
@@ -121,6 +132,27 @@ export function LeaseForm({ id }: { id?: string }) {
     }
   }, [lease, isEdit, renewalPrefill, unitPrefill]);
 
+  function invalidateLease() {
+    void qc.invalidateQueries({ queryKey: adminKeys.leases.all() });
+    if (id) {
+      void qc.invalidateQueries({ queryKey: adminKeys.leases.detail(id) });
+    }
+  }
+
+  async function handleDeleteAttachment(attachmentId: string) {
+    setDeletePending(true);
+    try {
+      await deleteLeaseDownpaymentAttachment(attachmentId);
+      showApiSuccess(ta("deleted"));
+      invalidateLease();
+    } catch (err) {
+      showApiError(err, ta("deleteFailed"));
+      throw err;
+    } finally {
+      setDeletePending(false);
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setFormError(null);
@@ -156,6 +188,7 @@ export function LeaseForm({ id }: { id?: string }) {
           startDate: form.startDate,
           unitPricingId: form.unitPricingId,
           leaseRenewalId: form.leaseRenewalId || undefined,
+          file: imageFile,
         });
         showApiSuccess(t("created"));
       }
@@ -307,6 +340,29 @@ export function LeaseForm({ id }: { id?: string }) {
       {isEdit && lease?.leaseRenewal && (
         <AdminLeaseRenewalActions lease={lease} />
       )}
+      {!isEdit && (
+        <AdminField label={tp("downpaymentProof")} htmlFor="lease-proof">
+          <AdminFileInput
+            id="lease-proof"
+            file={imageFile}
+            onFileChange={setImageFile}
+          />
+          <p className="mt-1 text-xs text-[#83746b]">{tp("downpaymentProofHint")}</p>
+        </AdminField>
+      )}
+      {isEdit ? (
+        <div className="space-y-3">
+          <div>
+            <h3 className="text-sm font-bold text-[#1a1c1a]">{ta("title")}</h3>
+            <p className="text-xs text-[#83746b]">{tp("downpaymentProofSection")}</p>
+          </div>
+          <AdminAttachmentsList
+            attachments={attachments}
+            onDelete={handleDeleteAttachment}
+            deletePending={deletePending}
+          />
+        </div>
+      ) : null}
     </AdminFormPage>
   );
 }
