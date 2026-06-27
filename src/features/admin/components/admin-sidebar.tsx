@@ -1,11 +1,10 @@
 ﻿"use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Icon } from "@/components/shared/Icon";
+import { ProfileAvatarPlaceholder } from "@/components/shared/profile-avatar-placeholder";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
-import { ADMIN_PROFILE_IMAGE } from "@/features/admin/constants/assets";
 import {
   adminNavGroups,
   adminNavItems,
@@ -141,15 +140,11 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               : "bg-[#f4f3f1] hover:bg-[#efeeeb]",
           )}
         >
-          <div className="relative size-10 shrink-0 overflow-hidden rounded-full ring-2 ring-white">
-            <Image
-              src={user.avatar ?? ADMIN_PROFILE_IMAGE}
-              alt={user.name}
-              fill
-              className="object-cover"
-              sizes="40px"
-            />
-          </div>
+          <ProfileAvatarPlaceholder
+            className="size-10 ring-2 ring-white"
+            iconSize={22}
+            label={user.name}
+          />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-[#1a1c1a]">
               {user.name}

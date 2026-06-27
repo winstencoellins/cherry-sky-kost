@@ -33,6 +33,7 @@ export function clearRenewalDismissal(renewalId: string): void {
 export function getTenantRenewalView(lease: Lease): TenantRenewalView {
   const renewal = lease.leaseRenewal;
   if (!renewal || renewal.markAsCompleted) return "none";
+  if (renewal.isConfirmed && !renewal.isRenewLease) return "none";
   if (renewal.isConfirmed) return "confirmed";
   if (renewal.isRenewLease) return "requested";
   if (!canRequestLeaseRenewal(lease)) return "none";
@@ -72,8 +73,9 @@ export function getTenantRenewalDisplayStatus(
   const renewal = lease.leaseRenewal;
   if (!renewal) return null;
   if (renewal.markAsCompleted) return "completed";
-  if (renewal.isConfirmed) return "confirmed";
+  if (renewal.isConfirmed && renewal.isRenewLease) return "confirmed";
   if (renewal.isRenewLease) return "requested";
+  if (renewal.isConfirmed && !renewal.isRenewLease) return "declined";
   if (lease.status !== "paid") return "not_eligible";
   if (isRenewalDismissed(renewal.id)) return "declined";
   if (isInFinalFiveDaysBeforeEnd(renewal.leaseEndDate, lease.endDate)) {

@@ -52,22 +52,32 @@ export function LeaseRenewalPrompt({
     }
   }
 
+  async function handleDecline() {
+    try {
+      await mutations.updateRenewal.mutateAsync({
+        leaseId: lease.id,
+        isRenewLease: false,
+      });
+      dismissRenewalPrompt(renewal!.id);
+      showApiSuccess(t("declinedSuccess"));
+      onResponded?.();
+    } catch (err) {
+      showApiError(err, t("declineFailed"));
+    }
+  }
+
   async function handleCancelRequest() {
     try {
       await mutations.updateRenewal.mutateAsync({
         leaseId: lease.id,
         isRenewLease: false,
       });
+      dismissRenewalPrompt(renewal!.id);
       showApiSuccess(t("cancelledSuccess"));
       onResponded?.();
     } catch (err) {
       showApiError(err, t("cancelFailed"));
     }
-  }
-
-  function handleDismiss() {
-    dismissRenewalPrompt(renewal!.id);
-    onResponded?.();
   }
 
   if (view === "requested") {
@@ -145,10 +155,10 @@ export function LeaseRenewalPrompt({
               <button
                 type="button"
                 disabled={pending}
-                onClick={handleDismiss}
+                onClick={() => void handleDecline()}
                 className="inline-flex items-center gap-1.5 rounded-xl border border-[#e3e2e0] bg-white px-4 py-2 text-sm font-semibold text-[#51443c] transition-colors hover:bg-[#efeeeb] disabled:opacity-50"
               >
-                {t("noRenew")}
+                {pending ? t("submitting") : t("noRenew")}
               </button>
             </div>
           )}

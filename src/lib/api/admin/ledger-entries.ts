@@ -9,8 +9,8 @@ import type {
 export type LedgerEntryFilters = {
   propertyId?: string;
   type?: LedgerEntryType;
-  from?: string;
-  to?: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 function buildQuery(filters?: LedgerEntryFilters): string {
@@ -18,8 +18,8 @@ function buildQuery(filters?: LedgerEntryFilters): string {
   const params = new URLSearchParams();
   if (filters.propertyId) params.set("propertyId", filters.propertyId);
   if (filters.type) params.set("type", filters.type);
-  if (filters.from) params.set("from", filters.from);
-  if (filters.to) params.set("to", filters.to);
+  if (filters.startDate) params.set("startDate", filters.startDate);
+  if (filters.endDate) params.set("endDate", filters.endDate);
   const q = params.toString();
   return q ? `?${q}` : "";
 }

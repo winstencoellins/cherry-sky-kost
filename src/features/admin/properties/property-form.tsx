@@ -150,7 +150,7 @@ export function PropertyForm({ id }: { id?: string }) {
       cancelHref={BASE}
       cancelLabel={t("cancel")}
     >
-      <AdminField label={t("name")} htmlFor="prop-name">
+      <AdminField label={t("name")} htmlFor="prop-name" required>
         <input
           id="prop-name"
           required
@@ -159,7 +159,7 @@ export function PropertyForm({ id }: { id?: string }) {
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
         />
       </AdminField>
-      <AdminField label={t("address")} htmlFor="prop-address">
+      <AdminField label={t("address")} htmlFor="prop-address" required>
         <input
           id="prop-address"
           required
@@ -168,7 +168,7 @@ export function PropertyForm({ id }: { id?: string }) {
           onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
         />
       </AdminField>
-      <AdminField label={t("city")} htmlFor="prop-city">
+      <AdminField label={t("city")} htmlFor="prop-city" required>
         <input
           id="prop-city"
           required

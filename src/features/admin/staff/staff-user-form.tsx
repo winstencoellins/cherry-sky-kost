@@ -150,7 +150,7 @@ export function StaffUserForm({ id }: { id?: string }) {
       cancelHref={BASE}
       cancelLabel={t("cancel")}
     >
-      <AdminField label={t("name")} htmlFor="staff-name">
+      <AdminField label={t("name")} htmlFor="staff-name" required>
         <input
           id="staff-name"
           required
@@ -161,7 +161,7 @@ export function StaffUserForm({ id }: { id?: string }) {
         />
       </AdminField>
 
-      <AdminField label={t("email")} htmlFor="staff-email">
+      <AdminField label={t("email")} htmlFor="staff-email" required>
         <input
           id="staff-email"
           type="email"
@@ -174,7 +174,7 @@ export function StaffUserForm({ id }: { id?: string }) {
       </AdminField>
 
       {!isEdit && (
-        <AdminField label={tp("password")} htmlFor="staff-password">
+        <AdminField label={tp("password")} htmlFor="staff-password" required>
           <div className="relative">
             <input
               id="staff-password"
@@ -203,7 +203,7 @@ export function StaffUserForm({ id }: { id?: string }) {
         </AdminField>
       )}
 
-      <AdminField label={tp("role")} htmlFor="staff-role">
+      <AdminField label={tp("role")} htmlFor="staff-role" required>
         <AdminSelect
           id="staff-role"
           required

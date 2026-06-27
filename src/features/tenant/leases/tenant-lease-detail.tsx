@@ -11,6 +11,7 @@ import {
 } from "@/features/admin/lib/format";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import { useTenantLease } from "@/features/tenant/hooks/use-tenant-queries";
+import { TenantAttachmentsList } from "@/features/tenant/components/tenant-attachments-list";
 import { LeaseRenewalPrompt } from "@/features/tenant/leases/lease-renewal-prompt";
 import { getTenantRenewalView } from "@/features/tenant/lib/lease-renewal";
 
@@ -96,6 +97,20 @@ export function TenantLeaseDetail({ id }: { id: string }) {
             <DetailItem label={tp("city")} value={lease.unit.property.city} />
           )}
         </dl>
+      </div>
+
+      <div className="rounded-2xl border border-[#e3e2e0] bg-white/80 p-6 shadow-sm">
+        <div className="mb-4">
+          <h3 className="text-base font-semibold text-[#1a1c1a]">
+            {tp("paymentProofTitle")}
+          </h3>
+          <p className="mt-1 text-sm text-[#83746b]">
+            {tp("paymentProofDescription")}
+          </p>
+        </div>
+        <TenantAttachmentsList
+          attachments={lease.downpaymentAttachments ?? []}
+        />
       </div>
     </div>
   );

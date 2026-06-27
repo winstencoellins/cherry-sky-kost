@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Icon } from "@/components/shared/Icon";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
+import { ProfileAvatarPlaceholder } from "@/components/shared/profile-avatar-placeholder";
+import { Icon } from "@/components/shared/Icon";
 import { Link, usePathname } from "@/i18n/routing";
-import { ADMIN_PROFILE_IMAGE } from "@/features/admin/constants/assets";
 import { tenantNavItems } from "@/features/tenant/constants/nav-items";
 import { useTenantShell } from "@/features/tenant/components/tenant-shell-context";
 import { cn } from "@/lib/utils";
@@ -54,15 +53,11 @@ export function TenantHeader() {
               "flex items-center gap-2.5 rounded-xl py-1.5 pl-1.5 pr-3 transition-colors hover:bg-[#f4f3f1]",
             )}
           >
-            <div className="relative size-9 overflow-hidden rounded-full ring-2 ring-[#e3e2e0]">
-              <Image
-                src={user.avatar ?? ADMIN_PROFILE_IMAGE}
-                alt={user.name}
-                fill
-                className="object-cover"
-                sizes="36px"
-              />
-            </div>
+            <ProfileAvatarPlaceholder
+              className="size-9 ring-2 ring-[#e3e2e0]"
+              iconSize={20}
+              label={user.name}
+            />
             <span className="hidden text-left md:block">
               <span className="block max-w-[120px] truncate text-sm font-semibold text-[#1a1c1a]">
                 {user.name}

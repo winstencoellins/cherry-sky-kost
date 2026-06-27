@@ -152,7 +152,7 @@ export function LedgerEntryForm({ id }: { id?: string }) {
       cancelHref={BASE}
       cancelLabel={t("cancel")}
     >
-      <AdminField label={tp("entryType")} htmlFor="ledger-type">
+      <AdminField label={tp("entryType")} htmlFor="ledger-type" required>
         <AdminSelect
           id="ledger-type"
           required
@@ -166,7 +166,7 @@ export function LedgerEntryForm({ id }: { id?: string }) {
         </AdminSelect>
       </AdminField>
 
-      <AdminField label={tp("amount")} htmlFor="ledger-amount">
+      <AdminField label={tp("amount")} htmlFor="ledger-amount" required>
         <input
           id="ledger-amount"
           type="number"
@@ -179,7 +179,7 @@ export function LedgerEntryForm({ id }: { id?: string }) {
         />
       </AdminField>
 
-      <AdminField label={t("description")} htmlFor="ledger-description">
+      <AdminField label={t("description")} htmlFor="ledger-description" required>
         <input
           id="ledger-description"
           required
@@ -191,7 +191,7 @@ export function LedgerEntryForm({ id }: { id?: string }) {
         />
       </AdminField>
 
-      <AdminField label={tp("date")} htmlFor="ledger-date">
+      <AdminField label={tp("date")} htmlFor="ledger-date" required>
         <AdminDatePicker
           id="ledger-date"
           value={form.date}

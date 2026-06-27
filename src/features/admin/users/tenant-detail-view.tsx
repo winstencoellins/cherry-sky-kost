@@ -171,7 +171,7 @@ export function TenantDetailView({ id }: TenantDetailViewProps) {
         )}
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <AdminField label={t("name")} htmlFor="tenant-name">
+          <AdminField label={t("name")} htmlFor="tenant-name" required>
             <input
               id="tenant-name"
               required
@@ -183,7 +183,7 @@ export function TenantDetailView({ id }: TenantDetailViewProps) {
               }
             />
           </AdminField>
-          <AdminField label={t("email")} htmlFor="tenant-email">
+          <AdminField label={t("email")} htmlFor="tenant-email" required>
             <input
               id="tenant-email"
               type="email"

@@ -55,6 +55,18 @@ export function uploadUnitTypeImage(
   );
 }
 
+export function uploadLeaseDownpaymentImage(
+  leaseId: string,
+  file: File,
+): Promise<void> {
+  return uploadAttachment(
+    "/admin/attachments/lease-downpayment",
+    "leaseId",
+    leaseId,
+    file,
+  );
+}
+
 export async function deletePropertyAttachment(
   id: string,
 ): Promise<PropertyAttachment> {

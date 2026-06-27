@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/shared/Icon";
+import { RequiredMark } from "@/components/shared/required-mark";
 import { useRouter } from "@/i18n/routing";
 import {
   adminLoginSchema,
@@ -152,8 +153,10 @@ export function AdminLoginForm() {
               <label
                 htmlFor="admin-email"
                 className="mb-2 block text-sm font-semibold tracking-wide text-[#1a1c1a]"
+                aria-required
               >
                 {t("emailLabel")}
+                <RequiredMark className="ml-0.5" />
               </label>
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -186,8 +189,10 @@ export function AdminLoginForm() {
               <label
                 htmlFor="admin-password"
                 className="mb-2 block text-sm font-semibold tracking-wide text-[#1a1c1a]"
+                aria-required
               >
                 {t("passwordLabel")}
+                <RequiredMark className="ml-0.5" />
               </label>
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

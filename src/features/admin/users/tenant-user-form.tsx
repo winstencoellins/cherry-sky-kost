@@ -77,7 +77,7 @@ export function TenantUserForm() {
       cancelHref={BASE}
       cancelLabel={t("cancel")}
     >
-      <AdminField label={t("name")} htmlFor="tenant-name">
+      <AdminField label={t("name")} htmlFor="tenant-name" required>
         <input
           id="tenant-name"
           required
@@ -87,7 +87,7 @@ export function TenantUserForm() {
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
         />
       </AdminField>
-      <AdminField label={t("email")} htmlFor="tenant-email">
+      <AdminField label={t("email")} htmlFor="tenant-email" required>
         <input
           id="tenant-email"
           type="email"
@@ -98,7 +98,7 @@ export function TenantUserForm() {
           onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
         />
       </AdminField>
-      <AdminField label={tp("password")} htmlFor="tenant-password">
+      <AdminField label={tp("password")} htmlFor="tenant-password" required>
         <div className="relative">
           <input
             id="tenant-password"

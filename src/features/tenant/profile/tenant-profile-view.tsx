@@ -1,16 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
+import { ProfileAvatarPlaceholder } from "@/components/shared/profile-avatar-placeholder";
 import { AdminAlert } from "@/features/admin/components/admin-alert";
 import {
   AdminField,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
-import { ADMIN_PROFILE_IMAGE } from "@/features/admin/constants/assets";
 import { formatDate } from "@/features/admin/lib/format";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import {
@@ -41,6 +40,7 @@ const emptyPassword: TenantPasswordValues = {
 
 export function TenantProfileView() {
   const t = useTranslations("tenant.common");
+  const th = useTranslations("tenant.header");
   const tp = useTranslations("tenant.pages.profile");
   const locale = useLocale();
   const router = useRouter();
@@ -131,27 +131,14 @@ export function TenantProfileView() {
         <div className="space-y-6">
           <section className="rounded-2xl border border-[#e3e2e0] bg-white/80 p-6 shadow-sm">
             <div className="mb-6 flex items-center gap-5">
-              <div className="relative size-20 shrink-0 overflow-hidden rounded-full ring-4 ring-[#f4f3f1]">
-                <Image
-                  src={profile.image ?? ADMIN_PROFILE_IMAGE}
-                  alt={profile.name}
-                  fill
-                  className="object-cover"
-                  sizes="80px"
-                />
-              </div>
+              <ProfileAvatarPlaceholder
+                className="size-20 ring-4 ring-[#f4f3f1]"
+                iconSize={36}
+                label={profile.name}
+              />
               <div>
-                <span
-                  className={cn(
-                    "inline-flex rounded-full px-2.5 py-1 text-xs font-semibold",
-                    profile.emailVerified
-                      ? "bg-emerald-50 text-emerald-700"
-                      : "bg-[#FEF7E0] text-[#B06000]",
-                  )}
-                >
-                  {profile.emailVerified
-                    ? tp("emailVerified")
-                    : tp("emailNotVerified")}
+                <span className="inline-flex rounded-full border border-[#e8dfd6] bg-[#f5e4d4] px-2.5 py-1 text-xs font-semibold text-[#6f4627]">
+                  {th("roleTenant")}
                 </span>
                 <p className="mt-2 text-xs text-[#83746b]">
                   {tp("memberSince")}: {formatDate(profile.createdAt, locale)}
@@ -167,7 +154,7 @@ export function TenantProfileView() {
               {profileError && <AdminAlert message={profileError} />}
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <AdminField label={t("name")} htmlFor="profile-name">
+                <AdminField label={t("name")} htmlFor="profile-name" required>
                   <input
                     id="profile-name"
                     type="text"
@@ -217,7 +204,7 @@ export function TenantProfileView() {
             <form onSubmit={(e) => void handlePasswordSubmit(e)} className="space-y-4">
               {passwordError && <AdminAlert message={passwordError} />}
 
-              <AdminField label={tp("currentPassword")} htmlFor="current-password">
+              <AdminField label={tp("currentPassword")} htmlFor="current-password" required>
                 <PasswordInput
                   id="current-password"
                   value={passwordForm.currentPassword}
@@ -233,7 +220,7 @@ export function TenantProfileView() {
               </AdminField>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <AdminField label={tp("newPassword")} htmlFor="new-password">
+                <AdminField label={tp("newPassword")} htmlFor="new-password" required>
                   <PasswordInput
                     id="new-password"
                     value={passwordForm.newPassword}
@@ -247,7 +234,7 @@ export function TenantProfileView() {
                     autoComplete="new-password"
                   />
                 </AdminField>
-                <AdminField label={tp("confirmPassword")} htmlFor="confirm-password">
+                <AdminField label={tp("confirmPassword")} htmlFor="confirm-password" required>
                   <PasswordInput
                     id="confirm-password"
                     value={passwordForm.confirmPassword}

@@ -206,23 +206,11 @@ export function KostGrid({ kosts, isLoading, error }: KostGridProps) {
                                     )}
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            window.open(`https://wa.me/${kost.whatsappNumber}?text=Halo, saya tertarik dengan ${kost.name}`, '_blank');
-                                        }}
-                                        className="flex items-center justify-center gap-2 px-3 py-2 bg-[#25D366] hover:bg-[#1fb855] text-white text-xs font-semibold rounded-lg transition-colors"
-                                    >
-                                        <Icon name="chat" size={14} />
-                                        WhatsApp
-                                    </button>
-                                    <button
-                                        className="flex items-center justify-center gap-2 px-3 py-2 bg-primary hover:bg-primary/90 text-white text-xs font-semibold rounded-lg transition-colors"
-                                    >
+                                <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+                                    <span className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white">
                                         <Icon name="arrow_forward" size={14} />
-                                        Detail
-                                    </button>
+                                        {t('cta.viewDetails')}
+                                    </span>
                                 </div>
 
                                 {kost.rating && (

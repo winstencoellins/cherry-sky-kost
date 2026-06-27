@@ -112,6 +112,7 @@
         "includeWater": "Termasuk air"
     },
     "cta": {
+        "sendInquiry": "Kirim Pertanyaan",
         "bookNow": "Pesan Sekarang",
         "bookViewing": "Jadwalkan Kunjungan",
         "contactOwner": "Hubungi Pemilik",
@@ -152,7 +153,7 @@
             "email": "Email",
             "emailPlaceholder": "nama@email.com",
             "phone": "Nomor Telepon",
-            "phonePlaceholder": "+62 812-3456-7890",
+            "phonePlaceholder": "+62 811-6359-119",
             "password": "Kata Sandi",
             "passwordPlaceholder": "Minimal 6 karakter",
             "confirmPassword": "Konfirmasi Kata Sandi",
@@ -272,7 +273,24 @@
         "inquiry": "Halo, saya tertarik dengan {propertyName}",
         "roomInquiry": "Halo, saya tertarik dengan {roomType} di {propertyName}. Apakah masih tersedia?",
         "generalInquiry": "Halo, saya ingin menanyakan informasi tentang kost",
-        "visitSchedule": "Halo, saya ingin menjadwalkan kunjungan ke {propertyName}"
+        "visitSchedule": "Halo, saya ingin menjadwalkan kunjungan ke {propertyName}",
+        "inquiryDialog": {
+            "title": "Kirim Pertanyaan",
+            "description": "Bagikan detail Anda dan preferensi sewa. Kami akan membuka WhatsApp dengan pesan yang sudah siap dikirim.",
+            "name": "Nama",
+            "namePlaceholder": "Nama lengkap Anda",
+            "phone": "Nomor Telepon",
+            "phonePlaceholder": "contoh: 08116359119",
+            "duration": "Durasi Sewa",
+            "durationPlaceholder": "Pilih durasi",
+            "checkInDate": "Tanggal Check-in",
+            "checkInDatePlaceholder": "Pilih tanggal check-in",
+            "depositNote": "Catatan: Deposit sebesar {amount} wajib dibayar untuk mengamankan kontrak sewa Anda. Pembayaran dilakukan setelah konfirmasi pemesanan.",
+            "submit": "Kirim via WhatsApp",
+            "required": "Field ini wajib diisi",
+            "invalidPhone": "Masukkan nomor telepon yang valid",
+            "bookingMessage": "Halo, saya ingin menanyakan tentang {roomType} di {propertyName}.\n\nNama: {name}\nTelepon: {phone}\nDurasi: {duration}\nTanggal Check-in: {checkInDate}\nDeposit: {deposit}"
+        }
     },
     "roomDetail": {
         "title": "Detail Kamar",
@@ -377,8 +395,8 @@
             "weekendClosed": "Minggu: Tutup",
             "addressSkykost": "SKYKOST: Jl. Gaharu Gg. Amat Lama No. 12, Medan",
             "addressCherry": "CHERRY KOST: Jl. Setia Budi No. 45, Medan",
-            "phonePrimary": "+62 812-3456-7890",
-            "phoneSecondary": "+62 812-3456-7891",
+            "phonePrimary": "+62 811-6359-119",
+            "phoneSecondary": "+62 811-6359-119",
             "emailPrimary": "info@cherryskykost.com",
             "emailSecondary": "support@cherryskykost.com",
             "viewMap": "Lihat Peta",
@@ -471,7 +489,7 @@
                 "content": "Jika Anda memiliki pertanyaan mengenai Syarat dan Ketentuan ini, silakan hubungi kami di:",
                 "items": [
                     "Email: legal@cherryskykost.com",
-                    "Telepon: +62 812-3456-7890",
+                    "Telepon: +62 811-6359-119",
                     "Alamat: Jl. Gaharu Gg. Amat Lama No. 12, Medan"
                 ]
             }
@@ -563,7 +581,7 @@
                 "content": "Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini atau praktik privasi kami, silakan hubungi kami di:",
                 "items": [
                     "Email: privacy@cherryskykost.com",
-                    "Telepon: +62 812-3456-7890",
+                    "Telepon: +62 811-6359-119",
                     "Alamat: Jl. Gaharu Gg. Amat Lama No. 12, Medan"
                 ]
             }
@@ -773,6 +791,8 @@
                 "title": "Tipe unit",
                 "description": "Kategori kamar per properti (mis. Studio, 1BR).",
                 "formDescription": "Tentukan kategori kamar dan hubungkan ke properti.",
+                "descriptionPlaceholder": "mis. Studio luas dengan tempat tidur queen, kamar mandi dalam, AC, dan lemari. Cocok untuk satu penghuni.",
+                "descriptionHint": "Ditampilkan di halaman properti publik. Jelaskan tata ruang, fasilitas, dan siapa yang cocok untuk kamar ini.",
                 "image": "Gambar tipe unit",
                 "imageHint": "Opsional. Unggah gambar untuk tipe unit ini.",
                 "imageUploaded": "Gambar tipe unit berhasil diunggah.",
@@ -785,6 +805,8 @@
             "units": {
                 "title": "Unit",
                 "description": "Lihat semua kamar di peta atau tabel, dan cek ketersediaan untuk rentang tanggal.",
+                "searchPlaceholder": "Cari berdasarkan unit, tipe, atau properti…",
+                "empty": "Tidak ada unit ditemukan.",
                 "formDescription": "Tambah atau perbarui unit sewa.",
                 "sizeRequired": "Masukkan ukuran yang valid dalam meter persegi.",
                 "viewMode": "Mode tampilan",
@@ -932,10 +954,20 @@
                 "unitPrefillHint": "Membuat sewa untuk {unit} di {property}. Pilih penyewa dan paket harga di bawah.",
                 "addNewTenant": "Tambah penyewa baru",
                 "noTenantsMatch": "Tidak ada penyewa yang cocok dengan pencarian.",
+                "noUnitsMatch": "Tidak ada unit yang cocok dengan pencarian.",
                 "noPricingForUnit": "Belum ada paket harga untuk tipe unit ini. Tambahkan di menu Harga terlebih dahulu.",
+                "overlapUnit": "Unit ini sudah memiliki sewa dari {start} hingga {end} yang bertumpuk dengan periode yang dipilih.",
+                "overlapTenant": "Penyewa ini sudah memiliki sewa di {unit} ({property}) dari {start} hingga {end} yang bertumpuk dengan periode yang dipilih.",
+                "overlapBlocked": "Selesaikan bentrokan tanggal sewa di atas sebelum menyimpan.",
                 "downpaymentProof": "Bukti pembayaran",
-                "downpaymentProofHint": "Opsional. Unggah bukti pembayaran saat membuat sewa ini.",
+                "downpaymentProofHint": "Opsional. Unggah bukti pembayaran saat membuat atau memperbarui sewa ini.",
                 "downpaymentProofSection": "Bukti pembayaran yang terhubung ke sewa ini.",
+                "uploadImage": "Unggah gambar",
+                "uploadingImage": "Mengunggah…",
+                "saveFirstToUpload": "Simpan sewa ini terlebih dahulu, lalu unggah gambarnya secara terpisah.",
+                "imageRequired": "Pilih file gambar terlebih dahulu.",
+                "imageUploaded": "Bukti pembayaran berhasil diunggah.",
+                "imageUploadFailed": "Gagal mengunggah bukti pembayaran.",
                 "stats": {
                     "totalBadge": "Total",
                     "attentionBadge": "Perhatian",
@@ -1019,6 +1051,9 @@
                 "typeExpense": "Pengeluaran",
                 "typeFilter": "Jenis",
                 "allTypes": "Semua jenis",
+                "dateRange": "Rentang tanggal",
+                "dateRangePlaceholder": "Semua tanggal",
+                "invalidDateRange": "Tanggal mulai harus sama dengan atau sebelum tanggal akhir.",
                 "date": "Tanggal",
                 "category": "Kategori",
                 "amount": "Jumlah (IDR)",
@@ -1103,6 +1138,10 @@
                 }
             }
         },
+        "attachments": {
+            "empty": "Belum ada bukti pembayaran terunggah.",
+            "view": "Lihat ukuran penuh"
+        },
         "common": {
             "loading": "Memuat…",
             "loadFailed": "Gagal memuat data.",
@@ -1132,6 +1171,8 @@
                 "duration": "Durasi",
                 "address": "Alamat",
                 "city": "Kota",
+                "paymentProofTitle": "Bukti pembayaran",
+                "paymentProofDescription": "Gambar bukti pembayaran yang terunggah untuk sewa ini.",
                 "renewal": {
                     "promptTitle": "Apakah Anda ingin memperpanjang sewa?",
                     "promptDescription": "Sewa Anda untuk {unit} berakhir pada {endDate}. Beri tahu kami sebelum {deadline} jika ingin tetap tinggal.",
@@ -1141,6 +1182,7 @@
                     "respondNow": "Respon sekarang",
                     "requestedSuccess": "Permintaan perpanjangan terkirim. Kami akan segera meninjaunya.",
                     "requestFailed": "Gagal mengirim permintaan perpanjangan.",
+                    "declinedSuccess": "Respons Anda telah disimpan. Anda memilih untuk tidak memperpanjang sewa ini.",
                     "declineFailed": "Gagal menyimpan respons Anda.",
                     "cancelRequest": "Batalkan permintaan perpanjangan",
                     "cancelFailed": "Gagal membatalkan permintaan perpanjangan.",
@@ -1192,8 +1234,6 @@
                 "description": "Perbarui nama dan kata sandi Anda.",
                 "emailReadOnly": "Email tidak dapat diubah di sini. Hubungi administrator jika perlu memperbaruinya.",
                 "memberSince": "Bergabung sejak",
-                "emailVerified": "Email terverifikasi",
-                "emailNotVerified": "Email belum terverifikasi",
                 "accountSection": "Detail akun",
                 "passwordSection": "Ubah kata sandi",
                 "passwordDescription": "Masukkan kata sandi saat ini untuk mengatur yang baru.",

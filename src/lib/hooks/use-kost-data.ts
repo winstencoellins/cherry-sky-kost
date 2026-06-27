@@ -121,7 +121,7 @@ function mapPublicPropertyToKost(property: PublicProperty, index: number): Kost 
         totalRooms,
         availableRooms,
         isFeatured: index < 2,
-        whatsappNumber: '081234567890',
+        whatsappNumber: '08116359119',
         createdAt: new Date(),
         updatedAt: new Date(),
     };
@@ -193,7 +193,7 @@ function mapSearchUnitTypeResults(rows: PublicSearchUnitTypeResult[]): SearchUni
         totalCount: row.totalCount,
         pricings: mapRoomTypePricings(row.pricings),
         minPrice: row.minPrice,
-        whatsappNumber: '081234567890',
+        whatsappNumber: '08116359119',
         size: row.size ?? undefined,
         description: row.description ?? undefined,
     }));

@@ -8,6 +8,7 @@ import {
   AdminField,
   AdminFileInput,
   AdminSelect,
+  AdminTextarea,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminAttachmentsList } from "@/features/admin/components/admin-attachments-list";
@@ -183,7 +184,7 @@ export function UnitTypeForm({ id }: { id?: string }) {
       cancelHref={BASE}
       cancelLabel={t("cancel")}
     >
-      <AdminField label={t("property")} htmlFor="ut-property">
+      <AdminField label={t("property")} htmlFor="ut-property" required>
         <AdminSelect
           id="ut-property"
           required
@@ -202,7 +203,7 @@ export function UnitTypeForm({ id }: { id?: string }) {
         </AdminSelect>
       </AdminField>
 
-      <AdminField label={t("name")} htmlFor="ut-name">
+      <AdminField label={t("name")} htmlFor="ut-name" required>
         <input
           id="ut-name"
           required
@@ -212,17 +213,17 @@ export function UnitTypeForm({ id }: { id?: string }) {
         />
       </AdminField>
 
-      <AdminField label={t("description")} htmlFor="ut-desc">
-        <textarea
+      <AdminField label={t("description")} htmlFor="ut-desc" required>
+        <AdminTextarea
           id="ut-desc"
           required
-          rows={3}
-          className={adminInputClassName}
+          placeholder={tp("descriptionPlaceholder")}
           value={form.description}
           onChange={(e) =>
             setForm((f) => ({ ...f, description: e.target.value }))
           }
         />
+        <p className="mt-1 text-xs text-[#83746b]">{tp("descriptionHint")}</p>
       </AdminField>
 
       <AdminField label={t("size")} htmlFor="ut-size">

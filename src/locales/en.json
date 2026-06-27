@@ -112,6 +112,7 @@
         "includeWater": "Including water"
     },
     "cta": {
+        "sendInquiry": "Send Inquiry",
         "bookNow": "Book Now",
         "bookViewing": "Book Viewing",
         "contactOwner": "Contact Owner",
@@ -152,7 +153,7 @@
             "email": "Email",
             "emailPlaceholder": "name@email.com",
             "phone": "Phone Number",
-            "phonePlaceholder": "+62 812-3456-7890",
+            "phonePlaceholder": "+62 811-6359-119",
             "password": "Password",
             "passwordPlaceholder": "Minimum 6 characters",
             "confirmPassword": "Confirm Password",
@@ -272,7 +273,24 @@
         "inquiry": "Hello, I'm interested in {propertyName}",
         "roomInquiry": "Hello, I'm interested in {roomType} at {propertyName}. Is it still available?",
         "generalInquiry": "Hello, I would like to inquire about the boarding house",
-        "visitSchedule": "Hello, I would like to schedule a visit to {propertyName}"
+        "visitSchedule": "Hello, I would like to schedule a visit to {propertyName}",
+        "inquiryDialog": {
+            "title": "Send an Inquiry",
+            "description": "Share your details and preferred stay. We'll open WhatsApp with your message ready to send.",
+            "name": "Name",
+            "namePlaceholder": "Your full name",
+            "phone": "Telephone Number",
+            "phonePlaceholder": "e.g. 08116359119",
+            "duration": "Duration of Stay",
+            "durationPlaceholder": "Select duration",
+            "checkInDate": "Check-in Date",
+            "checkInDatePlaceholder": "Select check-in date",
+            "depositNote": "Note: A deposit of {amount} is required to secure your lease. This will be collected upon booking confirmation.",
+            "submit": "Message via WhatsApp",
+            "required": "This field is required",
+            "invalidPhone": "Please enter a valid phone number",
+            "bookingMessage": "Hello, I would like to inquire about {roomType} at {propertyName}.\n\nName: {name}\nPhone: {phone}\nDuration: {duration}\nCheck-in Date: {checkInDate}\nDeposit: {deposit}"
+        }
     },
     "roomDetail": {
         "title": "Room Details",
@@ -377,8 +395,8 @@
             "weekendClosed": "Sunday: Closed",
             "addressSkykost": "SKYKOST: Jl. Gaharu Gg. Amat Lama No. 12, Medan",
             "addressCherry": "CHERRY KOST: Jl. Setia Budi No. 45, Medan",
-            "phonePrimary": "+62 812-3456-7890",
-            "phoneSecondary": "+62 812-3456-7891",
+            "phonePrimary": "+62 811-6359-119",
+            "phoneSecondary": "+62 811-6359-119",
             "emailPrimary": "info@cherryskykost.com",
             "emailSecondary": "support@cherryskykost.com",
             "viewMap": "View Map",
@@ -471,7 +489,7 @@
                 "content": "If you have any questions regarding these Terms and Conditions, please contact us at:",
                 "items": [
                     "Email: legal@cherryskykost.com",
-                    "Phone: +62 812-3456-7890",
+                    "Phone: +62 811-6359-119",
                     "Address: Jl. Gaharu Gg. Amat Lama No. 12, Medan"
                 ]
             }
@@ -563,7 +581,7 @@
                 "content": "If you have questions about this Privacy Policy or our privacy practices, please contact us at:",
                 "items": [
                     "Email: privacy@cherryskykost.com",
-                    "Phone: +62 812-3456-7890",
+                    "Phone: +62 811-6359-119",
                     "Address: Jl. Gaharu Gg. Amat Lama No. 12, Medan"
                 ]
             }
@@ -773,6 +791,8 @@
                 "title": "Unit types",
                 "description": "Room categories per property (e.g. Studio, 1BR).",
                 "formDescription": "Define a room category and link it to a property.",
+                "descriptionPlaceholder": "e.g. Spacious studio with queen bed, private bathroom, AC, and wardrobe. Ideal for one occupant.",
+                "descriptionHint": "Shown on the public property page. Describe layout, amenities, and who this room suits.",
                 "image": "Unit type image",
                 "imageHint": "Optional. Upload an image for this unit type.",
                 "imageUploaded": "Unit type image uploaded successfully.",
@@ -785,6 +805,8 @@
             "units": {
                 "title": "Units",
                 "description": "View all rooms on the map or table, and check which are vacant for a date range.",
+                "searchPlaceholder": "Search by unit, type, or property…",
+                "empty": "No units found.",
                 "formDescription": "Add or update a rentable unit.",
                 "sizeRequired": "Enter a valid size in square meters.",
                 "viewMode": "View mode",
@@ -932,10 +954,20 @@
                 "unitPrefillHint": "Creating a lease for {unit} at {property}. Choose the tenant and pricing package below.",
                 "addNewTenant": "Add new tenant",
                 "noTenantsMatch": "No tenants match your search.",
+                "noUnitsMatch": "No units match your search.",
                 "noPricingForUnit": "No pricing package exists for this unit type. Add one under Pricing first.",
+                "overlapUnit": "This unit already has a lease from {start} to {end} that overlaps the selected period.",
+                "overlapTenant": "This tenant already has a lease at {unit} ({property}) from {start} to {end} that overlaps the selected period.",
+                "overlapBlocked": "Resolve the lease date overlap above before saving.",
                 "downpaymentProof": "Downpayment proof",
-                "downpaymentProofHint": "Optional. Upload a payment proof image when creating this lease.",
+                "downpaymentProofHint": "Optional. Upload a payment proof image when creating or updating this lease.",
                 "downpaymentProofSection": "Payment proof images linked to this lease.",
+                "uploadImage": "Upload image",
+                "uploadingImage": "Uploading…",
+                "saveFirstToUpload": "Save this lease first, then upload its image separately.",
+                "imageRequired": "Please choose an image file first.",
+                "imageUploaded": "Payment proof uploaded successfully.",
+                "imageUploadFailed": "Failed to upload payment proof.",
                 "stats": {
                     "totalBadge": "Total",
                     "attentionBadge": "Attention",
@@ -1019,6 +1051,9 @@
                 "typeExpense": "Expense",
                 "typeFilter": "Type",
                 "allTypes": "All types",
+                "dateRange": "Date range",
+                "dateRangePlaceholder": "All dates",
+                "invalidDateRange": "Start date must be on or before end date.",
                 "date": "Date",
                 "category": "Category",
                 "amount": "Amount (IDR)",
@@ -1103,6 +1138,10 @@
                 }
             }
         },
+        "attachments": {
+            "empty": "No payment proof uploaded yet.",
+            "view": "View full size"
+        },
         "common": {
             "loading": "Loading…",
             "loadFailed": "Failed to load data.",
@@ -1132,6 +1171,8 @@
                 "duration": "Duration",
                 "address": "Address",
                 "city": "City",
+                "paymentProofTitle": "Payment proof",
+                "paymentProofDescription": "Images uploaded as proof of payment for this lease.",
                 "renewal": {
                     "promptTitle": "Would you like to renew your lease?",
                     "promptDescription": "Your lease for {unit} ends on {endDate}. Please let us know before {deadline} if you'd like to stay.",
@@ -1141,6 +1182,7 @@
                     "respondNow": "Respond now",
                     "requestedSuccess": "Renewal request submitted. We'll review it shortly.",
                     "requestFailed": "Failed to submit renewal request.",
+                    "declinedSuccess": "Your response has been saved. You chose not to renew this lease.",
                     "declineFailed": "Failed to save your response.",
                     "cancelRequest": "Cancel renewal request",
                     "cancelFailed": "Failed to cancel renewal request.",
@@ -1192,8 +1234,6 @@
                 "description": "Update your name and password.",
                 "emailReadOnly": "Email cannot be changed here. Contact your administrator if you need to update it.",
                 "memberSince": "Member since",
-                "emailVerified": "Email verified",
-                "emailNotVerified": "Email not verified",
                 "accountSection": "Account details",
                 "passwordSection": "Change password",
                 "passwordDescription": "Enter your current password to set a new one.",

@@ -53,8 +53,8 @@ export const adminKeys = {
     list: (filters?: {
       propertyId?: string;
       type?: string;
-      from?: string;
-      to?: string;
+      startDate?: string;
+      endDate?: string;
     }) => [...adminKeys.ledgerEntries.all(), filters ?? {}] as const,
     detail: (id: string) => [...adminKeys.ledgerEntries.all(), id] as const,
   },

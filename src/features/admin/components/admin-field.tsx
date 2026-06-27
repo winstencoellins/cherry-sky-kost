@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { Icon } from "@/components/shared/Icon";
+import { RequiredMark } from "@/components/shared/required-mark";
 import { cn } from "@/lib/utils";
 
 export function AdminField({
@@ -8,16 +9,23 @@ export function AdminField({
   htmlFor,
   children,
   className,
+  required,
 }: {
   label: string;
   htmlFor?: string;
   children: React.ReactNode;
   className?: string;
+  required?: boolean;
 }) {
   return (
     <div className={cn("space-y-1.5", className)}>
-      <label htmlFor={htmlFor} className="text-label-sm text-foreground">
+      <label
+        htmlFor={htmlFor}
+        className="text-label-sm text-foreground"
+        aria-required={required || undefined}
+      >
         {label}
+        {required ? <RequiredMark className="ml-0.5" /> : null}
       </label>
       {children}
     </div>
@@ -41,6 +49,28 @@ export const adminSearchInputClassName = cn(
   adminControlBase,
   "h-10 pl-10 pr-4 placeholder:text-[#83746b]/60",
 );
+
+export const adminTextareaClassName = cn(
+  adminControlBase,
+  "min-h-[8.5rem] resize-y px-3.5 py-3 leading-relaxed placeholder:text-[#83746b]/60",
+);
+
+export const AdminTextarea = React.forwardRef<
+  HTMLTextAreaElement,
+  React.ComponentProps<"textarea"> & { textareaClassName?: string }
+>(function AdminTextarea(
+  { className, textareaClassName, rows = 5, ...props },
+  ref,
+) {
+  return (
+    <textarea
+      ref={ref}
+      rows={rows}
+      className={cn(adminTextareaClassName, textareaClassName, className)}
+      {...props}
+    />
+  );
+});
 
 export function AdminFileInput({
   id,

@@ -9,6 +9,7 @@ import { AdminStatCard } from "@/features/admin/components/admin-stat-card";
 import { AdminTableShell } from "@/features/admin/components/admin-table-shell";
 import {
   AdminField,
+  AdminDateRangePicker,
   AdminSearchInput,
   AdminSelect,
 } from "@/features/admin/components/admin-field";
@@ -51,22 +52,47 @@ const BASE = "/admin/bookkeeping";
 
 type TypeFilter = "" | LedgerEntryType;
 
+function isDateInRange(
+  date: string,
+  startDate: string,
+  endDate: string,
+): boolean {
+  const day = date.slice(0, 10);
+  if (startDate && day < startDate) return false;
+  if (endDate && day > endDate) return false;
+  return true;
+}
+
 export function BookkeepingList() {
   const t = useTranslations("admin.crud");
   const tp = useTranslations("admin.pages.bookkeeping");
   const [propertyFilter, setPropertyFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [search, setSearch] = useState("");
+
+  const dateRangeError = useMemo(() => {
+    if (startDate && endDate && startDate > endDate) {
+      return tp("invalidDateRange");
+    }
+    return null;
+  }, [startDate, endDate, tp]);
 
   const filters = useMemo(
     () => ({
       ...(propertyFilter ? { propertyId: propertyFilter } : {}),
       ...(typeFilter ? { type: typeFilter } : {}),
+      ...(!dateRangeError && startDate ? { startDate } : {}),
+      ...(!dateRangeError && endDate ? { endDate } : {}),
     }),
-    [propertyFilter, typeFilter],
+    [propertyFilter, typeFilter, startDate, endDate, dateRangeError],
   );
 
-  const { data, isLoading, error, isError: ledgerError } = useLedgerEntries(filters);
+  const { data, isLoading, error, isError: ledgerError } = useLedgerEntries(
+    filters,
+    !dateRangeError,
+  );
   const {
     data: leases = [],
     isLoading: leasesLoading,
@@ -76,10 +102,15 @@ export function BookkeepingList() {
   const entries = data?.data ?? [];
   const ledgerSummary =
     data?.summary ?? computeLedgerSummary(entries);
-  const leaseIncome = useMemo(
-    () => sumPaidLeaseIncome(leases.filter((l) => l.status === "paid")),
-    [leases],
-  );
+  const leaseIncome = useMemo(() => {
+    const paidLeases = leases.filter((l) => l.status === "paid");
+    const inRange = startDate || endDate
+      ? paidLeases.filter((lease) =>
+          isDateInRange(lease.startDate, startDate, endDate),
+        )
+      : paidLeases;
+    return sumPaidLeaseIncome(inRange);
+  }, [leases, startDate, endDate]);
   const summary = useMemo(
     () => ({
       income: ledgerSummary.income + leaseIncome,
@@ -104,8 +135,9 @@ export function BookkeepingList() {
           }),
         ),
       )
-      .filter((row): row is LedgerEntry => row != null);
-  }, [leases, typeFilter, tp, lookups]);
+      .filter((row): row is LedgerEntry => row != null)
+      .filter((row) => isDateInRange(row.date, startDate, endDate));
+  }, [leases, typeFilter, tp, lookups, startDate, endDate]);
 
   const allEntries = useMemo(
     () => [...leaseIncomeEntries, ...entries],
@@ -212,6 +244,20 @@ export function BookkeepingList() {
             <option value="expense">{tp("typeExpense")}</option>
           </AdminSelect>
         </AdminField>
+        <AdminField
+          label={tp("dateRange")}
+          htmlFor="ledger-date-range"
+          className="w-full shrink-0 sm:w-[14rem]"
+        >
+          <AdminDateRangePicker
+            id="ledger-date-range"
+            from={startDate}
+            to={endDate}
+            onFromChange={setStartDate}
+            onToChange={setEndDate}
+            placeholder={tp("dateRangePlaceholder")}
+          />
+        </AdminField>
         <AdminSearchInput
           value={search}
           onChange={setSearch}
@@ -219,6 +265,10 @@ export function BookkeepingList() {
           className="sm:max-w-md sm:flex-1"
         />
       </div>
+
+      {dateRangeError && (
+        <p className="mb-4 text-sm text-[#ba1a1a]">{dateRangeError}</p>
+      )}
 
       {(ledgerError || leasesError) && (
         <div className="mb-4 space-y-2">

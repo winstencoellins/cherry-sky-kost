@@ -109,7 +109,7 @@ export function TenantQuickCreateDialog({
             </p>
           )}
 
-          <AdminField label={t("name")} htmlFor="quick-tenant-name">
+          <AdminField label={t("name")} htmlFor="quick-tenant-name" required>
             <input
               id="quick-tenant-name"
               required
@@ -122,7 +122,7 @@ export function TenantQuickCreateDialog({
             />
           </AdminField>
 
-          <AdminField label={t("email")} htmlFor="quick-tenant-email">
+          <AdminField label={t("email")} htmlFor="quick-tenant-email" required>
             <input
               id="quick-tenant-email"
               type="email"
@@ -136,7 +136,7 @@ export function TenantQuickCreateDialog({
             />
           </AdminField>
 
-          <AdminField label={tp("password")} htmlFor="quick-tenant-password">
+          <AdminField label={tp("password")} htmlFor="quick-tenant-password" required>
             <div className="relative">
               <input
                 id="quick-tenant-password"

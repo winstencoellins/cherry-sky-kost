@@ -119,7 +119,7 @@ export function PricingForm({ id }: { id?: string }) {
       cancelLabel={t("cancel")}
     >
       {!isEdit && (
-        <AdminField label={t("property")} htmlFor="price-property">
+        <AdminField label={t("property")} htmlFor="price-property" required>
           <AdminSelect
             id="price-property"
             required
@@ -142,7 +142,7 @@ export function PricingForm({ id }: { id?: string }) {
         </AdminField>
       )}
 
-      <AdminField label={t("unitType")} htmlFor="price-unit-type">
+      <AdminField label={t("unitType")} htmlFor="price-unit-type" required>
         <AdminSelect
           id="price-unit-type"
           required
@@ -161,7 +161,7 @@ export function PricingForm({ id }: { id?: string }) {
         </AdminSelect>
       </AdminField>
 
-      <AdminField label={t("duration")} htmlFor="price-duration">
+      <AdminField label={t("duration")} htmlFor="price-duration" required>
         <input
           id="price-duration"
           type="number"
@@ -175,7 +175,7 @@ export function PricingForm({ id }: { id?: string }) {
         />
       </AdminField>
 
-      <AdminField label={t("price")} htmlFor="price-amount">
+      <AdminField label={t("price")} htmlFor="price-amount" required>
         <input
           id="price-amount"
           type="number"

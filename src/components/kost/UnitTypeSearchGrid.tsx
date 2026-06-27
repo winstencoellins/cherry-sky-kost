@@ -10,6 +10,7 @@ import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Icon } from '@/components/shared/Icon';
+import { WhatsAppInquiryDialog } from '@/components/kost/WhatsAppInquiryDialog';
 import type { SearchUnitTypeResult } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils/format';
 
@@ -107,8 +108,8 @@ export function UnitTypeSearchGrid({ unitTypes, isLoading }: UnitTypeSearchGridP
 
                 return (
                     <motion.div key={`${unitType.propertyId}-${unitType.id}`} variants={item} className="group">
-                        <Link href={detailUrl} className="block h-full">
-                            <div className="relative h-full overflow-hidden rounded-2xl border border-slate-100 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900">
+                        <div className="relative h-full overflow-hidden rounded-2xl border border-slate-100 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900">
+                            <Link href={detailUrl} className="block">
                                 <div className="relative h-56 w-full overflow-hidden bg-slate-200 dark:bg-slate-800">
                                     {unitType.thumbnail ? (
                                         <Image
@@ -134,7 +135,7 @@ export function UnitTypeSearchGrid({ unitTypes, isLoading }: UnitTypeSearchGridP
                                     )}
                                 </div>
 
-                                <div className="flex flex-col gap-4 p-5">
+                                <div className="flex flex-col gap-4 p-5 pb-0">
                                     <div>
                                         <h3 className="mb-1 line-clamp-1 text-xl font-bold text-slate-900 dark:text-white">
                                             {unitType.name}
@@ -169,30 +170,34 @@ export function UnitTypeSearchGrid({ unitTypes, isLoading }: UnitTypeSearchGridP
                                             {t('search.noPricing')}
                                         </p>
                                     )}
-
-                                    <div className="grid grid-cols-2 gap-3 border-t border-slate-200 pt-4 dark:border-slate-800">
-                                        <button
-                                            type="button"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                window.open(
-                                                    `https://wa.me/${unitType.whatsappNumber}?text=Halo, saya tertarik dengan ${unitType.name} di ${unitType.propertyName}`,
-                                                    '_blank',
-                                                );
-                                            }}
-                                            className="flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1fb855]"
-                                        >
-                                            <Icon name="chat" size={14} />
-                                            WhatsApp
-                                        </button>
-                                        <span className="flex items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white">
-                                            <Icon name="arrow_forward" size={14} />
-                                            {t('cta.viewDetails')}
-                                        </span>
-                                    </div>
                                 </div>
+                            </Link>
+
+                            <div className="grid grid-cols-2 gap-3 border-t border-slate-200 p-5 pt-4 dark:border-slate-800">
+                                {unitType.availableCount > 0 ? (
+                                    <WhatsAppInquiryDialog
+                                        phoneNumber={unitType.whatsappNumber}
+                                        propertyName={unitType.propertyName}
+                                        roomName={unitType.name}
+                                        pricings={unitType.pricings}
+                                        fallbackPrice={unitType.minPrice}
+                                        variant="compact"
+                                        className="h-full w-full justify-center rounded-lg px-3 py-2 text-xs font-semibold"
+                                    />
+                                ) : (
+                                    <span className="flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                                        {t('status.full')}
+                                    </span>
+                                )}
+                                <Link
+                                    href={detailUrl}
+                                    className="flex items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-primary/90"
+                                >
+                                    <Icon name="arrow_forward" size={14} />
+                                    {t('cta.viewDetails')}
+                                </Link>
                             </div>
-                        </Link>
+                        </div>
                     </motion.div>
                 );
             })}

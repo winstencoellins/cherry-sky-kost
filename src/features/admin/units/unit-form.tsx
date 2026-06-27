@@ -132,7 +132,7 @@ export function UnitForm({ id }: { id?: string }) {
       cancelLabel={t("cancel")}
     >
       {!isEdit && (
-        <AdminField label={t("property")} htmlFor="unit-property">
+        <AdminField label={t("property")} htmlFor="unit-property" required>
           <AdminSelect
             id="unit-property"
             required
@@ -155,7 +155,7 @@ export function UnitForm({ id }: { id?: string }) {
         </AdminField>
       )}
 
-      <AdminField label={t("unitType")} htmlFor="unit-type">
+      <AdminField label={t("unitType")} htmlFor="unit-type" required>
         <AdminSelect
           id="unit-type"
           required
@@ -177,7 +177,7 @@ export function UnitForm({ id }: { id?: string }) {
         </AdminSelect>
       </AdminField>
 
-      <AdminField label={t("name")} htmlFor="unit-name">
+      <AdminField label={t("name")} htmlFor="unit-name" required>
         <input
           id="unit-name"
           required

@@ -184,10 +184,14 @@ export function useUnitPricingMutations() {
   };
 }
 
-export function useUnits(propertyId?: string) {
+export function useUnits(
+  propertyId?: string,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: adminKeys.units.list(propertyId),
     queryFn: () => listUnits(propertyId),
+    enabled: options?.enabled ?? true,
   });
 }
 
@@ -239,14 +243,18 @@ export function useUnitMutations() {
   };
 }
 
-export function useLeases(filters?: {
-  unitId?: string;
-  userId?: string;
-  propertyId?: string;
-}) {
+export function useLeases(
+  filters?: {
+    unitId?: string;
+    userId?: string;
+    propertyId?: string;
+  },
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: adminKeys.leases.list(filters),
     queryFn: () => listLeases(filters),
+    enabled: options?.enabled ?? true,
   });
 }
 
@@ -386,10 +394,11 @@ export function useLeaseMutations() {
   };
 }
 
-export function useLedgerEntries(filters?: LedgerEntryFilters) {
+export function useLedgerEntries(filters?: LedgerEntryFilters, enabled = true) {
   return useQuery({
     queryKey: adminKeys.ledgerEntries.list(filters),
     queryFn: () => listLedgerEntries(filters),
+    enabled,
   });
 }
 

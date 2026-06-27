@@ -8,7 +8,7 @@
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Icon } from '@/components/shared/Icon';
-import { WhatsAppButton } from '@/components/shared/WhatsAppButton';
+import { WhatsAppInquiryDialog } from '@/components/kost/WhatsAppInquiryDialog';
 import type { RoomTypePricing } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils/format';
 import { getDurationLabel } from '@/lib/utils/kost-display';
@@ -84,14 +84,14 @@ export function RoomDetailSidebar({
                         </p>
                     )}
 
-                    <WhatsAppButton
+                    <WhatsAppInquiryDialog
                         phoneNumber={whatsappNumber}
-                        message={t('whatsapp.roomInquiry', {
-                            roomType: roomName,
-                            propertyName,
-                        })}
+                        propertyName={propertyName}
+                        roomName={roomName}
+                        pricings={pricings}
+                        fallbackPrice={fallbackPrice}
                         className="w-full"
-                        label={t('cta.bookNow')}
+                        label={t('cta.sendInquiry')}
                     />
                     <p className="mt-4 text-center text-xs text-[#b0a29a]">
                         {t('roomDetail.notChargedYet')}

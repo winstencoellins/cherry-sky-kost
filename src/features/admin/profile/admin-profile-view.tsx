@@ -1,17 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import { Icon } from "@/components/shared/Icon";
+import { ProfileAvatarPlaceholder } from "@/components/shared/profile-avatar-placeholder";
 import { AdminAlert } from "@/features/admin/components/admin-alert";
 import {
   AdminField,
   adminInputClassName,
 } from "@/features/admin/components/admin-field";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
-import { ADMIN_PROFILE_IMAGE } from "@/features/admin/constants/assets";
 import { formatDate } from "@/features/admin/lib/format";
 import { getErrorMessage } from "@/features/admin/lib/errors";
 import {
@@ -138,15 +137,11 @@ export function AdminProfileView() {
         <div className="space-y-6">
           <section className="rounded-2xl border border-[#e3e2e0] bg-white/80 p-6 shadow-sm">
             <div className="mb-6 flex items-center gap-5">
-              <div className="relative size-20 shrink-0 overflow-hidden rounded-full ring-4 ring-[#f4f3f1]">
-                <Image
-                  src={profile.image ?? ADMIN_PROFILE_IMAGE}
-                  alt={profile.name}
-                  fill
-                  className="object-cover"
-                  sizes="80px"
-                />
-              </div>
+              <ProfileAvatarPlaceholder
+                className="size-20 ring-4 ring-[#f4f3f1]"
+                iconSize={36}
+                label={profile.name}
+              />
               <div>
                 <span
                   className={cn(
@@ -170,7 +165,7 @@ export function AdminProfileView() {
               {profileError && <AdminAlert message={profileError} />}
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <AdminField label={t("name")} htmlFor="admin-profile-name">
+                <AdminField label={t("name")} htmlFor="admin-profile-name" required>
                   <input
                     id="admin-profile-name"
                     type="text"
@@ -220,7 +215,7 @@ export function AdminProfileView() {
             <form onSubmit={(e) => void handlePasswordSubmit(e)} className="space-y-4">
               {passwordError && <AdminAlert message={passwordError} />}
 
-              <AdminField label={tp("currentPassword")} htmlFor="admin-current-password">
+              <AdminField label={tp("currentPassword")} htmlFor="admin-current-password" required>
                 <PasswordInput
                   id="admin-current-password"
                   value={passwordForm.currentPassword}
@@ -236,7 +231,7 @@ export function AdminProfileView() {
               </AdminField>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <AdminField label={tp("newPassword")} htmlFor="admin-new-password">
+                <AdminField label={tp("newPassword")} htmlFor="admin-new-password" required>
                   <PasswordInput
                     id="admin-new-password"
                     value={passwordForm.newPassword}
@@ -250,7 +245,7 @@ export function AdminProfileView() {
                     autoComplete="new-password"
                   />
                 </AdminField>
-                <AdminField label={tp("confirmPassword")} htmlFor="admin-confirm-password">
+                <AdminField label={tp("confirmPassword")} htmlFor="admin-confirm-password" required>
                   <PasswordInput
                     id="admin-confirm-password"
                     value={passwordForm.confirmPassword}

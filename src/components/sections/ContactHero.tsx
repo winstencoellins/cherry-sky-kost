@@ -85,7 +85,7 @@ export function ContactHero() {
                     className="flex items-center justify-center gap-6 pt-4"
                 >
                     <a
-                        href="https://wa.me/6281234567890"
+                        href="https://wa.me/628116359119"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all hover:scale-110 hover:bg-[#1fb855]"
@@ -94,7 +94,7 @@ export function ContactHero() {
                         <Icon name="chat" size={24} />
                     </a>
                     <a
-                        href="tel:+6281234567890"
+                        href="tel:+628116359119"
                         className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#6f4627] text-white shadow-lg transition-all hover:scale-110 hover:bg-[#805533]"
                         aria-label="Call us"
                     >

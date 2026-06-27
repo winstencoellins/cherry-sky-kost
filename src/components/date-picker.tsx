@@ -26,6 +26,7 @@ export interface DatePickerProps {
   disabled?: boolean;
   placeholder?: string;
   className?: string;
+  popoverClassName?: string;
   fromDate?: Date;
   toDate?: Date;
 }
@@ -37,6 +38,7 @@ export function DatePicker({
   disabled,
   placeholder = "Pick a date",
   className,
+  popoverClassName,
   fromDate,
   toDate,
 }: DatePickerProps) {
@@ -67,7 +69,7 @@ export function DatePicker({
           </span>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className={cn("w-auto p-0", popoverClassName)} align="start">
         <Calendar
           mode="single"
           locale={calendarLocale}

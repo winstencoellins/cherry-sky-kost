@@ -1,3 +1,0 @@
-/** Default admin profile avatar (design reference). */
-export const ADMIN_PROFILE_IMAGE =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuBV3fdhgCRUaMZCboJAEWjeVIU3I-FT4VXqiKqD1LtzpGbkLmKV6LIhrdYdZp3IRMNAe82lcAb6-tmGxmI68QWC7WxZvty4SOFBQT_u-dGil1ioacQpdHAY9I2daUOMAMZcaol_sIcVZpkLQyNfC2uyIEd_7bvvXX25YGiSK13YWZhFX8G2p8NFdhn0ASKT7sb4B36Vu3FttS4WBP_THnfBtClEXMza7dV5hL9J29JGshhJyo4vsvNEtJ7AEVEL_v6QfOkD1IsBx4U";

@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/shared/Icon';
+import { RequiredMark } from '@/components/shared/required-mark';
 
 interface FormData {
     name: string;
@@ -89,7 +90,7 @@ ${formData.message}
         `.trim();
 
         const encodedMessage = encodeURIComponent(whatsappMessage);
-        const whatsappURL = `https://wa.me/6281234567890?text=${encodedMessage}`;
+        const whatsappURL = `https://wa.me/628116359119?text=${encodedMessage}`;
 
         window.open(whatsappURL, '_blank');
         handleSuccess();
@@ -189,7 +190,7 @@ ${formData.message}
                                         className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
                                     >
                                         {t('name')}
-                                        <span className="text-red-500">*</span>
+                                        <RequiredMark className="ml-0.5" />
                                     </label>
                                     <input
                                         id="contact-name"
@@ -216,7 +217,7 @@ ${formData.message}
                                         className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
                                     >
                                         {t('email')}
-                                        <span className="text-red-500">*</span>
+                                        <RequiredMark className="ml-0.5" />
                                     </label>
                                     <input
                                         id="contact-email"
@@ -246,7 +247,7 @@ ${formData.message}
                                         className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
                                     >
                                         {t('phone')}
-                                        <span className="text-red-500">*</span>
+                                        <RequiredMark className="ml-0.5" />
                                     </label>
                                     <input
                                         id="contact-phone"
@@ -273,7 +274,7 @@ ${formData.message}
                                         className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
                                     >
                                         {t('subject')}
-                                        <span className="text-red-500">*</span>
+                                        <RequiredMark className="ml-0.5" />
                                     </label>
                                     <input
                                         id="contact-subject"
@@ -301,7 +302,7 @@ ${formData.message}
                                     className="block text-sm font-semibold text-slate-900 dark:text-white mb-2"
                                 >
                                     {t('message')}
-                                    <span className="text-red-500">*</span>
+                                    <RequiredMark className="ml-0.5" />
                                 </label>
                                 <textarea
                                     id="contact-message"

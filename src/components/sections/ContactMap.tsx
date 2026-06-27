@@ -32,7 +32,7 @@ export function ContactMap() {
             address: 'Jl. Gaharu Gg. Amat Lama No. 12, Medan Area, Medan',
             latitude: 3.1955,
             longitude: 98.6722,
-            phone: '+62 812-3456-7890',
+            phone: '+62 811-6359-119',
         },
         {
             id: 'cherry-kost',
@@ -40,7 +40,7 @@ export function ContactMap() {
             address: 'Jl. Setia Budi No. 45, Medan Maimun, Medan',
             latitude: 3.1945,
             longitude: 98.6812,
-            phone: '+62 812-3456-7891',
+            phone: '+62 811-6359-119',
         },
     ];
 
@@ -202,7 +202,7 @@ export function ContactMap() {
                         ensure someone is available to show you around.
                     </p>
                     <a
-                        href="tel:+6281234567890"
+                        href="tel:+628116359119"
                         className="inline-flex items-center gap-2 rounded-xl bg-[#6f4627] px-6 py-3 font-semibold text-white transition-colors hover:bg-[#805533]"
                     >
                         <Icon name="call" size={18} />
